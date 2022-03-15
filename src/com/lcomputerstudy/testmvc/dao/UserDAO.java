@@ -126,4 +126,39 @@ public class UserDAO {
 		}
 		return count;
 	}
+	
+	public User loginUser(String idx, String pw) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		User user = null;
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "SELECT * FROM user WHERE u_id = ? AND u_pw = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idx);
+			pstmt.setString(2, pw);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				user = new User();
+				user.setU_idx(rs.getInt("u_idx"));
+				user.setU_pw(rs.getString("u_pw"));
+				user.setU_id(rs.getString("u_id"));
+				user.setU_name(rs.getString("u_name"));
+			}
+		} catch (Exception ex) {
+			System.out.println("SQLException : " + ex.getMessage());
+		} finally {
+			try {
+				if (pstmt != null) pstmt.close();
+				if (conn != null) pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return user;
+	}
+	
+	 
 }
