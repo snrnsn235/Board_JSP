@@ -12,6 +12,7 @@
 	request.setCharacterEncoding("UTF-8"); //한글깨짐 방지
 	
 	String title = request.getParameter("title");
+	String id = request.getParameter("id");
 	String content = request.getParameter("content");
 	String writer = request.getParameter("writer");
 	String date = request.getParameter("date");
@@ -19,13 +20,14 @@
 	PreparedStatement pstmt = null;
 	
 	try {
-		String sql = "insert into board(b_title,b_content,b_date,b_writer,b_hits) values(?,?,?,?,?)";
+		String sql = "insert into board(b_title,b_id,b_content,b_writer,b_date,b_hits) values(?,?,?,?,?,?)";
 		pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, title);
-		pstmt.setString(2, content);
-		pstmt.setString(3, writer);
-		pstmt.setString(4, date);
-		pstmt.setString(5, hits);
+		pstmt.setString(2, id);
+		pstmt.setString(3, content);
+		pstmt.setString(4, writer);
+		pstmt.setString(5, date);
+		pstmt.setString(6, hits);
 		pstmt.executeUpdate();
 	} catch (SQLException ex) {
 		System.out.println("SQLException : "+ex.getMessage());

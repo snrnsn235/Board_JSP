@@ -9,7 +9,8 @@
 <body>
 	<h2>게시판 만들기</h2>
 	<form action="boardjoin_process.jsp" name="user" method="post">
-		<p> 제목: <input type = "text" name="title"></p>	
+		<p> 제목: <input type = "text" name="title"></p>
+		<p> 아이디: <input type = "text" name="id"></p>
 		<p> 내용 : <input type = "text" maxlength="20" size = "20" name="content"></p>	
 		<p> 작성자 : <input type="text" maxlength = "4" size = "4" name="writer"></p>
 		<p> 작성일시 : <input type="text" name="date">
