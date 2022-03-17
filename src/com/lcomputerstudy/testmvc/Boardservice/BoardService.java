@@ -1,30 +1,35 @@
-package com.lcomputerstudy.testmvc.Boardservice;
+package com.lcomputerstudy.testmvc.boardservice;
 
 import java.util.ArrayList;
-import com.lcomputerstudy.testmvc.Boarddao.BoardDAO;
-import com.lcomputerstudy.testmvc.Boardvo.Board;
 
-public class BoardService {
-	private static BoardService service = null;
-	private static BoardDAO dao = null;
+import com.lcomputerstudy.testmvc.boarddao.boardDAO;
+import com.lcomputerstudy.testmvc.boardvo.board;
+
+public class boardservice {
+	private static boardservice service = null;
+	private static boardDAO dao = null;
 	
-	private BoardService() {
+	private boardservice() {
 		
 	}
 	
-	public static BoardService getInstance() {
+	public static boardservice getInstance() {
 		if(service == null) {
-			service = new BoardService();
-			dao = BoardDAO.getInstance();
+			service = new boardservice();
+			dao = boardDAO.getInstance();
 		}
 		return service;
 	}
 	
-	public static ArrayList<Board> getBoards() {
-		return dao.getBoards();
+	public static ArrayList<board> getBoards(int page) {
+		return dao.getBoards(page);
 	}
 	
-	public void insertBoard(Board board) {
-		BoardDAO.insertBoard(board);
+	public void insertBoard(board board) {
+		dao.insertBoard(board);
+	}
+	
+	public int getBoardsCount() {
+		return dao.getBoardsCount();
 	}
 }

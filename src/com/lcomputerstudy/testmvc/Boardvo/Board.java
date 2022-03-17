@@ -1,6 +1,6 @@
-package com.lcomputerstudy.testmvc.Boardvo;
+package com.lcomputerstudy.testmvc.boardvo;
 
-public class Board {
+public class board {
 	private int b_idx;
 	private String b_num;
 	private String b_writer;

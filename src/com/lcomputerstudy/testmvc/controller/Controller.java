@@ -1,6 +1,7 @@
 package com.lcomputerstudy.testmvc.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.lcomputerstudy.testmvc.boardservice.boardservice;
+import com.lcomputerstudy.testmvc.boardvo.board;
 import com.lcomputerstudy.testmvc.service.UserService;
 import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
@@ -18,7 +21,7 @@ import com.lcomputerstudy.testmvc.vo.User;
 @WebServlet("*.do")
 public class Controller extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
@@ -33,16 +36,18 @@ public class Controller extends HttpServlet{
 		
 		int page = 1;
 		int userCount = 0;
+		int boardCount = 0;
 		String pw = null;
 		String idx = null;
 		HttpSession session = null;
 		command = checkSession(request, response, command);
-		
+		Pagination pagination1 = new Pagination();
 		
 		response.setContentType("text/html; charset=utf-8");
 		request.setCharacterEncoding("utf-8");
 		
 		switch (command) {
+			//user
 			case "/user-list.do":
 				String reqPage = request.getParameter("page");
 				if(reqPage != null && !(reqPage.equals(""))) {
@@ -61,6 +66,7 @@ public class Controller extends HttpServlet{
 				request.setAttribute("list", list);
 				request.setAttribute("pagination", pagination);
 				break;
+				
 			case "/user-insert.do":
 				view = "user/insert";
 				break;
@@ -104,6 +110,40 @@ public class Controller extends HttpServlet{
 				
 			case "/access-denied.do":
 				view = "user/access-denied";
+				break;
+			
+			//Board
+			case "/board-boardlist.do":
+				String reqPage1 = request.getParameter("page");
+				if (reqPage1 != null) {
+					page = Integer.parseInt(reqPage1);
+				}
+				boardservice boardService = boardservice.getInstance();
+				ArrayList<board> Boardlist = boardservice.getBoards(page);
+				boardCount = boardService.getBoardsCount();
+				
+				view = "board/boardlist";
+				request.setAttribute("boardlist", Boardlist);
+				request.setAttribute("boardcount", boardCount);
+				break;
+			
+			case "/board-boardinsert.do":
+				view = "board/boardinsert";
+				break;
+				
+			case "/board-boardinsert-process.do":
+				board board = new board();
+				board.setB_content(request.getParameter("content"));
+				board.setB_id(request.getParameter("id"));
+				board.setB_title(request.getParameter("title"));
+				board.setB_hits(request.getParameter("hits"));
+				board.setB_date(request.getParameter("date"));
+				board.setB_writer(request.getParameter("writer"));
+				
+				boardService = boardservice.getInstance();
+				boardService.insertBoard(board);
+				
+				view = "board/boardinsert-result";
 				break;
 		}
 		

@@ -8,8 +8,8 @@ public class DBConnection {
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection conn = null;
 		
-		String url = "jdbc:mysql://localhost:3306/yyy";
-		String id = "rood";
+		String url = "jdbc:mysql://localhost:3306/jacob";
+		String id = "root";
 		String pw = "1234";
 		
 		Class.forName("org.mariadb.jdbc.Driver");
