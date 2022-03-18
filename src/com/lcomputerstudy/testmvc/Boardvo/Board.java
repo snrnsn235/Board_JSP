@@ -1,6 +1,7 @@
 package com.lcomputerstudy.testmvc.boardvo;
 
 public class board {
+	private int rownum;
 	private int b_idx;
 	private String b_num;
 	private String b_writer;
@@ -58,6 +59,12 @@ public class board {
 	}
 	public void setB_title(String b_title) {
 		this.b_title = b_title;
+	}
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
 	}
 	
 	

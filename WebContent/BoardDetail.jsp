@@ -7,15 +7,20 @@
 <title>게시글 상세</title>
 </head>
 <style>
+	h1 {
+	text-align: center;
+	}
 	table {
 		border-collapse:collapse;
+		margin:40px auto;
 	}
 	table tr th {
 		font-weight:700;
 	}
 	table tr td, table tr th {
 		border:1px solid #818181;
-		width:200px;
+		width:400px;
+		height:3px;
 		text-align:center;
 	}
 	a {
@@ -33,19 +38,19 @@
 	<h1>게시판 상세페이지</h1>
 	<table>
 		<%
-			String id = request.getParameter("b_id");
+			String id = request.getParameter("b_idx");
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			
-			String query = "select * from board where b_id=?";
+			String query = "select * from board where b_idx=? ";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, id);
 			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				String b_id = rs.getString("b_id");
 				String b_idx = rs.getString("b_idx");
+				String b_id = rs.getString("b_id");
 				String b_writer = rs.getString("b_writer");
 				String b_title = rs.getString("b_title");
 				String b_content = rs.getString("b_content");
@@ -79,7 +84,9 @@
 					<a href = "BoardDelete.jsp?b_idx=<%=b_idx%>" style="width:70%; font-weight:700; background-color:red; color:#fff;">삭제</a>
 				</td>
 			</tr>
-			
+			<td style = "boarder:none;">
+				<a href ="board-boardinsert.do" style="width:70%; font-weight:700; background-color:green; color:#fff;">답글달기</a>
+			</td>
 			<%
 			}
 			%>

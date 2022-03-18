@@ -1,9 +1,10 @@
 package com.lcomputerstudy.testmvc.boardservice;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import com.lcomputerstudy.testmvc.boarddao.boardDAO;
+import com.lcomputerstudy.testmvc.boarddao.*;
 import com.lcomputerstudy.testmvc.boardvo.board;
+import com.lcomputerstudy.testmvc.boardvo.Pagination;
 
 public class boardservice {
 	private static boardservice service = null;
@@ -21,8 +22,8 @@ public class boardservice {
 		return service;
 	}
 	
-	public static ArrayList<board> getBoards(int page) {
-		return dao.getBoards(page);
+	public static List<board> getBoards(Pagination pagination) {
+		return dao.getBoards(pagination);
 	}
 	
 	public void insertBoard(board board) {
@@ -32,4 +33,8 @@ public class boardservice {
 	public int getBoardsCount() {
 		return dao.getBoardsCount();
 	}
+	
+//	public board loginBoard(String idx, String pw) {
+//		return dao.loginBoard(idx, pw);
+//	}
 }

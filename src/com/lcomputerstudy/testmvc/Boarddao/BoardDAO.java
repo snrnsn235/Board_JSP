@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import com.lcomputerstudy.testmvc.Boarddatabase.DBConnection;
+import java.util.List;
+
 import com.lcomputerstudy.testmvc.boardvo.board;
+import com.lcomputerstudy.testmvc.boardvo.Pagination;
+import com.lcomputerstudy.testmvc.Boarddatabase.DBConnection;
 
 public class boardDAO {
 	private static boardDAO dao = null;
@@ -23,22 +26,32 @@ public class boardDAO {
 		return dao;
 	}
 	
-	public ArrayList<board> getBoards(int page) {
+	public List<board> getBoards(Pagination pagination) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		ArrayList<board> list = null;
-		int pageNum = ()
+		List<board> list = null;
+		int pageNum = pagination.getPageNum();
+		
 		try {
 			conn = DBConnection.getConnection();
-			String query = "select * from board limit ?, 3";
+			String query =new StringBuilder()
+					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
+					.append("				ta.*\n")
+					.append("FROM 			board ta,\n")
+					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
+					.append("LIMIT			?, ?\n")
+					.toString();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, page);
+			pstmt.setInt(1, pageNum);
+			pstmt.setInt(2, pageNum);
+			pstmt.setInt(3, Pagination.perPage);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<board>();
 			
 			while(rs.next()) {
 				board board = new board();
+				board.setRownum(rs.getInt("ROWNUM"));
 				board.setB_idx(rs.getInt("b_idx"));
 				board.setB_num(rs.getString("b_num"));
 				board.setB_writer(rs.getString("b_writer"));
@@ -47,15 +60,16 @@ public class boardDAO {
 				board.setB_date(rs.getString("b_date"));
 				board.setB_id(rs.getString("b_id"));
 				board.setB_title(rs.getString("b_title"));
+				
 				list.add(board);
-			}
+				}
 		} catch(Exception e) {
-			
+			e.printStackTrace();
 		} finally {
 			try {
-				rs.close();
-				pstmt.close();
-				conn.close();
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -98,7 +112,7 @@ public class boardDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-			String query = "SELECT COUNT(*) count FROM user";
+			String query = "SELECT COUNT(*) count FROM board";
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 			
@@ -118,6 +132,17 @@ public class boardDAO {
 		}
 		return count;
 	}
+	
+//	public board loginBoard(String idx, String pw) {
+//		Connection conn = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		board board = null;
+//		try {
+//			conn = DBConnection.getConnection();
+//			String sql = "SELECT * FROM board WHERE b_id = ? AND b_pw=?";
+//		}
+//	}
 }
 
 

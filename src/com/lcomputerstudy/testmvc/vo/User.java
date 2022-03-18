@@ -1,7 +1,6 @@
 package com.lcomputerstudy.testmvc.vo;
 
 public class User {
-	
 	private int rownum;
 	private int u_idx;
 	private String u_id;

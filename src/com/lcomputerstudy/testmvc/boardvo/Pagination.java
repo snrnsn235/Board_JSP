@@ -1,9 +1,7 @@
 package com.lcomputerstudy.testmvc.boardvo;
 
-import com.lcomputerstudy.testmvc.boardservice.boardservice;
-
 public class Pagination {
-	int boardCount;
+	int count;
 	int page;
 	int pageNum;
 	int startPage;
@@ -13,30 +11,28 @@ public class Pagination {
 	int nextPage;
 	public static final int pageUnit=5;
 	public static final int perPage=3;
-	boardservice boardservice = null;
 	
 	public Pagination() {
 		
 	}
 	
-	public Pagination(int page) {
-		this.page = page;
-		boardservice = boardservice.getInstance();
-		boardCount = boardservice.getBoardsCount();
-		startPage = ((page-1)/pageUnit) * pageUnit+1;
-		lastPage = (int)Math.ceil(boardCount / (float)perPage);
-		endPage = startPage + pageUnit-1;
+	public void init() {
+		pageNum = (page-1)*perPage;
+		startPage =((page-1)/pageUnit)*pageUnit+1;
+		lastPage = (int)Math.ceil(count / (float)perPage);
+		endPage = startPage+pageUnit-1;
 		endPage = endPage < lastPage ? endPage : lastPage;
-		prevPage=(endPage-pageUnit);
+		prevPage=(startPage-pageUnit);
 		nextPage=(startPage+pageUnit);
 	}
 
-	public int getBoardCount() {
-		return boardCount;
+	
+	public int getCount() {
+		return count;
 	}
 
-	public void setBoardCount(int boardCount) {
-		this.boardCount = boardCount;
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 	public int getPage() {
@@ -93,14 +89,6 @@ public class Pagination {
 
 	public void setNextPage(int nextPage) {
 		this.nextPage = nextPage;
-	}
-
-	public boardservice getBoardservice() {
-		return boardservice;
-	}
-
-	public void setBoardservice(boardservice boardservice) {
-		this.boardservice = boardservice;
 	}
 
 	public static int getPageunit() {

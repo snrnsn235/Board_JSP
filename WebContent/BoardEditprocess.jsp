@@ -44,6 +44,6 @@
 			}
 		}
 	%>
-<a href ="Boardlist.jsp">돌아가기</a>
+<a href ="board-boardlist.do">돌아가기</a>
 </body>
 </html>
