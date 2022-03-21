@@ -3,35 +3,39 @@ package com.lcomputerstudy.testmvc.boardservice;
 import java.util.List;
 
 import com.lcomputerstudy.testmvc.boarddao.*;
-import com.lcomputerstudy.testmvc.boardvo.board;
-import com.lcomputerstudy.testmvc.boardvo.Pagination;
+//import com.lcomputerstudy.testmvc.boardvo.Board;
+import com.lcomputerstudy.testmvc.vo.*;
 
-public class boardservice {
-	private static boardservice service = null;
-	private static boardDAO dao = null;
+public class Boardservice {
+	private static Boardservice service = null;
+	private static BoardDAO dao = null;
 	
-	private boardservice() {
+	private Boardservice() {
 		
 	}
 	
-	public static boardservice getInstance() {
+	public static Boardservice getInstance() {
 		if(service == null) {
-			service = new boardservice();
-			dao = boardDAO.getInstance();
+			service = new Boardservice();
+			dao = BoardDAO.getInstance();
 		}
 		return service;
 	}
 	
-	public static List<board> getBoards(Pagination pagination) {
+	public static List<Board> getBoards(Pagination pagination) {
 		return dao.getBoards(pagination);
 	}
 	
-	public void insertBoard(board board) {
+	public void insertBoard(Board board) {
 		dao.insertBoard(board);
 	}
 	
 	public int getBoardsCount() {
 		return dao.getBoardsCount();
+	}
+	
+	public void replyBoard(Board board) {
+		dao.replyBoard(board);
 	}
 	
 //	public board loginBoard(String idx, String pw) {

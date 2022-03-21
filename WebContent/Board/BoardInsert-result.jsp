@@ -8,6 +8,6 @@
 </head>
 <body>
 <h1>게시물 저장 완료</h1>
-<a href = "/Icomputerstudy/board-boardlist.do">돌아가기</a>
+<a href = "/Icomputerstudy/boardlist.do">돌아가기</a>
 </body>
 </html>

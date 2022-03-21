@@ -25,7 +25,7 @@
 
 <script>
 setTimeout(function () {
-	window.location.href = "Boardlist.jsp";
+	window.location.href = "boardlist.do";
 })
 </script>
 </body>

@@ -13,20 +13,20 @@
 
 	String idx = request.getParameter("b_idx");
 	String id = request.getParameter("edit_id");
-	String writer = request.getParameter("edit_writer");
+	//String writer = request.getParameter("edit_writer");
 	String content = request.getParameter("edit_content");
 	
 	PreparedStatement pstmt = null;
 	
 	try {
-		String sql = "UPDATE board SET b_id=?, b_writer=?, b_content=? where b_idx=?";
+		String sql = "UPDATE board SET b_id=?, b_content=? where b_idx=?";
 		
 		pstmt = conn.prepareStatement(sql);
 		
 		pstmt.setString(1, id);
-		pstmt.setString(2, writer);
-		pstmt.setString(3, content);
-		pstmt.setString(4, idx);
+		//pstmt.setString(2, writer);
+		pstmt.setString(2, content);
+		pstmt.setString(3, idx);
 		pstmt.executeUpdate();
 	%>
 	
@@ -44,6 +44,6 @@
 			}
 		}
 	%>
-<a href ="board-boardlist.do">돌아가기</a>
+<a href ="boardlist.do">돌아가기</a>
 </body>
 </html>

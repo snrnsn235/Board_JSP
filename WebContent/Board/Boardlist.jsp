@@ -29,6 +29,10 @@
 		color:#000;
 		font-weight:700;
 	}
+	div {
+		border-collapse:collapse;
+		margin:40px auto;
+	}
 	
 	ul {
 		width:600px;
@@ -54,15 +58,13 @@
 		</tr>
 		<tr>
 			<th>번호</th>
-			<th>ID</th>
-			<th>이름</th>
+			<th>제목</th>
 			<th>내용</th>
 		</tr>
 		<c:forEach items="${boardlist}" var="board" varStatus = "status">
 			<tr>
 				<td><a href="BoardDetail.jsp?b_idx=${board.b_idx}">${board.rownum}</a></td>
-				<td>${board.b_id }</td>
-				<td>${board.b_writer }</td>
+				<td>${board.b_title }</td>
 				<td>${board.b_content }</td>
 			</tr>
 		</c:forEach>
@@ -72,7 +74,7 @@
 			<c:choose>
 					<c:when test="${pagination.startPage-1 != 0}">
 						<li style="">
-							<a href="board-boardlist.do?page=${pagination.prevPage}">◀</a>
+							<a href="boardlist.do?page=${pagination.prevPage}">◀</a>
 						</li>
 					</c:when>
 			</c:choose>
@@ -85,15 +87,15 @@
 						</c:when>
 						<c:when test="${ pagination.page ne i }">
 							<li>
-								<a href="board-boardlist.do?page=${i}">${i}</a>
+								<a href="boardlist.do?page=${i}">${i}</a>
 							</li>
 						</c:when>
 					</c:choose>
 				</c:forEach>
 			<c:choose>
-					<c:when test = "${pagination.nextPage eq pagination.lastPage }">
+					<c:when test = "${pagination.nextPage-1 != pagination.lastPage }">
 						<li style="">
-							<a href="board-boardlist.do?page=${pagination.nextPage}">▶</a>
+							<a href="boardlist.do?page=${pagination.nextPage}">▶</a>
 						</li>
 					</c:when>
 				</c:choose>	

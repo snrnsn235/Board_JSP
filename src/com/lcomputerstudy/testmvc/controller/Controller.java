@@ -1,7 +1,7 @@
 package com.lcomputerstudy.testmvc.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.lcomputerstudy.testmvc.boardservice.boardservice;
-import com.lcomputerstudy.testmvc.boardvo.board;
-import com.lcomputerstudy.testmvc.service.UserService;
-import com.lcomputerstudy.testmvc.boardvo.Pagination;
+import com.lcomputerstudy.testmvc.boardservice.Boardservice;
+//import com.lcomputerstudy.testmvc.boardvo.Board;
+//import com.lcomputerstudy.testmvc.service.UserService;
+//import com.lcomputerstudy.testmvc.boardvo.Pagination;
 import com.lcomputerstudy.testmvc.vo.*;
-import com.lcomputerstudy.testmvc.vo.User;
+//import com.lcomputerstudy.testmvc.vo.User;
 
 @WebServlet("*.do")
 public class Controller extends HttpServlet{
@@ -27,6 +27,7 @@ public class Controller extends HttpServlet{
 		doPost(request, response);
 	}
 	
+	@SuppressWarnings("null")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=utf-8");
 		
@@ -38,11 +39,12 @@ public class Controller extends HttpServlet{
 		int page = 1;
 //		int userCount = 0;
 		int boardCount = 0;
-		String pw = null;
-		String idx = null;
+		//String pw = null;
+		//String idx = null;
 		HttpSession session = null;
 		command = checkSession(request, response, command);
-		
+		Board board = null;
+		//User user = null;
 		
 		response.setContentType("text/html; charset=utf-8");
 		request.setCharacterEncoding("utf-8");
@@ -114,45 +116,61 @@ public class Controller extends HttpServlet{
 //				break;
 //			
 			//Board
-			case "/board-boardlist.do":
+			case "/boardlist.do":
 				String reqPage1 = request.getParameter("page");
 				if (reqPage1 != null  && !(reqPage1.equals("")) && !(reqPage1.equals("0"))) {
 					page = Integer.parseInt(reqPage1);
 				}
-				boardservice boardService = boardservice.getInstance();
+				Boardservice boardService = Boardservice.getInstance();
 				boardCount = boardService.getBoardsCount();
 				Pagination pagination = new Pagination();
 				pagination.setPage(page);
 				pagination.setCount(boardCount);
 				pagination.init();
-				List<board> Boardlist = boardservice.getBoards(pagination);
+				List<Board> Boardlist = Boardservice.getBoards(pagination);
 								
 				view = "board/boardlist";
 				request.setAttribute("boardlist", Boardlist);
 				request.setAttribute("pagination", pagination);
 				break;
 			
-			case "/board-boardinsert.do":
+			case "/boardinsert.do":
 				view = "board/boardinsert";
 				break;
 				
-			case "/board-boardinsert-process.do":
-				board board = new board();
-				board.setB_content(request.getParameter("content"));
-				board.setB_id(request.getParameter("id"));
-				board.setB_title(request.getParameter("title"));
-				board.setB_hits(request.getParameter("hits"));
-				board.setB_date(request.getParameter("date"));
-				board.setB_writer(request.getParameter("writer"));
+			case "/boardinsert-process.do":
+				/*session = request.getSession();
+				user = (User)session.getAttribute("user");
+				board.setU_idx(user.getU_idx());*/
 				
-				boardService = boardservice.getInstance();
+				board.setB_content(request.getParameter("content"));
+				board.setB_title(request.getParameter("title"));
+				//board.setB_hits(request.getParameter("hits"));
+				//board.setB_date(request.getParameter("date"));
+				//board.setB_writer(request.getParameter("writer"));
+				
+				boardService = Boardservice.getInstance();
 				boardService.insertBoard(board);
 				
 				view = "board/boardinsert-result";
 				break;
-			case "/board-detail.do":
-				view = "board/detail";
+			case "/detail.do":
+				view = "BoardDetail";
 				break;
+				
+			//답글
+			case "/boardreply.do":
+				view = "Boardreply";
+				break;
+			case "/boardreply-process.do":
+				board.setB_content(request.getParameter("content"));
+				board.setB_title(request.getParameter("title"));
+				
+				boardService = Boardservice.getInstance();
+				boardService.replyBoard(board);
+				view = "Boardreply-process";
+				break;
+			
 			
 		}
 		

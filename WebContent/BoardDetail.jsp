@@ -51,7 +51,7 @@
 			while(rs.next()) {
 				String b_idx = rs.getString("b_idx");
 				String b_id = rs.getString("b_id");
-				String b_writer = rs.getString("b_writer");
+				//String b_writer = rs.getString("b_writer");
 				String b_title = rs.getString("b_title");
 				String b_content = rs.getString("b_content");
 			%>
@@ -62,10 +62,6 @@
 			<tr>
 				<td>회원 아이디</td>
 				<td><%=b_id %></td>
-			</tr>
-			<tr>
-				<td>작성자 이름</td>
-				<td><%=b_writer %></td>
 			</tr>
 			<tr>
 				<td>제목</td>
@@ -84,9 +80,12 @@
 					<a href = "BoardDelete.jsp?b_idx=<%=b_idx%>" style="width:70%; font-weight:700; background-color:red; color:#fff;">삭제</a>
 				</td>
 			</tr>
-			<td style = "boarder:none;">
-				<a href ="board-boardinsert.do" style="width:70%; font-weight:700; background-color:green; color:#fff;">답글달기</a>
-			</td>
+				<td style = "boarder:none;">
+					<a href ="boardreply.do" style="width:70%; font-weight:700; background-color:green; color:#fff;">답글달기</a>
+				</td>
+				<td style = "boarder:none;">
+					<a href ="boardlist.do" style="width:70%; font-weight:700; background-color:skyblue; color:#fff;">돌아가기</a>
+				</td>
 			<%
 			}
 			%>

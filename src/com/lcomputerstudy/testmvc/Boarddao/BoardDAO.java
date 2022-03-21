@@ -7,30 +7,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lcomputerstudy.testmvc.boardvo.board;
-import com.lcomputerstudy.testmvc.boardvo.Pagination;
+//import com.lcomputerstudy.testmvc.boardvo.Board;
+import com.lcomputerstudy.testmvc.vo.*;
 import com.lcomputerstudy.testmvc.Boarddatabase.DBConnection;
 
-public class boardDAO {
-	private static boardDAO dao = null;
+public class BoardDAO {
+	private static BoardDAO dao = null;
 	
-	private boardDAO() {
+	private BoardDAO() {
 		
 	}
 	
-	public static boardDAO getInstance() {
+	public static BoardDAO getInstance() {
 		if(dao == null) {
-			dao = new boardDAO();
+			dao = new BoardDAO();
 		}
 		
 		return dao;
 	}
 	
-	public List<board> getBoards(Pagination pagination) {
+	public List<Board> getBoards(Pagination pagination) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<board> list = null;
+		List<Board> list = null;
 		int pageNum = pagination.getPageNum();
 		
 		try {
@@ -47,18 +47,18 @@ public class boardDAO {
 			pstmt.setInt(2, pageNum);
 			pstmt.setInt(3, Pagination.perPage);
 			rs = pstmt.executeQuery();
-			list = new ArrayList<board>();
+			list = new ArrayList<Board>();
 			
 			while(rs.next()) {
-				board board = new board();
+				Board board = new Board();
 				board.setRownum(rs.getInt("ROWNUM"));
 				board.setB_idx(rs.getInt("b_idx"));
-				board.setB_num(rs.getString("b_num"));
-				board.setB_writer(rs.getString("b_writer"));
-				board.setB_hits(rs.getString("b_hits"));
+				//board.setB_num(rs.getString("b_num"));
+				//board.setB_writer(rs.getString("b_writer"));
+				board.setB_hit(rs.getString("b_hit"));
 				board.setB_content(rs.getString("b_content"));
 				board.setB_date(rs.getString("b_date"));
-				board.setB_id(rs.getString("b_id"));
+				//board.setB_id(rs.getString("b_id"));
 				board.setB_title(rs.getString("b_title"));
 				
 				list.add(board);
@@ -77,20 +77,24 @@ public class boardDAO {
 		return list;
 	}
 	
-	public void insertBoard(board board) {
+	public void insertBoard(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into board(b_title,b_id,b_content,b_writer,b_date,b_hits) values(?,?,?,?,?,?)";
+			String sql = "insert into board(b_title,b_content,b_date,b_hit,b_group,b_order,b_depth) values(?,?,now(),0,0,1,0)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board.getB_title());
-			pstmt.setString(2, board.getB_id());
-			pstmt.setString(3, board.getB_content());
-			pstmt.setString(4, board.getB_writer());
-			pstmt.setString(5, board.getB_date());
-			pstmt.setString(6, board.getB_hits());
+			pstmt.setString(2, board.getB_content());
+			//pstmt.setString(4, board.getB_writer());
+			//pstmt.setString(4, board.getB_date());
+			//pstmt.setString(5, board.getB_hits());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			sql = "update board set b_group=last_insert_id() where b_idx = last_insert_id()";
+			pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -104,6 +108,28 @@ public class boardDAO {
 	}
 	}
 
+	public void replyBoard(Board board) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "insert into board(b_title,b_content) values(?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board.getB_title());
+			pstmt.setString(2, board.getB_content());
+			pstmt.executeUpdate();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public int getBoardsCount() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -132,6 +158,8 @@ public class boardDAO {
 		}
 		return count;
 	}
+
+	
 	
 //	public board loginBoard(String idx, String pw) {
 //		Connection conn = null;
