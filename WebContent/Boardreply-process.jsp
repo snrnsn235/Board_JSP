@@ -16,7 +16,7 @@
 	PreparedStatement pstmt = null;
 	
 	try {
-		String sql = "insert into board(b_content, b_title) values(?,?)";
+		String sql = "insert into board(b_content, b_title, b_date, b_group, b_order, b_depth) values(?,?, now(),)";
 		pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1,title);
 		pstmt.setString(2, content);

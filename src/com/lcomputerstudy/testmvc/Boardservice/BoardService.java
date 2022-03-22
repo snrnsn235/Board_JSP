@@ -30,12 +30,20 @@ public class Boardservice {
 		dao.insertBoard(board);
 	}
 	
+	public void editBoard(Board board) {
+		dao.editBoard(board);
+	}
+	
 	public int getBoardsCount() {
 		return dao.getBoardsCount();
 	}
 	
 	public void replyBoard(Board board) {
 		dao.replyBoard(board);
+	}
+
+	public Board getBoard(Board board) {
+		return dao.getBoard(board);
 	}
 	
 //	public board loginBoard(String idx, String pw) {

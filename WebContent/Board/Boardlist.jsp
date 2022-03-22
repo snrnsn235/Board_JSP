@@ -63,7 +63,7 @@
 		</tr>
 		<c:forEach items="${boardlist}" var="board" varStatus = "status">
 			<tr>
-				<td><a href="BoardDetail.jsp?b_idx=${board.b_idx}">${board.rownum}</a></td>
+				<td><a href="boarddetail.do?b_idx=${board.b_idx}">${board.rownum}</a></td>
 				<td>${board.b_title }</td>
 				<td>${board.b_content }</td>
 			</tr>

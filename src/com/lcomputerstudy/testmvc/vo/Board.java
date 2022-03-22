@@ -5,12 +5,15 @@ public class Board {
 	private int b_idx;
 	//private String b_num;
 	private String b_writer;
-	private String b_hit;
+	private int b_hit;
 	private String b_content;
 	private String b_date;
 	//private String b_id;
 	private String b_title;
 	private int u_idx;
+	private int b_group;
+	private int b_order;
+	private int b_depth;
 	
 	
 	public int getU_idx() {
@@ -33,6 +36,13 @@ public class Board {
 		this.b_writer = b_writer;
 	}
 	
+	public int getB_hit() {
+		return b_hit;
+	}
+	public void setB_hit(int b_hit) {
+		this.b_hit = b_hit;
+	}
+	
 	public String getB_content() {
 		return b_content;
 	}
@@ -52,17 +62,30 @@ public class Board {
 	public void setRownum(int rownum) {
 		this.rownum = rownum;
 	}
-	public String getB_hit() {
-		return b_hit;
-	}
-	public void setB_hit(String b_hit) {
-		this.b_hit = b_hit;
-	}
+	
 	public String getB_date() {
 		return b_date;
 	}
 	public void setB_date(String b_date) {
 		this.b_date = b_date;
+	}
+	public int getB_group() {
+		return b_group;
+	}
+	public void setB_group(int b_group) {
+		this.b_group = b_group;
+	}
+	public int getB_order() {
+		return b_order;
+	}
+	public void setB_order(int b_order) {
+		this.b_order = b_order;
+	}
+	public int getB_depth() {
+		return b_depth;
+	}
+	public void setB_depth(int b_depth) {
+		this.b_depth = b_depth;
 	}
 	
 	

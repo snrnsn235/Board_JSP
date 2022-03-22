@@ -45,6 +45,7 @@ public class Controller extends HttpServlet{
 		command = checkSession(request, response, command);
 		Board board = null;
 		//User user = null;
+		Boardservice boardService = null;
 		
 		response.setContentType("text/html; charset=utf-8");
 		request.setCharacterEncoding("utf-8");
@@ -116,12 +117,13 @@ public class Controller extends HttpServlet{
 //				break;
 //			
 			//Board
+			//게시판 리스트
 			case "/boardlist.do":
 				String reqPage1 = request.getParameter("page");
 				if (reqPage1 != null  && !(reqPage1.equals("")) && !(reqPage1.equals("0"))) {
 					page = Integer.parseInt(reqPage1);
 				}
-				Boardservice boardService = Boardservice.getInstance();
+				boardService = Boardservice.getInstance();
 				boardCount = boardService.getBoardsCount();
 				Pagination pagination = new Pagination();
 				pagination.setPage(page);
@@ -133,7 +135,38 @@ public class Controller extends HttpServlet{
 				request.setAttribute("boardlist", Boardlist);
 				request.setAttribute("pagination", pagination);
 				break;
+			//상세페이지
+			case "/boarddetail.do":
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				boardService = Boardservice.getInstance();
+				board = boardService.getBoard(board);
+				view = "BoardDetail";
+				request.setAttribute("board", board);
+				break;
+			//수정	
+			case "/boardedit.do":
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				boardService = Boardservice.getInstance();
+				board = boardService.getBoard(board);
+				view = "BoardEdit";
+				request.setAttribute("board", board);
+				break;
 			
+			case "/boardedit-process.do":
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				board.setB_title(request.getParameter("title"));
+				board.setB_content(request.getParameter("content"));
+				
+				boardService = Boardservice.getInstance();
+				boardService.editBoard(board);
+				
+				view = "BoardEditprocess";
+				request.setAttribute("board", board);
+				break;
+			//새로 만들기	
 			case "/boardinsert.do":
 				view = "board/boardinsert";
 				break;
@@ -143,8 +176,8 @@ public class Controller extends HttpServlet{
 				user = (User)session.getAttribute("user");
 				board.setU_idx(user.getU_idx());*/
 				
-				board.setB_content(request.getParameter("content"));
-				board.setB_title(request.getParameter("title"));
+				board.setB_content(request.getParameter("b_content"));
+				board.setB_title(request.getParameter("b_title"));
 				//board.setB_hits(request.getParameter("hits"));
 				//board.setB_date(request.getParameter("date"));
 				//board.setB_writer(request.getParameter("writer"));
@@ -154,24 +187,26 @@ public class Controller extends HttpServlet{
 				
 				view = "board/boardinsert-result";
 				break;
-			case "/detail.do":
-				view = "BoardDetail";
-				break;
-				
+			
 			//답글
 			case "/boardreply.do":
 				view = "Boardreply";
 				break;
 			case "/boardreply-process.do":
+				board = new Board();
 				board.setB_content(request.getParameter("content"));
 				board.setB_title(request.getParameter("title"));
-				
+				board.setB_group(Integer.parseInt(request.getParameter("b_group")));
+				board.setB_order(Integer.parseInt(request.getParameter("b_order")));
+				board.setB_depth(Integer.parseInt(request.getParameter("b_depth")));
 				boardService = Boardservice.getInstance();
 				boardService.replyBoard(board);
 				view = "Boardreply-process";
 				break;
 			
-			
+			case "/boarddelete.do":
+				view = "BoardDelete";
+				break;
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
