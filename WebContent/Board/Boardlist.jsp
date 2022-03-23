@@ -31,6 +31,7 @@
 	}
 	div {
 		border-collapse:collapse;
+		width:470px;
 		margin:40px auto;
 	}
 	
@@ -52,6 +53,7 @@
 </style>
 <body>
 	<h1>게시판 목록</h1>
+	<a href="boardinsert.do" style="text-align:center;">게시글 추가하기</a>
 	<table>
 		<tr>
 			<td colspan="3">전체 게시판 개수 : ${pagination.count }</td>

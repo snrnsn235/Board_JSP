@@ -10,24 +10,8 @@
 <body>
 <%@ include file="db_connection.jsp" %>
 
-<%
-	String idx = request.getParameter("b_idx");
-	System.out.println(idx);
-	
-	PreparedStatement pstmt = null;
-	
-	String query = "delete from board where b_idx=?";
-	pstmt = conn.prepareStatement(query);
-	pstmt.setString(1, idx);
-	pstmt.executeUpdate();
-%>
+<h2>삭제 완료</h2>
 
-	<h2>삭제 완료</h2>
-
-<script>
-setTimeout(function () {
-	window.location.href = "boardlist.do";
-})
-</script>
+<a href ="boardlist.do" style="width:70%; font-weight:700; background-color:skyblue; color:#fff;">돌아가기</a>
 </body>
 </html>

@@ -60,12 +60,14 @@
 			</tr>
 			<tr>
 				<td style = "boarder:none;">
-					<a href ="boardreply.do?b_group=${board.b_group}&b_order=${board.b_order}" style="width:70%; font-weight:700; background-color:green; color:#fff;">답글달기</a>
+					<a href ="boardreply.do?b_group=${board.b_group}&b_order=${board.b_order}&b_depth=${board.b_depth}" style="width:70%; font-weight:700; background-color:green; color:#fff;">답글달기</a>
 				</td>
 				<td style = "boarder:none;">
 					<a href ="boardlist.do" style="width:70%; font-weight:700; background-color:skyblue; color:#fff;">돌아가기</a>
 				</td>
 			</tr>		
 	</table>
+	
+	<text area> 
 </body>
 </html>

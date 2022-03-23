@@ -13,6 +13,7 @@ import com.lcomputerstudy.testmvc.Boarddatabase.DBConnection;
 
 public class BoardDAO {
 	private static BoardDAO dao = null;
+	private int executeUpdate;
 	
 	private BoardDAO() {
 		
@@ -40,6 +41,7 @@ public class BoardDAO {
 					.append("				ta.*\n")
 					.append("FROM 			board ta,\n")
 					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
+					.append("order by		b_group desc, b_order asc\n")
 					.append("LIMIT			?, ?\n")
 					.toString();
 			pstmt = conn.prepareStatement(query);
@@ -81,7 +83,7 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "update board set(b_title,b_content) = values(?,?) where b_idx = ?";
+			String sql = "UPDATE board SET b_title=?, b_content=? WHERE b_idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board.getB_title());
 			pstmt.setString(2, board.getB_content());
@@ -98,6 +100,28 @@ public class BoardDAO {
 			}
 		}
 	}
+	
+	public void deleteBoard(Board board) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "delete from board where b_idx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board.getB_idx());
+			pstmt.executeUpdate();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null ) pstmt.close();
+				if(conn != null ) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void insertBoard(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -141,6 +165,13 @@ public class BoardDAO {
 			pstmt.setInt(3, board.getB_group());
 			pstmt.setInt(4, board.getB_order());
 			pstmt.setInt(5, board.getB_depth());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			sql = "update board set b_order=b_order+1 where b_group = ? and b_order >= ? and b_idx <> last_insert_id()";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board.getB_group());
+			pstmt.setInt(2, board.getB_order());
 			pstmt.executeUpdate();
 		} catch(Exception ex) {
 			ex.printStackTrace();

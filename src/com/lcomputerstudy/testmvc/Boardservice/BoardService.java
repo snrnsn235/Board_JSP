@@ -34,6 +34,9 @@ public class Boardservice {
 		dao.editBoard(board);
 	}
 	
+	public void deleteBoard(Board board) {
+		dao.deleteBoard(board);
+	}
 	public int getBoardsCount() {
 		return dao.getBoardsCount();
 	}

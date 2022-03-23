@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>게시판 수정</title>
 </head>
+
 <body>
 <%@ include file = "db_connection.jsp" %>
 	<h1>게시판 수정</h1>

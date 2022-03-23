@@ -27,29 +27,25 @@ public class Board {
 	}
 	public void setB_idx(int b_idx) {
 		this.b_idx = b_idx;
-	}
-	
+	}	
 	public String getB_writer() {
 		return b_writer;
 	}
 	public void setB_writer(String b_writer) {
 		this.b_writer = b_writer;
-	}
-	
+	}	
 	public int getB_hit() {
 		return b_hit;
 	}
 	public void setB_hit(int b_hit) {
 		this.b_hit = b_hit;
-	}
-	
+	}	
 	public String getB_content() {
 		return b_content;
 	}
 	public void setB_content(String b_content) {
 		this.b_content = b_content;
 	}
-	
 	public String getB_title() {
 		return b_title;
 	}
@@ -62,7 +58,6 @@ public class Board {
 	public void setRownum(int rownum) {
 		this.rownum = rownum;
 	}
-	
 	public String getB_date() {
 		return b_date;
 	}
