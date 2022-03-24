@@ -181,7 +181,7 @@ public class Controller extends HttpServlet{
 				
 				view = "BoardDelete";
 				break;
-			
+			//새로 생성하기
 			case "/boardinsert.do":
 				view = "board/boardinsert";
 				break;
