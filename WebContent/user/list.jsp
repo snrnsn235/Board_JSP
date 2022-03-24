@@ -14,22 +14,25 @@
 	table {
 		border-collapse:collapse;
 		margin:40px auto;
-	}	
-	
-	table tr th {
-	font-weight:700;
 	}
-	
+	table tr th {
+		font-weight:700;
+	}
 	table tr td, table tr th {
 		border:1px solid #818181;
 		width:200px;
-		text_align:center;
+		text-align:center;
 	}
 	
-	a { 
+	a {
 		text-decoration:none;
 		color:#000;
 		font-weight:700;
+	}
+	div {
+		border-collapse:collapse;
+		width:470px;
+		margin:40px auto;
 	}
 	
 	ul {

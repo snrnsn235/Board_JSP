@@ -33,6 +33,21 @@
 		padding:10px;
 		display:inline-block;
 	}
+	
+	div {
+		border-collapse:collapse;
+		margin:40px auto;
+		width : 780px;
+	}
+	div textarea {
+		 height: 200px;
+		 padding: 100px 100px;
+		 box-sizing: border-box;
+		 border: 2px solid #ccc;
+		 border-radius: 4px;
+		 background-color: #f8f8f8;
+		 font-size: 16px;
+	}
 </style>
 <body>
 	<h1>게시판 상세페이지</h1>
@@ -67,7 +82,15 @@
 				</td>
 			</tr>		
 	</table>
-	
-	<text area> 
+	<div>
+		<textarea action = "commentinsert.do" name="comment" rows="4" cols="70"></textarea>
+			<input type="hidden" name="b_idx" value="${board.b_idx }">
+			<input type="hidden" name="c_idx" value="${comment.c_idx }">
+			<input type="hidden" name="u_idx" value="${user.u_idx }">
+		
+		
+		<a href ="commentinsert.do? b_idx=${board.b_idx }&c_idx=${comment.c_idx}" style="font-weight:70; background-color:skyblue; color:#fff;">댓글달기</a>
+	</div>
+
 </body>
 </html>

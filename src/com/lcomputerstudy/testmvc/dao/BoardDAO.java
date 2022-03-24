@@ -1,4 +1,4 @@
-package com.lcomputerstudy.testmvc.boarddao;
+package com.lcomputerstudy.testmvc.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.lcomputerstudy.testmvc.boardvo.Board;
 import com.lcomputerstudy.testmvc.vo.*;
 import com.lcomputerstudy.testmvc.Boarddatabase.DBConnection;
 
@@ -132,9 +131,6 @@ public class BoardDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board.getB_title());
 			pstmt.setString(2, board.getB_content());
-			//pstmt.setString(4, board.getB_writer());
-			//pstmt.setString(4, board.getB_date());
-			//pstmt.setString(5, board.getB_hits());
 			pstmt.executeUpdate();
 			pstmt.close();
 			
@@ -247,7 +243,7 @@ public class BoardDAO {
 		}
 		return board;
 	}
-
+}
 	
 	
 //	public board loginBoard(String idx, String pw) {
@@ -260,6 +256,6 @@ public class BoardDAO {
 //			String sql = "SELECT * FROM board WHERE b_id = ? AND b_pw=?";
 //		}
 //	}
-}
+
 
 

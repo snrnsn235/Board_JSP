@@ -1,9 +1,8 @@
-package com.lcomputerstudy.testmvc.boardservice;
+package com.lcomputerstudy.testmvc.service;
 
 import java.util.List;
 
-import com.lcomputerstudy.testmvc.boarddao.*;
-//import com.lcomputerstudy.testmvc.boardvo.Board;
+import com.lcomputerstudy.testmvc.dao.*;
 import com.lcomputerstudy.testmvc.vo.*;
 
 public class Boardservice {

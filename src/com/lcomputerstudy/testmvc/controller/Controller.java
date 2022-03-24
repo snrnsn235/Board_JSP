@@ -12,13 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.lcomputerstudy.testmvc.boardservice.Boardservice;
-import com.lcomputerstudy.testmvc.service.UserService;
-//import com.lcomputerstudy.testmvc.boardvo.Board;
-//import com.lcomputerstudy.testmvc.service.UserService;
-//import com.lcomputerstudy.testmvc.boardvo.Pagination;
+import com.lcomputerstudy.testmvc.service.*;
 import com.lcomputerstudy.testmvc.vo.*;
-//import com.lcomputerstudy.testmvc.vo.User;
 
 @WebServlet("*.do")
 public class Controller extends HttpServlet{
@@ -44,10 +39,15 @@ public class Controller extends HttpServlet{
 		String idx = null;
 		HttpSession session = null;
 		command = checkSession(request, response, command);
-		Board board = null;
+		
 		User user = null;
+		Board board = null;
 		Boardservice boardService = null;
 		Pagination pagination = null;
+		Comment comment = null;
+		Commentservice commentservice = null;
+		
+		boolean isRedirected = false;
 		
 		response.setContentType("text/html; charset=utf-8");
 		request.setCharacterEncoding("utf-8");
@@ -143,6 +143,9 @@ public class Controller extends HttpServlet{
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				boardService = Boardservice.getInstance();
 				board = boardService.getBoard(board);
+				// 코멘트 서비스를 이용해 코멘트 목록을 얻어옴
+				//commentList = commentService.getComments(board);
+				//board.setCommentList(commentList);
 				view = "BoardDetail";
 				request.setAttribute("board", board);
 				break;
@@ -220,12 +223,31 @@ public class Controller extends HttpServlet{
 				boardService.replyBoard(board);
 				view = "Boardreply-process";
 				break;
-			
-		
+				
+				//댓글달기
+			case "/commentinsert.do":
+				comment = new Comment();
+				user = new User();
+				board = new Board();
+				comment.setC_content(request.getParameter("content"));
+				comment.setC_date(request.getParameter("date"));
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				
+				commentservice = Commentservice.getInstance();
+				commentservice.insertComment(comment);
+				isRedirected = true;
+				view = "boarddetail.do?b_idx="+comment.getB_idx();
+				break;
 		}
 		
-		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
-		rd.forward(request, response);
+		if (isRedirected) {
+			response.sendRedirect(view);
+		} else {
+			RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
+			rd.forward(request, response);
+		}
 	}
 
 	String checkSession(HttpServletRequest request, HttpServletResponse response, String command) {
