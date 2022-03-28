@@ -48,7 +48,7 @@ ${sessionScope.user.u_name} 님
 </div>
 <div>
 	<ul>
-		<li><a href="user-list.do">회원 목록</a></li>
+		<li><a href="userlist.do">회원 목록</a></li>
 		<li><a href="logout.do">로그아웃</a></li>
 		<li><a href="boardlist.do">게시판 목록</a>
 	</ul>

@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>게시글 상세</title>
-</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style>
 	h1 {
 	text-align: center;
@@ -49,6 +49,7 @@
 		 font-size: 16px;
 	}
 </style>
+</head>
 <body>
 	<h1>게시판 상세페이지</h1>
 	<table>
@@ -82,15 +83,68 @@
 				</td>
 			</tr>		
 	</table>
+	
 	<div>
-		<textarea action = "commentinsert.do" name="comment" rows="4" cols="70"></textarea>
+		<form action="commentinsert.do" method="post" id="frmComment">
 			<input type="hidden" name="b_idx" value="${board.b_idx }">
-			<input type="hidden" name="c_idx" value="${comment.c_idx }">
-			<input type="hidden" name="u_idx" value="${user.u_idx }">
-		
-		
-		<a href ="commentinsert.do? b_idx=${board.b_idx }&c_idx=${comment.c_idx}" style="font-weight:70; background-color:skyblue; color:#fff;">댓글달기</a>
+			<textarea name="c_content" rows="4" cols="70"></textarea>
+			<a href ="#" class="btnCommentReg" style="font-weight:70; background-color:skyblue; color:#fff;">댓글달기</a>
+		</form>
 	</div>
 
+<script>
+$(document).on('click', '.btnCommentReg', function () {
+	$('#frmComment').submit();
+});
+</script>
+
+	<table>
+		<tr>
+			<td colspan="3">댓글 개수 : ${pagination.count }</td>
+		</tr>
+		<tr>
+			<th>번호</th>
+			<th>내용</th>
+		</tr>
+		<c:forEach items="${commentlist}" var="comment" varStatus = "status">
+			<tr>
+				<td>${board.rownum}</td>
+				<td>${board.b_title }</td>
+				<td>${board.b_content }</td>
+			</tr>
+		</c:forEach>
+	</table>
+	<div>
+		<ul>
+			<c:choose>
+					<c:when test="${pagination.startPage-1 != 0}">
+						<li style="">
+							<a href="boardlist.do?page=${pagination.prevPage}">◀</a>
+						</li>
+					</c:when>
+			</c:choose>
+			<c:forEach var="i" begin="${pagination.startPage}" end="${pagination.endPage}" step="1">
+					<c:choose>
+						<c:when test="${pagination.page eq i }">
+							<li style="background-color:#ededed;">
+								<span>${i}</span>
+							</li>
+						</c:when>
+						<c:when test="${ pagination.page ne i }">
+							<li>
+								<a href="boardlist.do?page=${i}">${i}</a>
+							</li>
+						</c:when>
+					</c:choose>
+				</c:forEach>
+			<c:choose>
+					<c:when test = "${pagination.nextPage-1 != pagination.lastPage }">
+						<li style="">
+							<a href="boardlist.do?page=${pagination.nextPage}">▶</a>
+						</li>
+					</c:when>
+				</c:choose>	
+		</ul>
+	</div>
 </body>
 </html>

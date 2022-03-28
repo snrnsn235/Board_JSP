@@ -224,16 +224,23 @@ public class Controller extends HttpServlet{
 				view = "Boardreply-process";
 				break;
 				
-				//댓글달기
+				
+			case "/commentlist.do":
+				comment = new Comment();
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				commentservice = Commentservice.getInstance();
+				
+				
+				//댓글달기					
 			case "/commentinsert.do":
 				comment = new Comment();
-				user = new User();
-				board = new Board();
-				comment.setC_content(request.getParameter("content"));
-				comment.setC_date(request.getParameter("date"));
-				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
-				comment.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+//				user = new User();
+//				board = new Board();
+				comment.setC_content(request.getParameter("c_content"));
 				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+//				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+//				comment.setU_idx(Integer.parseInt(request.getParameter("u_idx"))+1);
+//				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx"))+1);
 				
 				commentservice = Commentservice.getInstance();
 				commentservice.insertComment(comment);

@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lcomputerstudy.testmvc.vo.*;
-import com.lcomputerstudy.testmvc.Boarddatabase.DBConnection;
+import com.lcomputerstudy.testmvc.database.DBConnection;
 
 public class BoardDAO {
 	private static BoardDAO dao = null;
-	private int executeUpdate;
+//	private int executeUpdate;
 	
 	private BoardDAO() {
 		
@@ -54,12 +54,9 @@ public class BoardDAO {
 				Board board = new Board();
 				board.setRownum(rs.getInt("ROWNUM"));
 				board.setB_idx(rs.getInt("b_idx"));
-				//board.setB_num(rs.getString("b_num"));
-				//board.setB_writer(rs.getString("b_writer"));
 				board.setB_hit(rs.getInt("b_hit"));
 				board.setB_content(rs.getString("b_content"));
 				board.setB_date(rs.getString("b_date"));
-				//board.setB_id(rs.getString("b_id"));
 				board.setB_title(rs.getString("b_title"));
 				
 				list.add(board);
@@ -246,16 +243,6 @@ public class BoardDAO {
 }
 	
 	
-//	public board loginBoard(String idx, String pw) {
-//		Connection conn = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		board board = null;
-//		try {
-//			conn = DBConnection.getConnection();
-//			String sql = "SELECT * FROM board WHERE b_id = ? AND b_pw=?";
-//		}
-//	}
 
 
 

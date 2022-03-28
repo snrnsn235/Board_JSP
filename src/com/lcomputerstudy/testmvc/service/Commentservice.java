@@ -1,5 +1,7 @@
 package com.lcomputerstudy.testmvc.service;
 
+import java.util.List;
+
 import com.lcomputerstudy.testmvc.dao.CommentDAO;
 import com.lcomputerstudy.testmvc.vo.*;
 
@@ -19,6 +21,9 @@ public class Commentservice {
 		return service;
 	}
 	
+	public static List<Comment> getComments(Pagination pagination) {
+		return dao.getComments(pagination);
+	}
 	public void insertComment(Comment comment) {
 		dao.insertComment(comment);
 	}

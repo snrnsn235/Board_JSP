@@ -1,11 +1,15 @@
 package com.lcomputerstudy.testmvc.vo;
 
 public class Comment {
+	private int rownum;
 	private int c_idx;
 	private int b_idx;
 	private int u_idx;
 	private String c_content;
 	private String c_date;
+	private int c_group;
+	private int c_order;
+	private int c_depth;
 	
 	public int getC_idx() {
 		return c_idx;
@@ -37,5 +41,30 @@ public class Comment {
 	public void setC_date(String c_date) {
 		this.c_date = c_date;
 	}
+	public int getC_group() {
+		return c_group;
+	}
+	public void setC_group(int c_group) {
+		this.c_group = c_group;
+	}
+	public int getC_order() {
+		return c_order;
+	}
+	public void setC_order(int c_order) {
+		this.c_order = c_order;
+	}
+	public int getC_depth() {
+		return c_depth;
+	}
+	public void setC_depth(int c_depth) {
+		this.c_depth = c_depth;
+	}
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+	
 }
 

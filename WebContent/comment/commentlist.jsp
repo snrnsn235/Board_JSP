@@ -4,10 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>댓글달기</title>
+<title>댓글 게시판</title>
 </head>
 <body>
-<h3>댓글달기완료</h3>
-<a href = "/lcomputerstudy/boardlist.do">돌아가기</a>
+
 </body>
 </html>
