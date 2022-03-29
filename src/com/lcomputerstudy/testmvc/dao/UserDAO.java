@@ -114,7 +114,7 @@ public class UserDAO {
 				count = rs.getInt("count");
 			}
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		} finally {
 			try {
 				if(rs != null) rs.close();

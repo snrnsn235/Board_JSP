@@ -12,11 +12,9 @@ import com.lcomputerstudy.testmvc.vo.*;
 
 public class CommentDAO {
 	private static CommentDAO dao = null;
-	//private int executeUpdate;
-	
-	private CommentDAO() {
-		
-		
+		Comment comment = null;
+		Board board = null;
+		private CommentDAO() {
 	}
 	
 	public static CommentDAO getInstance() {
@@ -26,22 +24,46 @@ public class CommentDAO {
 		
 		return dao;
 	}
-	
-	
-	public List<Comment> getComments(Pagination pagination) {
+	public List<Comment> getComments(Pagination pagination, Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Comment> list = null;
 		int pageNum = pagination.getPageNum();
+		
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "select * from board";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			list = new ArrayList<Comment>();
+			
+			while(rs.next()) {
+				board = new Board();
+//				board.setB_content(rs.getString("c_content"));
+				board.setB_idx(rs.getInt("b_idx"));
+				list.add(comment);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				pstmt.close();
+				conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		try {
 			conn=DBConnection.getConnection();
 			String query =new StringBuilder()
 					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
 					.append("				ta.*\n")
-					.append("FROM 			board ta,\n")
-					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
-					.append("order by		b_group desc, b_order asc\n")
+					.append("FROM 			comment ta,\n")
+					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM comment ta)) tb\n")
+					.append("order by		c_group desc, c_order asc\n")
 					.append("LIMIT			?, ?\n")
 					.toString();
 			pstmt = conn.prepareStatement(query);
@@ -52,7 +74,7 @@ public class CommentDAO {
 			list = new ArrayList<Comment>();
 			
 			while(rs.next()) {
-				Comment comment = new Comment();
+				comment = new Comment();
 				comment.setC_idx(rs.getInt("c_idx"));
 				comment.setC_content(rs.getString("c_content"));
 				comment.setC_date(rs.getString("c_date"));
@@ -70,6 +92,8 @@ public class CommentDAO {
 			}
 		}
 		return list;
+		
+		
 	}
 	public void insertComment(Comment comment) {
 		Connection conn = null;
@@ -98,6 +122,35 @@ public class CommentDAO {
 		}
 	}
 	
+	public int getCommentsCount() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String query = "select count(*) count from comment";
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				count = rs.getInt("count");
+			} 
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstmt != null) pstmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
+	
 	public Comment getComment(Comment comment) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -112,6 +165,9 @@ public class CommentDAO {
 			
 			while(rs.next()) {
 				comment.setC_content(rs.getString("c_content"));
+				comment.setC_group(rs.getInt("c_group"));
+				comment.setC_order(rs.getInt("c_order"));
+				comment.setC_depth(rs.getInt("c_depth"));
 			} 
 		}catch(Exception e) {
 				e.printStackTrace();
@@ -126,5 +182,6 @@ public class CommentDAO {
 		}
 		return comment;
 	}
+	
 }
 

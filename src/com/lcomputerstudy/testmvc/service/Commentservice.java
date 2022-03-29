@@ -21,8 +21,8 @@ public class Commentservice {
 		return service;
 	}
 	
-	public static List<Comment> getComments(Pagination pagination) {
-		return dao.getComments(pagination);
+	public static List<Comment> getComments(Pagination pagination, Board board) {
+		return dao.getComments(pagination, board);
 	}
 	public void insertComment(Comment comment) {
 		dao.insertComment(comment);
@@ -31,4 +31,13 @@ public class Commentservice {
 	public Comment getComment(Comment comment) {
 		return dao.getComment(comment);
 	}
+	
+	public int getCommentsCount() {
+		return dao.getCommentsCount();
+	}
+
+//	public List<Comment> getComments(Board board) {
+//		dao.getComments(board);
+//		return null;
+//	}
 }

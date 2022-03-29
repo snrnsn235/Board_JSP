@@ -35,6 +35,7 @@ public class Controller extends HttpServlet{
 		int page = 1;
 		int userCount = 0;
 		int boardCount = 0;
+		int commentCount = 0;
 		String pw = null;
 		String idx = null;
 		HttpSession session = null;
@@ -47,6 +48,7 @@ public class Controller extends HttpServlet{
 		Comment comment = null;
 		Commentservice commentservice = null;
 		
+		
 		boolean isRedirected = false;
 		
 		response.setContentType("text/html; charset=utf-8");
@@ -54,7 +56,7 @@ public class Controller extends HttpServlet{
 		
 		switch (command) {
 			//user
-			case "/user-list.do":
+			case "/userlist.do":
 				String reqPage = request.getParameter("page");
 				if(reqPage != null && !(reqPage.equals(""))) {
 					page = Integer.parseInt(reqPage);
@@ -73,10 +75,10 @@ public class Controller extends HttpServlet{
 				request.setAttribute("pagination", pagination);
 				break;
 				
-			case "/user-insert.do":
+			case "/logininsert.do":
 				view = "user/insert";
 				break;
-			case "/user-insert-process.do":
+			case "/insert-process.do":
 				user = new User();
 				user.setU_id(request.getParameter("id"));
 				user.setU_pw(request.getParameter("pw"));
@@ -89,10 +91,10 @@ public class Controller extends HttpServlet{
 				
 				view = "user/insert-result";
 				break;		
-			case "/user-login.do":
+			case "/login.do":
 				view = "user/login";
 				break;
-			case "/user-login-process.do":
+			case "/login-process.do":
 				idx = request.getParameter("login_id");
 				pw = request.getParameter("login_password");
 				
@@ -143,11 +145,21 @@ public class Controller extends HttpServlet{
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				boardService = Boardservice.getInstance();
 				board = boardService.getBoard(board);
-				// 코멘트 서비스를 이용해 코멘트 목록을 얻어옴
-				//commentList = commentService.getComments(board);
-				//board.setCommentList(commentList);
+				
+			//코멘트 서비스를 이용해 코멘트 목록을 얻어옴
+				commentservice = Commentservice.getInstance();
+				commentCount = commentservice.getCommentsCount();
+				pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(commentCount);
+				pagination.init();
+				List<Comment> commentlist = Commentservice.getComments(pagination, board);
+				board.setCommentList(commentlist);
+				
 				view = "BoardDetail";
 				request.setAttribute("board", board);
+				request.setAttribute("commentList", commentlist);
+				request.setAttribute("pagination", pagination);
 				break;
 			//수정	
 			case "/boardedit.do":
@@ -224,23 +236,11 @@ public class Controller extends HttpServlet{
 				view = "Boardreply-process";
 				break;
 				
-				
-			case "/commentlist.do":
-				comment = new Comment();
-				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
-				commentservice = Commentservice.getInstance();
-				
-				
 				//댓글달기					
 			case "/commentinsert.do":
 				comment = new Comment();
-//				user = new User();
-//				board = new Board();
 				comment.setC_content(request.getParameter("c_content"));
 				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
-//				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
-//				comment.setU_idx(Integer.parseInt(request.getParameter("u_idx"))+1);
-//				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx"))+1);
 				
 				commentservice = Commentservice.getInstance();
 				commentservice.insertComment(comment);

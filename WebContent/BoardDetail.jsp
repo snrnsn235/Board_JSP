@@ -48,6 +48,17 @@
 		 background-color: #f8f8f8;
 		 font-size: 16px;
 	}
+	
+	li {
+		list-style:none;
+		width:50px;
+		line-height:50px;
+		border:1px solid #ededed;
+		float:left;
+		text-align:center;
+		margin:0 5px;
+		border-radius:5px;
+	}
 </style>
 </head>
 <body>
@@ -98,6 +109,8 @@ $(document).on('click', '.btnCommentReg', function () {
 });
 </script>
 
+	<!-- 댓글리스트   -->
+	<h3 style = "text-align:center;">댓글목록</h3>
 	<table>
 		<tr>
 			<td colspan="3">댓글 개수 : ${pagination.count }</td>
@@ -108,18 +121,19 @@ $(document).on('click', '.btnCommentReg', function () {
 		</tr>
 		<c:forEach items="${commentlist}" var="comment" varStatus = "status">
 			<tr>
-				<td>${board.rownum}</td>
-				<td>${board.b_title }</td>
-				<td>${board.b_content }</td>
+				<td>${comment.c_idx }</td>
+				<td>${comment.c_content }</td>
 			</tr>
 		</c:forEach>
 	</table>
+	
+	<!-- Pagination -->
 	<div>
 		<ul>
 			<c:choose>
 					<c:when test="${pagination.startPage-1 != 0}">
 						<li style="">
-							<a href="boardlist.do?page=${pagination.prevPage}">◀</a>
+							<a href="boarddetail.do?page=${pagination.prevPage}">◀</a>
 						</li>
 					</c:when>
 			</c:choose>
@@ -132,7 +146,7 @@ $(document).on('click', '.btnCommentReg', function () {
 						</c:when>
 						<c:when test="${ pagination.page ne i }">
 							<li>
-								<a href="boardlist.do?page=${i}">${i}</a>
+								<a href="boarddetail.do?page=${i}">${i}</a>
 							</li>
 						</c:when>
 					</c:choose>
@@ -140,11 +154,12 @@ $(document).on('click', '.btnCommentReg', function () {
 			<c:choose>
 					<c:when test = "${pagination.nextPage-1 != pagination.lastPage }">
 						<li style="">
-							<a href="boardlist.do?page=${pagination.nextPage}">▶</a>
+							<a href="boarddetail.do?page=${pagination.nextPage}">▶</a>
 						</li>
 					</c:when>
 				</c:choose>	
 		</ul>
 	</div>
+	
 </body>
 </html>

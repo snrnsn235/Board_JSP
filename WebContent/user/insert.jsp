@@ -8,7 +8,7 @@
 </head>
 <body>
 <h2>회원 가입</h2>
-<form action="user-insert-process.do" name="user" method="post">
+<form action="insert-process.do" name="user" method="post">
 	<p> 아이디 : <input type = "text" name = "id"> <input type ="button" value="아이디 중복 검사"></p>
 	<p> 비밀번호 : <input type = "text" name = "password"></p>
 	<p> 이름 : <input type = "text" name = "name"></p>
