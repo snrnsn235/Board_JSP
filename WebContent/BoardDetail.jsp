@@ -103,13 +103,8 @@
 		</form>
 	</div>
 
-<script>
-$(document).on('click', '.btnCommentReg', function () {
-	$('#frmComment').submit();
-});
-</script>
-
 	<!-- 댓글리스트   -->
+	
 	<h3 style = "text-align:center;">댓글목록</h3>
 	<table>
 		<tr>
@@ -118,22 +113,37 @@ $(document).on('click', '.btnCommentReg', function () {
 		<tr>
 			<th>번호</th>
 			<th>내용</th>
+			<th>댓글의 댓글달기</th>
 		</tr>
-		<c:forEach items="${commentlist}" var="comment" varStatus = "status">
+		<c:forEach items="${commentList}" var="comment" varStatus = "status">
 			<tr>
-				<td>${comment.c_idx }</td>
+				<td>${comment.rownum}</td>
 				<td>${comment.c_content }</td>
+				<td>
+					<button type="button" class="commentReply">댓글</button>
+					<button type="button">수정</button>
+					<button type="button">삭제</button>
+				</td>
+			</tr>
+			<tr style="display: none;">
+				<td colspan="2">
+					<textarea name="c_content" rows="2" cols="80"></textarea>
+				</td>
+				<td>
+					<button type="button" >등록</button>
+					<button type="button" class="commentCancel">취소</button>
+				</td>
 			</tr>
 		</c:forEach>
 	</table>
 	
 	<!-- Pagination -->
-	<div>
+	<div style="border-collapse:collapse; margin:40px auto; width : 780px;">
 		<ul>
 			<c:choose>
 					<c:when test="${pagination.startPage-1 != 0}">
 						<li style="">
-							<a href="boarddetail.do?page=${pagination.prevPage}">◀</a>
+							<a href="boarddetail.do?b_idx=${board.b_idx }&page=${pagination.prevPage}">◀</a>
 						</li>
 					</c:when>
 			</c:choose>
@@ -146,7 +156,7 @@ $(document).on('click', '.btnCommentReg', function () {
 						</c:when>
 						<c:when test="${ pagination.page ne i }">
 							<li>
-								<a href="boarddetail.do?page=${i}">${i}</a>
+								<a href="boarddetail.do?b_idx=${board.b_idx }&page=${i}">${i}</a>
 							</li>
 						</c:when>
 					</c:choose>
@@ -154,12 +164,25 @@ $(document).on('click', '.btnCommentReg', function () {
 			<c:choose>
 					<c:when test = "${pagination.nextPage-1 != pagination.lastPage }">
 						<li style="">
-							<a href="boarddetail.do?page=${pagination.nextPage}">▶</a>
+							<a href="boarddetail.do?b_idx=${board.b_idx }&page=${pagination.nextPage}">▶</a>
 						</li>
 					</c:when>
 				</c:choose>	
 		</ul>
 	</div>
+	<script>
+	$(document).on('click', '.btnCommentReg', function () {
+		$('#frmComment').submit();
+	});
+
+	$(document).on('click', '.commentReply', function () {
+		$(this).parent().parent().next().css('display', '');
+	});
 	
+	$(document).on('click', '.commentCancel', function () {
+		$(this).parent().parent().css('display', 'none');
+	});
+
+	</script>
 </body>
 </html>

@@ -32,31 +32,6 @@ public class CommentDAO {
 		int pageNum = pagination.getPageNum();
 		
 		try {
-			conn = DBConnection.getConnection();
-			String sql = "select * from board";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			list = new ArrayList<Comment>();
-			
-			while(rs.next()) {
-				board = new Board();
-//				board.setB_content(rs.getString("c_content"));
-				board.setB_idx(rs.getInt("b_idx"));
-				list.add(comment);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				rs.close();
-				pstmt.close();
-				conn.close();
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		try {
 			conn=DBConnection.getConnection();
 			String query =new StringBuilder()
 					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
@@ -75,6 +50,7 @@ public class CommentDAO {
 			
 			while(rs.next()) {
 				comment = new Comment();
+				comment.setRownum(rs.getInt("ROWNUM"));
 				comment.setC_idx(rs.getInt("c_idx"));
 				comment.setC_content(rs.getString("c_content"));
 				comment.setC_date(rs.getString("c_date"));

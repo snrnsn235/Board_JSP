@@ -47,8 +47,4 @@ public class Boardservice {
 	public Board getBoard(Board board) {
 		return dao.getBoard(board);
 	}
-	
-//	public board loginBoard(String idx, String pw) {
-//		return dao.loginBoard(idx, pw);
-//	}
 }

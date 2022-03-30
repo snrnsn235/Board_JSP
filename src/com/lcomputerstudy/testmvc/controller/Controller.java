@@ -43,9 +43,9 @@ public class Controller extends HttpServlet{
 		
 		User user = null;
 		Board board = null;
+		Comment comment = null;
 		Boardservice boardService = null;
 		Pagination pagination = null;
-		Comment comment = null;
 		Commentservice commentservice = null;
 		
 		
@@ -56,6 +56,7 @@ public class Controller extends HttpServlet{
 		
 		switch (command) {
 			//user
+		//회원리스트
 			case "/userlist.do":
 				String reqPage = request.getParameter("page");
 				if(reqPage != null && !(reqPage.equals(""))) {
@@ -74,7 +75,7 @@ public class Controller extends HttpServlet{
 				request.setAttribute("list", list);
 				request.setAttribute("pagination", pagination);
 				break;
-				
+				//회원추가
 			case "/logininsert.do":
 				view = "user/insert";
 				break;
@@ -90,8 +91,18 @@ public class Controller extends HttpServlet{
 				userService.insertUser(user);
 				
 				view = "user/insert-result";
-				break;		
-			case "/login.do":
+				break;	
+				//고객 정보
+			case "/userdetail.do":
+				user = new User();
+				user.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+				userService = UserService.getInstance();
+				user = userService.getUsers(user);
+				view = "userDetail";
+				request.setAttribute("user", user);
+				break;
+				//회원 로그인, 로그아웃
+			case "/userlogin.do":
 				view = "user/login";
 				break;
 			case "/login-process.do":
@@ -128,8 +139,8 @@ public class Controller extends HttpServlet{
 					page = Integer.parseInt(reqPage1);
 				}
 				boardService = Boardservice.getInstance();
-				boardCount = boardService.getBoardsCount();
-				pagination = new Pagination();
+				boardCount = boardService.getBoardsCount(); //전체 게시판 개수 
+				pagination = new Pagination(); //pagination
 				pagination.setPage(page);
 				pagination.setCount(boardCount);
 				pagination.init();
@@ -139,14 +150,18 @@ public class Controller extends HttpServlet{
 				request.setAttribute("boardlist", Boardlist);
 				request.setAttribute("pagination", pagination);
 				break;
-			//상세페이지
+			//상세페이지 칸
 			case "/boarddetail.do":
 				board = new Board();
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				boardService = Boardservice.getInstance();
 				board = boardService.getBoard(board);
-				
-			//코멘트 서비스를 이용해 코멘트 목록을 얻어옴
+						
+			//상세페이지 - 댓글 리스트
+				String reqPage2 = request.getParameter("page");
+				if (reqPage2 != null  && !(reqPage2.equals("")) && !(reqPage2.equals("0"))) {
+					page = Integer.parseInt(reqPage2);
+				}
 				commentservice = Commentservice.getInstance();
 				commentCount = commentservice.getCommentsCount();
 				pagination = new Pagination();

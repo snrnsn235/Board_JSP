@@ -127,6 +127,41 @@ public class UserDAO {
 		return count;
 	}
 	
+	public User getUsers(User user) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String query = "select * from user where u_idx=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, user.getU_idx());
+			rs = pstmt.executeQuery();
+			
+				while(rs.next()) {
+					user.setU_id(rs.getString("u_id"));
+					user.setU_pw(rs.getString("u_pw"));
+					user.setU_name(rs.getString("u_name"));
+					user.setU_tel(rs.getString("u_tel"));
+					user.setU_age(rs.getString("u_age"));
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+			} catch (SQLException ex) {{
+				ex.printStackTrace();
+			}
+			
+		}
+	}
+		return user;
+}
+	
 	public User loginUser(String idx, String pw) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

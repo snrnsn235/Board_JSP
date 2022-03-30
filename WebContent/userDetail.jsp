@@ -33,7 +33,7 @@
 <%@ include file="db_connection.jsp" %>
 	<h1>회원 상세 페이지</h1>
 	<table>
-		<%
+	<!-- %
 			String idx = request.getParameter("u_idx");
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
@@ -50,42 +50,40 @@
 		           String u_name = rs.getString("u_name");
 		           String u_tel = rs.getString("u_tel");
 		           String u_age = rs.getString("u_age");
-		%>
+		%>-->
 		
 		<tr>
 			<td>회원번호
-			<td><%=u_idx %>
+			<td>${user.u_idx }</td>
 		</tr>
 		<tr>
 			<td>회원 ID
-			<td><%=u_id %>
+			<td>${user.u_id }
 		</tr>
 		<tr>
 			<td>회원이름
-			<td><%=u_name %>
+			<td>${user.u_name }
 		</tr>
 		<tr>
 			<td>회원 전화번호
-			<td><%=u_tel%>
+			<td>${user.u_tel }
 		</tr>
 		<tr>
 			<td>회원 나이
-			<td><%=u_age%>
+			<td>${user.u_age }
 		</tr>
 		
 		<tr style="height:50px;">
 			<td style="border:none;">
-				<a href="userEdit.jsp?u_idx=<%=u_idx%>" style="width:70%;font-weight:700;background-color:#818181;color:#fff;" >수정</a>
+				<a href="userEdit.do?u_idx=${user.u_idx }" style="width:70%;font-weight:700;background-color:#818181;color:#fff;" >수정</a>
 			</td>
 			<td style="border:none;">
-				<a href="userDelete.jsp?u_idx=<%=u_idx%>" style="width:70%;font-weight:700;background-color:red;color:#fff;">삭제</a>
+				<a href="userDelete.do?u_idx=${user.u_idx }" style="width:70%;font-weight:700;background-color:red;color:#fff;">삭제</a>
 			</td>
 		</tr>
 
 		
-		<%
-			}
-		%>
+		
 </table>
 </body>
 </html>

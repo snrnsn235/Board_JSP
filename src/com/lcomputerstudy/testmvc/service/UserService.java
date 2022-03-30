@@ -3,6 +3,7 @@ package com.lcomputerstudy.testmvc.service;
 import java.util.List;
 
 import com.lcomputerstudy.testmvc.dao.*;
+import com.lcomputerstudy.testmvc.vo.Board;
 import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
 
@@ -35,5 +36,9 @@ public class UserService {
 	
 	public User loginUser(String idx, String pw) {
 		return dao.loginUser(idx, pw);
+	}
+	
+	public User getUsers(User user) {
+		return dao.getUsers(user);
 	}
 }
