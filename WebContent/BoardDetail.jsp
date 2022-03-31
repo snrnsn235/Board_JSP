@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>게시글 상세</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
 	h1 {
 	text-align: center;
@@ -47,6 +48,7 @@
 		 border-radius: 4px;
 		 background-color: #f8f8f8;
 		 font-size: 16px;
+		 overflow:auto;
 	}
 	
 	li {
@@ -94,17 +96,16 @@
 				</td>
 			</tr>		
 	</table>
-	
-	<div>
+	<!-- 댓글 작성하기 -->
+	<div class = "comment-text">
 		<form action="commentinsert.do" method="post" id="frmComment">
 			<input type="hidden" name="b_idx" value="${board.b_idx }">
-			<textarea name="c_content" rows="4" cols="70"></textarea>
+			<textarea id="cmtCnt" name="c_content" placeholder = "여러분의 댓글을 입력해주세요." rows="4" cols="70"></textarea>
 			<a href ="#" class="btnCommentReg" style="font-weight:70; background-color:skyblue; color:#fff;">댓글달기</a>
 		</form>
 	</div>
 
 	<!-- 댓글리스트   -->
-	
 	<h3 style = "text-align:center;">댓글목록</h3>
 	<table>
 		<tr>
@@ -113,14 +114,14 @@
 		<tr>
 			<th>번호</th>
 			<th>내용</th>
-			<th>댓글의 댓글달기</th>
+			<th>대댓글, 수정, 삭제</th>
 		</tr>
 		<c:forEach items="${commentList}" var="comment" varStatus = "status">
 			<tr>
 				<td>${comment.rownum}</td>
 				<td>${comment.c_content }</td>
 				<td>
-					<button type="button" class="commentReply">댓글</button>
+					<button type="button" class="commentReply">대댓글</button>
 					<button type="button">수정</button>
 					<button type="button">삭제</button>
 				</td>

@@ -53,24 +53,26 @@
 </style>
 <body>
 	<h1>게시판 목록</h1>
-	<a href="boardinsert.do" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">게시글 추가하기</a>
-	<table>
-		<tr>
-			<td colspan="3">전체 게시판 개수 : ${pagination.count }</td>
-		</tr>
-		<tr>
-			<th>번호</th>
-			<th>제목</th>
-			<th>내용</th>
-		</tr>
-		<c:forEach items="${boardlist}" var="board" varStatus = "status">
-			<tr>
-				<td><a href="boarddetail.do?b_idx=${board.b_idx}">${board.rownum}</a></td>
-				<td>${board.b_title }</td>
-				<td>${board.b_content }</td>
-			</tr>
-		</c:forEach>
-	</table>
+	<div>
+		<a href="boardinsert.do" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">게시글 추가하기</a>
+			<table>
+				<tr>
+					<td colspan="3">전체 게시판 개수 : ${pagination.count }</td>
+				</tr>
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>내용</th>
+				</tr>
+				<c:forEach items="${boardlist}" var="board" varStatus = "status">
+					<tr>
+						<td><a href="boarddetail.do?b_idx=${board.b_idx}">${board.rownum}</a></td>
+						<td>${board.b_title }</td>
+						<td>${board.b_content }</td>
+					</tr>
+				</c:forEach>
+			</table>
+	</div>
 	<div>
 		<ul>
 			<c:choose>

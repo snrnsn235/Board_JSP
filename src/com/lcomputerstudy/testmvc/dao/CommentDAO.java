@@ -38,11 +38,13 @@ public class CommentDAO {
 					.append("				ta.*\n")
 					.append("FROM 			comment ta,\n")
 					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM comment ta)) tb\n")
+					//.append("where 			b_idx = 0")
 					.append("order by		c_group desc, c_order asc\n")
-					.append("LIMIT			?, ?\n")
+					.append("LIMIT			?, ? \n")
 					.toString();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
+//			pstmt.setInt(2, comment.getB_idx());
 			pstmt.setInt(2, pageNum);
 			pstmt.setInt(3, Pagination.perPage);
 			rs = pstmt.executeQuery();
@@ -77,9 +79,10 @@ public class CommentDAO {
 		
 			try {
 				conn = DBConnection.getConnection();
-				String sql = "insert into comment(c_content,c_date,c_group,c_order,c_depth) values(?,now(),0,1,0)";
+				String sql = "insert into comment(c_content,c_date,b_idx,c_group,c_order,c_depth) values(?,now(),?,0,1,0)";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, comment.getC_content());
+				pstmt.setInt(2, comment.getB_idx());
 				pstmt.executeUpdate();
 				pstmt.close();
 								
@@ -106,8 +109,9 @@ public class CommentDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-			String query = "select count(*) count from comment";
-			pstmt = conn.prepareStatement(query);
+			String sql = "select count(*) as count from comment order by b_idx= last_insert_id()";
+			pstmt = conn.prepareStatement(sql);
+			//pstmt.setInt(1, comment.getB_idx());
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
