@@ -157,19 +157,20 @@ public class Controller extends HttpServlet{
 				boardService = Boardservice.getInstance();
 				board = boardService.getBoard(board);
 						
-			//상세페이지 - 댓글 리스트
+			//	상세페이지 - 댓글 리스트
 				String reqPage2 = request.getParameter("page");
 				if (reqPage2 != null  && !(reqPage2.equals("")) && !(reqPage2.equals("0"))) {
 					page = Integer.parseInt(reqPage2);
 				}
 				commentservice = Commentservice.getInstance();
-				commentCount = commentservice.getCommentsCount();
+				commentCount = commentservice.getCommentsCount(board);
 				pagination = new Pagination();
 				pagination.setPage(page);
 				pagination.setCount(commentCount);
 				pagination.init();
 				List<Comment> commentlist = Commentservice.getComments(pagination, board);
 				board.setCommentList(commentlist);
+						
 				
 				view = "BoardDetail";
 				request.setAttribute("board", board);
@@ -262,6 +263,29 @@ public class Controller extends HttpServlet{
 				isRedirected = true;
 				view = "boarddetail.do?b_idx="+comment.getB_idx();
 				break;
+				//대댓글등록
+			case "/commentReply.do":
+				comment = new Comment();
+				board = new Board();
+				comment.setC_group(Integer.parseInt(request.getParameter("c_group")));
+				comment.setC_order(Integer.parseInt(request.getParameter("c_order")));
+				comment.setC_depth(Integer.parseInt(request.getParameter("c_depth")));
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				
+				session = request.getSession();
+				board = (Board)session.getAttribute("board");
+				
+				comment.setC_content(request.getParameter("content"));
+				comment.setC_date(request.getParameter("date"));
+				comment.setC_group(Integer.parseInt(request.getParameter("c_group")));
+				comment.setC_order(Integer.parseInt(request.getParameter("c_order"))+1);
+				comment.setC_depth(Integer.parseInt(request.getParameter("c_depth"))+1);
+				comment.setB_idx(board.getB_idx());
+				
+				commentservice = Commentservice.getInstance();
+				commentservice.replyComment(comment);
+				view = "boarddetail.do?b_idx="+comment.getB_idx();
+				
 		}
 		
 		if (isRedirected) {

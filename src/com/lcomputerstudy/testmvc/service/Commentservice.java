@@ -32,12 +32,11 @@ public class Commentservice {
 		return dao.getComment(comment);
 	}
 	
-	public int getCommentsCount() {
-		return dao.getCommentsCount();
+	public int getCommentsCount(Board board) {
+		return dao.getCommentsCount(board);
+	}
+	public void replyComment(Comment comment) {
+		dao.replyComment(comment);
 	}
 
-//	public List<Comment> getComments(Board board) {
-//		dao.getComments(board);
-//		return null;
-//	}
 }

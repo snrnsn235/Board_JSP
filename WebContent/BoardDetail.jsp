@@ -121,7 +121,7 @@
 				<td>${comment.rownum}</td>
 				<td>${comment.c_content }</td>
 				<td>
-					<button type="button" class="commentReply">대댓글</button>
+					<button type="button" class="commentC">대댓글</button>
 					<button type="button">수정</button>
 					<button type="button">삭제</button>
 				</td>
@@ -131,7 +131,13 @@
 					<textarea name="c_content" rows="2" cols="80"></textarea>
 				</td>
 				<td>
-					<button type="button" >등록</button>
+					<form action="commentReply.do?c_group=${comment.c_group}&c_order=${comment.c_order}&c_depth=${comment.c_depth}" method="post" id="replyComment">
+						<input type="hidden" name="c_idx" value="${comment.c_idx }">
+						<input type="hidden" name="c_group" value="${comment.c_group }">
+						<input type="hidden" name="c_order" value="${comment.c_order }">
+						<input type="hidden" name="c_depth" value="${comment.c_depth }">
+							<button type="submit" class="commentReply">등록</button>
+					</form>
 					<button type="button" class="commentCancel">취소</button>
 				</td>
 			</tr>
@@ -172,18 +178,22 @@
 		</ul>
 	</div>
 	<script>
-	$(document).on('click', '.btnCommentReg', function () {
-		$('#frmComment').submit();
-	});
-
-	$(document).on('click', '.commentReply', function () {
-		$(this).parent().parent().next().css('display', '');
-	});
-	
-	$(document).on('click', '.commentCancel', function () {
-		$(this).parent().parent().css('display', 'none');
-	});
-
+		//댓글달기
+		$(document).on('click', '.btnCommentReg', function () {
+			$('#frmComment').submit();
+		});
+		//대댓글창 띄우기
+		$(document).on('click', '.commentC', function () {
+			$(this).parent().parent().next().css('display', '');
+		});
+		//대댓글등록하기
+		$(document).on('click', '.commentReply', function () {
+			$('#replyComment').submit();
+		});
+		//댓글달기 취소
+		$(document).on('click', '.commentCancel', function () {
+			$(this).parent().parent().css('display', 'none');
+		});
 	</script>
 </body>
 </html>

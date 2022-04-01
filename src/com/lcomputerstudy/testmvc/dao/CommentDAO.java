@@ -12,9 +12,8 @@ import com.lcomputerstudy.testmvc.vo.*;
 
 public class CommentDAO {
 	private static CommentDAO dao = null;
-		Comment comment = null;
-		Board board = null;
-		private CommentDAO() {
+
+	private CommentDAO() {
 	}
 	
 	public static CommentDAO getInstance() {
@@ -38,20 +37,20 @@ public class CommentDAO {
 					.append("				ta.*\n")
 					.append("FROM 			comment ta,\n")
 					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM comment ta)) tb\n")
-					//.append("where 			b_idx = 0")
+					.append("where   		b_idx = ?\n")
 					.append("order by		c_group desc, c_order asc\n")
 					.append("LIMIT			?, ? \n")
 					.toString();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
-//			pstmt.setInt(2, comment.getB_idx());
-			pstmt.setInt(2, pageNum);
-			pstmt.setInt(3, Pagination.perPage);
+			pstmt.setInt(2, board.getB_idx());
+			pstmt.setInt(3, pageNum);
+			pstmt.setInt(4, Pagination.perPage);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Comment>();
 			
 			while(rs.next()) {
-				comment = new Comment();
+				Comment comment = new Comment();
 				comment.setRownum(rs.getInt("ROWNUM"));
 				comment.setC_idx(rs.getInt("c_idx"));
 				comment.setC_content(rs.getString("c_content"));
@@ -101,7 +100,7 @@ public class CommentDAO {
 		}
 	}
 	
-	public int getCommentsCount() {
+	public int getCommentsCount(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -109,9 +108,9 @@ public class CommentDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "select count(*) as count from comment order by b_idx= last_insert_id()";
+			String sql = "select count(*) as count from comment where b_idx=?";
 			pstmt = conn.prepareStatement(sql);
-			//pstmt.setInt(1, comment.getB_idx());
+			pstmt.setInt(1, board.getB_idx());
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -161,6 +160,37 @@ public class CommentDAO {
 				}
 		}
 		return comment;
+	}
+	
+	public void replyComment(Comment comment) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "insert into comment(c_content,c_date,c_group,c_order,c_depth) values(?,now(),?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, comment.getC_content());
+			pstmt.setInt(2, comment.getC_group());
+			pstmt.setInt(3, comment.getC_order());
+			pstmt.setInt(4, comment.getC_depth());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			sql = "update comment set c_order=c_order+1 where c_group = ? and c_order >= ? and c_idx <> last_insert_id()";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, comment.getC_group());
+			pstmt.setInt(2, comment.getC_order());
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
