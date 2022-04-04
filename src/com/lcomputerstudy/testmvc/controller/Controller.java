@@ -23,7 +23,6 @@ public class Controller extends HttpServlet{
 		doPost(request, response);
 	}
 	
-	@SuppressWarnings("null")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=utf-8");
 		
@@ -263,29 +262,46 @@ public class Controller extends HttpServlet{
 				isRedirected = true;
 				view = "boarddetail.do?b_idx="+comment.getB_idx();
 				break;
+				
 				//대댓글등록
 			case "/commentReply.do":
+				//session은 로그인 할때 사용하는 것이므로 필요없음
+//				session = request.getSession();
+//				board = (Board)session.getAttribute("board");
+				//board = new Board();
 				comment = new Comment();
-				board = new Board();
-				comment.setC_group(Integer.parseInt(request.getParameter("c_group")));
-				comment.setC_order(Integer.parseInt(request.getParameter("c_order")));
-				comment.setC_depth(Integer.parseInt(request.getParameter("c_depth")));
-				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
 				
-				session = request.getSession();
-				board = (Board)session.getAttribute("board");
-				
-				comment.setC_content(request.getParameter("content"));
-				comment.setC_date(request.getParameter("date"));
+				comment.setC_content(request.getParameter("c_content"));
 				comment.setC_group(Integer.parseInt(request.getParameter("c_group")));
 				comment.setC_order(Integer.parseInt(request.getParameter("c_order"))+1);
 				comment.setC_depth(Integer.parseInt(request.getParameter("c_depth"))+1);
-				comment.setB_idx(board.getB_idx());
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				
 				commentservice = Commentservice.getInstance();
 				commentservice.replyComment(comment);
+				isRedirected = true;
 				view = "boarddetail.do?b_idx="+comment.getB_idx();
+				request.setAttribute("comment", comment);
+				break;
+				//댓글삭제
+			case "/commentDelete.do":
+				comment = new Comment();
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
 				
+				commentservice = Commentservice.getInstance();
+				commentservice.deleteComment(comment);
+				isRedirected = true;
+				view = "boarddetail.do?b_idx="+comment.getB_idx();
+				break;
+				//댓글수정
+//			case "/commentEdit.do":
+//				comment = new Comment();
+//				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+//				commentservice = Commentservice.getInstance();
+//				commentservice.getComment(comment);
+//				view = "";
+//				request.setAttribute("comment", comment);
+//				break;
 		}
 		
 		if (isRedirected) {

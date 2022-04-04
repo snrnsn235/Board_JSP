@@ -121,24 +121,23 @@
 				<td>${comment.rownum}</td>
 				<td>${comment.c_content }</td>
 				<td>
-					<button type="button" class="commentC">대댓글</button>
-					<button type="button">수정</button>
-					<button type="button">삭제</button>
+					<button type="button" class="commentComment">대댓글</button>
+					<button type="button" class="commentEdit">수정</button>
+					<button type="button" class="commentDelete">삭제</button>
 				</td>
 			</tr>
 			<tr style="display: none;">
-				<td colspan="2">
-					<textarea name="c_content" rows="2" cols="80"></textarea>
-				</td>
-				<td>
-					<form action="commentReply.do?c_group=${comment.c_group}&c_order=${comment.c_order}&c_depth=${comment.c_depth}" method="post" id="replyComment">
-						<input type="hidden" name="c_idx" value="${comment.c_idx }">
-						<input type="hidden" name="c_group" value="${comment.c_group }">
-						<input type="hidden" name="c_order" value="${comment.c_order }">
-						<input type="hidden" name="c_depth" value="${comment.c_depth }">
+				<td colspan="3">
+					<form action="commentReply.do" name = "comment" method="post" class="replyComment">
+						<textarea name="c_content" rows="2" cols="80"></textarea>
+							<input type="hidden" name="b_idx" value="${board.b_idx }">
+							<input type="hidden" name="c_group" value="${comment.c_group }">
+							<input type="hidden" name="c_order" value="${comment.c_order }">
+							<input type="hidden" name="c_depth" value="${comment.c_depth }">
+							
 							<button type="submit" class="commentReply">등록</button>
+							<button type="button" class="commentCancel">취소</button>
 					</form>
-					<button type="button" class="commentCancel">취소</button>
 				</td>
 			</tr>
 		</c:forEach>
@@ -178,22 +177,28 @@
 		</ul>
 	</div>
 	<script>
-		//댓글달기
+		//1. 댓글달기
 		$(document).on('click', '.btnCommentReg', function () {
 			$('#frmComment').submit();
 		});
-		//대댓글창 띄우기
-		$(document).on('click', '.commentC', function () {
+		//2. 대댓글창 띄우기
+		$(document).on('click', '.commentComment', function () {
 			$(this).parent().parent().next().css('display', '');
 		});
-		//대댓글등록하기
-		$(document).on('click', '.commentReply', function () {
-			$('#replyComment').submit();
-		});
-		//댓글달기 취소
+		//3. 댓글달기 취소
 		$(document).on('click', '.commentCancel', function () {
 			$(this).parent().parent().css('display', 'none');
 		});
+		//4. 대댓글등록하기
+		$(document).on('click', '.commentReply', function () {
+			$('#replyComment').submit();
+		});
+		//5. 대댓글 지우기
+		$(document).on('click', '.commentDelete', function() {
+			$(this).parent().parent().deleteRow(-1);
+		});
+		//6. 대댓글 수정하기
+		
 	</script>
 </body>
 </html>

@@ -55,6 +55,9 @@ public class CommentDAO {
 				comment.setC_idx(rs.getInt("c_idx"));
 				comment.setC_content(rs.getString("c_content"));
 				comment.setC_date(rs.getString("c_date"));
+				comment.setC_group(rs.getInt("c_group"));
+				comment.setC_depth(rs.getInt("c_depth"));
+				comment.setC_order(rs.getInt("c_order"));
 				list.add(comment);
 			}
 		} catch(Exception e) {
@@ -129,7 +132,7 @@ public class CommentDAO {
 		}
 		return count;
 	}
-	
+	//대댓글수정하기
 	public Comment getComment(Comment comment) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -161,19 +164,20 @@ public class CommentDAO {
 		}
 		return comment;
 	}
-	
+	//대댓글에 답글달기
 	public void replyComment(Comment comment) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into comment(c_content,c_date,c_group,c_order,c_depth) values(?,now(),?,?,?)";
+			String sql = "insert into comment(c_content,c_date,c_group,c_order,c_depth,b_idx) values(?,now(),?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, comment.getC_content());
 			pstmt.setInt(2, comment.getC_group());
 			pstmt.setInt(3, comment.getC_order());
 			pstmt.setInt(4, comment.getC_depth());
+			pstmt.setInt(5, comment.getB_idx());
 			pstmt.executeUpdate();
 			pstmt.close();
 			
@@ -192,6 +196,26 @@ public class CommentDAO {
 			}
 		}
 	}
-	
+	//대댓글 삭제하기
+	public void deleteComment(Comment commnet) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "delete from comment where c_idx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, commnet.getC_idx());
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) conn.close();
+				if (pstmt != null) pstmt.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
 
