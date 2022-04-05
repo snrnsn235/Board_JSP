@@ -9,17 +9,6 @@
 <body>
 <%@ include file="db_connection.jsp" %>
 
-<%
-	String idx = request.getParameter("u_idx");
-	System.out.println(idx);
-	
-	PreparedStatement pstmt = null;
-	
-	String query = "delete from user where u_idx=?";
-	pstmt = conn.prepareStatement(query);
-	pstmt.setString(1, idx);
-	pstmt.executeUpdate();
-%>
 <h2>삭제 완료</h2>
 <script>
 	setTimeout(function () {

@@ -161,6 +161,27 @@ public class UserDAO {
 	}
 		return user;
 }
+	public void deleteUser(User user) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "delete from user where u_idx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user.getU_idx());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public User loginUser(String idx, String pw) {
 		Connection conn = null;

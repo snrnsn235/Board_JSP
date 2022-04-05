@@ -33,25 +33,6 @@
 <%@ include file="db_connection.jsp" %>
 	<h1>회원 상세 페이지</h1>
 	<table>
-	<!-- %
-			String idx = request.getParameter("u_idx");
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			
-			String query = "select * from user where u_idx=?";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, idx);
-			
-			rs = pstmt.executeQuery();
-			 
-			while(rs.next()){     
-		   	       String u_idx = rs.getString("u_idx");
-		           String u_id = rs.getString("u_id");
-		           String u_name = rs.getString("u_name");
-		           String u_tel = rs.getString("u_tel");
-		           String u_age = rs.getString("u_age");
-		%>-->
-		
 		<tr>
 			<td>회원번호
 			<td>${user.u_idx }</td>
@@ -81,9 +62,6 @@
 				<a href="userDelete.do?u_idx=${user.u_idx }" style="width:70%;font-weight:700;background-color:red;color:#fff;">삭제</a>
 			</td>
 		</tr>
-
-		
-		
 </table>
 </body>
 </html>

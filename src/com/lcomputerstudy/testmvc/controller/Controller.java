@@ -100,7 +100,16 @@ public class Controller extends HttpServlet{
 				view = "userDetail";
 				request.setAttribute("user", user);
 				break;
-				//회원 로그인, 로그아웃
+			case "/userDelete.do":
+				user = new User();
+				user.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+								
+				userService = UserService.getInstance();
+				userService.deleteUser(user);
+				
+				view = "BoardDelete";
+				break;
+				//회원 로그인
 			case "/userlogin.do":
 				view = "user/login";
 				break;
@@ -120,6 +129,7 @@ public class Controller extends HttpServlet{
 					view = "user/login-fail";
 				}
 				break;
+				//로그아웃
 			case "/logout.do":
 				session = request.getSession();
 				session.invalidate();
@@ -283,25 +293,54 @@ public class Controller extends HttpServlet{
 				view = "boarddetail.do?b_idx="+comment.getB_idx();
 				request.setAttribute("comment", comment);
 				break;
+				//댓글수정
+			case "/commentEdit.do":
+				comment = new Comment();
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				commentservice = Commentservice.getInstance();
+				comment = commentservice.getComment(comment);
+				
+				//commentEdit-process.do
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setC_content(request.getParameter("c_content"));
+				commentservice = Commentservice.getInstance();
+				commentservice.editComment(comment);
+				isRedirected = true;
+				view = "boarddetail.do?b_idx="+comment.getB_idx();
+				request.setAttribute("comment", comment);
+				break;
+				
 				//댓글삭제
 			case "/commentDelete.do":
 				comment = new Comment();
 				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				
 				commentservice = Commentservice.getInstance();
 				commentservice.deleteComment(comment);
 				isRedirected = true;
 				view = "boarddetail.do?b_idx="+comment.getB_idx();
 				break;
-				//댓글수정
-//			case "/commentEdit.do":
-//				comment = new Comment();
-//				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
-//				commentservice = Commentservice.getInstance();
-//				commentservice.getComment(comment);
-//				view = "";
-//				request.setAttribute("comment", comment);
-//				break;
+				
+				//ajax
+			case "/aj-commentReply.do":
+				comment = new Comment();
+				
+				comment.setC_content(request.getParameter("c_content"));
+				comment.setC_group(Integer.parseInt(request.getParameter("c_group")));
+				comment.setC_order(Integer.parseInt(request.getParameter("c_order"))+1);
+				comment.setC_depth(Integer.parseInt(request.getParameter("c_depth"))+1);
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				
+				commentservice = Commentservice.getInstance();
+				commentservice.replyComment(comment);
+				isRedirected = true;
+				view = "boarddetail.do?b_idx="+comment.getB_idx();
+				request.setAttribute("comment", comment);
+				break;
+				
+			
 		}
 		
 		if (isRedirected) {

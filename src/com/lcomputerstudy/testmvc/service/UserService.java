@@ -41,4 +41,7 @@ public class UserService {
 	public User getUsers(User user) {
 		return dao.getUsers(user);
 	}
+	public void deleteUser(User user) {
+		dao.deleteUser(user);
+	}
 }

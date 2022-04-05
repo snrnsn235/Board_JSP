@@ -64,7 +64,7 @@
 			</tr>
 			<c:forEach items="${list}" var="item" varStatus = "status">
 				<tr>
-					<td><a href="user-detail.do?u_idx=${item.u_idx}">${item.rownum}</a></td>
+					<td><a href="userdetail.do?u_idx=${item.u_idx}">${item.rownum}</a></td>
 					<td>${item.u_id}</td>
 					<td>${item.u_name}</td>
 				</tr>

@@ -44,5 +44,9 @@ public class Commentservice {
 	public void deleteComment(Comment comment) {
 		dao.deleteComment(comment);
 	}
+	
+	public void editComment(Comment comment) {
+		dao.editComment(comment);
+	}
 
 }

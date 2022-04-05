@@ -119,23 +119,58 @@
 		<c:forEach items="${commentList}" var="comment" varStatus = "status">
 			<tr>
 				<td>${comment.rownum}</td>
-				<td>${comment.c_content }</td>
+				<td style="text-align: left;">
+					<c:forEach var="i" begin="1" end="${comment.c_depth }">
+					->
+					</c:forEach>
+					${comment.c_content }
+				</td>
 				<td>
 					<button type="button" class="commentComment">대댓글</button>
 					<button type="button" class="commentEdit">수정</button>
 					<button type="button" class="commentDelete">삭제</button>
 				</td>
 			</tr>
+			<!-- 대댓글 -->
 			<tr style="display: none;">
 				<td colspan="3">
 					<form action="commentReply.do" name = "comment" method="post" class="replyComment">
+						<input type="hidden" name="b_idx" value="${board.b_idx }">
+						<input type="hidden" name="c_group" value="${comment.c_group }">
+						<input type="hidden" name="c_order" value="${comment.c_order }">
+						<input type="hidden" name="c_depth" value="${comment.c_depth }">
+						
 						<textarea name="c_content" rows="2" cols="80"></textarea>
+						<button type="button" 
+								class="commentReply" 
+								c_group="${comment.c_group}" 
+								c_order="${comment.c_order}" 
+								c_depth="${comment.c_depth}"
+								b_idx="${board.b_idx }">등록</button>
+						<button type="button" class="commentCancel">취소</button>
+					</form>
+				</td>
+			</tr>
+			<!-- 수정하기 -->
+			<tr style="display: none;">
+				<td colspan="3">
+					<form action="commentEdit.do" name = "edit" method="post" class="Edit">
+							<input type="hidden" name="c_idx" value="${comment.c_idx }">
 							<input type="hidden" name="b_idx" value="${board.b_idx }">
-							<input type="hidden" name="c_group" value="${comment.c_group }">
-							<input type="hidden" name="c_order" value="${comment.c_order }">
-							<input type="hidden" name="c_depth" value="${comment.c_depth }">
-							
-							<button type="submit" class="commentReply">등록</button>
+							<input type = "text" name="c_content" value="${comment.c_content }">
+							<button type="submit">수정완료</button>
+							<button type="button" class="commentCancel">취소</button>
+					</form>
+				</td>
+			</tr>
+			<!-- 삭제 -->
+			<tr style="display: none;">
+				<td colspan="3">
+					<form action="commentDelete.do" name = "delete" method="post" class="Delete">
+							<input type="hidden" name="c_idx" value="${comment.c_idx }">
+							<input type="hidden" name="b_idx" value="${board.b_idx }">
+							<input type = "text" name="c_content" value="${comment.c_content }">
+							<button type="submit">삭제완료</button>
 							<button type="button" class="commentCancel">취소</button>
 					</form>
 				</td>
@@ -180,24 +215,52 @@
 		//1. 댓글달기
 		$(document).on('click', '.btnCommentReg', function () {
 			$('#frmComment').submit();
-		});
+		}); //했음
+		
 		//2. 대댓글창 띄우기
 		$(document).on('click', '.commentComment', function () {
 			$(this).parent().parent().next().css('display', '');
+		}); //했음
+
+		//3. 대댓글 수정하기 창 띄우기
+		$(document).on('click','.commentEdit', function() {
+			$(this).parent().parent().next().next().css('display', '');
+		}); //했음
+
+		//4. 대댓글 지우기 창 띄우기
+		$(document).on('click', '.commentDelete', function() {
+			$(this).parent().parent().next().next().next().css('display', '');
 		});
-		//3. 댓글달기 취소
+		
+		//5. 댓글달기 취소
 		$(document).on('click', '.commentCancel', function () {
 			$(this).parent().parent().css('display', 'none');
-		});
-		//4. 대댓글등록하기
+		}); //했음
+
+		//6. 대댓글등록하기
 		$(document).on('click', '.commentReply', function () {
-			$('#replyComment').submit();
-		});
-		//5. 대댓글 지우기
-		$(document).on('click', '.commentDelete', function() {
-			$(this).parent().parent().deleteRow(-1);
-		});
-		//6. 대댓글 수정하기
+			//$(this).submit();
+			
+			//let, var은 변수 선언 방식으로 let이 최신 방법, var은 예전에 많이 쓰던 방법
+			let cGroup = $(this).attr('c_group');
+			let cOrder = $(this).attr('c_order');
+			let cDepth = $(this).attr('c_depth');
+			let bIdx = $(this).attr('b_idx')
+			let cContent = $(this).prev().val();
+
+			$.ajax({
+				method: "POST",
+				url: "aj-commentReply.do",
+				data: { c_group: cGroup, c_order: cOrder, c_depth:cDepth, b_idx:bIdx, c_content:cContent }
+			})
+			.done(function( msg ) {
+			    alert( "Data Saved: " + msg );
+			});
+			
+		}); //했음
+
+		
+
 		
 	</script>
 </body>
