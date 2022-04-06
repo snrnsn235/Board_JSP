@@ -75,6 +75,58 @@ public class CommentDAO {
 		
 		
 	}
+	public List<Comment> getCommentss(Pagination pagination, Comment comment) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Comment> list = null;
+		int pageNum = pagination.getPageNum();
+		
+		try {
+			conn=DBConnection.getConnection();
+			String query =new StringBuilder()
+					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
+					.append("				ta.*\n")
+					.append("FROM 			comment ta,\n")
+					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM comment ta)) tb\n")
+					.append("where   		b_idx = ?\n")
+					.append("order by		c_group desc, c_order asc\n")
+					.append("LIMIT			?, ? \n")
+					.toString();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, pageNum);
+			pstmt.setInt(2, comment.getB_idx());
+			pstmt.setInt(3, pageNum);
+			pstmt.setInt(4, Pagination.perPage);
+			rs = pstmt.executeQuery();
+			list = new ArrayList<Comment>();
+			
+			while(rs.next()) {
+				Comment comment1 = new Comment();
+				comment1.setRownum(rs.getInt("ROWNUM"));
+				comment1.setC_idx(rs.getInt("c_idx"));
+				comment1.setC_content(rs.getString("c_content"));
+				comment1.setC_date(rs.getString("c_date"));
+				comment1.setC_group(rs.getInt("c_group"));
+				comment1.setC_depth(rs.getInt("c_depth"));
+				comment1.setC_order(rs.getInt("c_order"));
+				list.add(comment1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+		
+		
+	}
 	public void insertComment(Comment comment) {
 		Connection conn = null;
 		PreparedStatement  pstmt = null;
@@ -114,6 +166,35 @@ public class CommentDAO {
 			String sql = "select count(*) as count from comment where b_idx=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, board.getB_idx());
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				count = rs.getInt("count");
+			} 
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstmt != null) pstmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
+	public int getCommentsCount(Comment comment) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "select count(*) as count from comment where b_idx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, comment.getB_idx());
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {

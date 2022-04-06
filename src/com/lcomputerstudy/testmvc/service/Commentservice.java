@@ -24,6 +24,9 @@ public class Commentservice {
 	public static List<Comment> getComments(Pagination pagination, Board board) {
 		return dao.getComments(pagination, board);
 	}
+	public static List<Comment> getCommentss(Pagination pagination, Comment comment) {
+		return dao.getCommentss(pagination, comment);
+	}
 	//대댓글 추가
 	public void insertComment(Comment comment) {
 		dao.insertComment(comment);
@@ -35,6 +38,9 @@ public class Commentservice {
 	
 	public int getCommentsCount(Board board) {
 		return dao.getCommentsCount(board);
+	}
+	public int getCommentsCount(Comment comment) {
+		return dao.getCommentsCount(comment);
 	}
 	//대댓글에 답글달기
 	public void replyComment(Comment comment) {

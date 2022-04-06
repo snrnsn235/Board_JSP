@@ -43,8 +43,9 @@ public class Controller extends HttpServlet{
 		User user = null;
 		Board board = null;
 		Comment comment = null;
-		Boardservice boardService = null;
 		Pagination pagination = null;
+		
+		Boardservice boardService = null;
 		Commentservice commentservice = null;
 		
 		
@@ -335,9 +336,43 @@ public class Controller extends HttpServlet{
 				
 				commentservice = Commentservice.getInstance();
 				commentservice.replyComment(comment);
-				isRedirected = true;
-				view = "boarddetail.do?b_idx="+comment.getB_idx();
+				commentCount = commentservice.getCommentsCount(comment);
+				pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(commentCount);
+				pagination.init();
+				List<Comment> commentList = Commentservice.getCommentss(pagination, comment);
+				view = "comment/commentlist";
 				request.setAttribute("comment", comment);
+				request.setAttribute("commentList", commentList);
+				request.setAttribute("pagination", pagination);
+				break;
+				
+			case "/aj-commentEdit.do":
+				comment = new Comment();
+				
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				commentservice = Commentservice.getInstance();
+				comment = commentservice.getComment(comment);
+				
+				//commentEdit-process.do
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setC_content(request.getParameter("c_content"));
+				commentservice = Commentservice.getInstance();
+				commentservice.editComment(comment);
+				
+				view = "comment/commentlist";
+				request.setAttribute("comment", comment);
+				break; 
+			case "aj-commentDelete.do":
+				comment = new Comment();
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				
+				commentservice = Commentservice.getInstance();
+				commentservice.deleteComment(comment);
+				view = "comment/commentlist";
 				break;
 				
 			
