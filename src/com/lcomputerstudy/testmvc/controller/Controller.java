@@ -157,6 +157,7 @@ public class Controller extends HttpServlet{
 				List<Board> Boardlist = Boardservice.getBoards(pagination);
 								
 				view = "board/boardlist";
+				request.setAttribute("board", board);
 				request.setAttribute("boardlist", Boardlist);
 				request.setAttribute("pagination", pagination);
 				break;
@@ -323,7 +324,7 @@ public class Controller extends HttpServlet{
 				isRedirected = true;
 				view = "boarddetail.do?b_idx="+comment.getB_idx();
 				break;
-				
+			
 				//ajax
 			case "/aj-commentReply.do":
 				comment = new Comment();
@@ -337,6 +338,7 @@ public class Controller extends HttpServlet{
 				commentservice = Commentservice.getInstance();
 				commentservice.replyComment(comment);
 				commentCount = commentservice.getCommentsCount(comment);
+				
 				pagination = new Pagination();
 				pagination.setPage(page);
 				pagination.setCount(commentCount);
@@ -355,27 +357,67 @@ public class Controller extends HttpServlet{
 				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				commentservice = Commentservice.getInstance();
 				comment = commentservice.getComment(comment);
-				
+				//대댓글 갯수
+				commentCount = commentservice.getCommentsCount(comment);
 				//commentEdit-process.do
 				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
 				comment.setC_content(request.getParameter("c_content"));
 				commentservice = Commentservice.getInstance();
 				commentservice.editComment(comment);
 				
+				pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(commentCount);
+				pagination.init();
+				List<Comment> commentList1 = Commentservice.getCommentss(pagination, comment);
 				view = "comment/commentlist";
 				request.setAttribute("comment", comment);
+				request.setAttribute("commentList", commentList1);
+				request.setAttribute("pagination", pagination);
 				break; 
-			case "aj-commentDelete.do":
+		
+			case "/aj-commentDelete.do":
 				comment = new Comment();
+				
 				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
 				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
-				
 				commentservice = Commentservice.getInstance();
 				commentservice.deleteComment(comment);
+				//댓글 개수
+				commentCount = commentservice.getCommentsCount(comment);
+				//Pagination, list
+				pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(commentCount);
+				pagination.init();
+				List<Comment> commentList2 = Commentservice.getCommentss(pagination, comment);
 				view = "comment/commentlist";
+				request.setAttribute("comment", comment);
+				request.setAttribute("commentList", commentList2);
+				request.setAttribute("pagination", pagination);
 				break;
+			case "/aj-commentInsert.do":
+				comment = new Comment();
 				
-			
+				comment.setC_content(request.getParameter("c_content"));
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				commentservice = Commentservice.getInstance();
+				commentservice.insertComment(comment);
+				
+				//댓글 개수
+				commentCount = commentservice.getCommentsCount(comment);
+				
+				//Pagination, list, view
+				pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(commentCount);
+				pagination.init();
+				List<Comment> commentList3 = Commentservice.getCommentss(pagination, comment);
+				view="comment/commentlist";
+				request.setAttribute("comment", comment);
+				request.setAttribute("commentList", commentList3);
+				request.setAttribute("pagination", pagination);
+				break;
 		}
 		
 		if (isRedirected) {

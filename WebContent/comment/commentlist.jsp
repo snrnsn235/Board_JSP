@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+
+<!-- 댓글리스트 -->
 <h3 style = "text-align:center;">댓글목록</h3>
 <table>
 	<tr>
@@ -70,12 +72,8 @@
 				<form action="commentDelete.do" name = "delete" method="post" class="Delete">
 						<input type="hidden" name="c_idx" value="${comment.c_idx }">
 						<input type="hidden" name="b_idx" value="${board.b_idx }">
-						<input type = "text" name="c_content" value="${comment.c_content }">
 						<button type="button"
 								class = "Delete"
-								c_group="${comment.c_group}" 
-								c_order="${comment.c_order}" 
-								c_depth="${comment.c_depth}"
 								c_idx="${comment.c_idx }"
 								b_idx="${board.b_idx }">>삭제완료</button>
 						<button type="button" class="commentCancel">취소</button>

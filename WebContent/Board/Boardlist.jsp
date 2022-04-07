@@ -68,7 +68,12 @@
 					<tr>
 						<td><a href="boarddetail.do?b_idx=${board.b_idx}">${board.rownum}</a></td>
 						<td>${board.b_title }</td>
-						<td>${board.b_content }</td>
+						<td style="text-align: left;">
+							<c:forEach var="i" begin="1" end="${board.b_depth}">
+							->
+							</c:forEach>
+							${board.b_content }
+						</td>
 					</tr>
 				</c:forEach>
 			</table>

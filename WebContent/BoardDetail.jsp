@@ -97,16 +97,20 @@
 			</tr>		
 	</table>
 	<!-- 댓글 작성하기 -->
-	<div class = "comment-text">
-		<form action="commentinsert.do" method="post" id="frmComment">
-			<input type="hidden" name="b_idx" value="${board.b_idx }">
-			<textarea id="cmtCnt" name="c_content" placeholder = "여러분의 댓글을 입력해주세요." rows="4" cols="70"></textarea>
-			<a href ="#" class="btnCommentReg" style="font-weight:70; background-color:skyblue; color:#fff;">댓글달기</a>
-		</form>
-	</div>
 
 	<!-- 댓글리스트   -->
 	<div id="commentList">
+		<form action="commentinsert.do" method="post">
+			<input type="hidden" name="b_idx" value="${board.b_idx }">
+			<input type="hidden" name="c_idx" value="${comment.c_idx }">
+			<textarea name="c_content" placeholder = "여러분의 댓글을 입력해주세요." rows="4" cols="70"></textarea>
+			<button type="button" 
+					class = "Insert"
+					c_idx="${comment.c_idx }"
+					b_idx="${board.b_idx }"
+					>댓글달기
+			</button>
+		</form>
 		<h3 style = "text-align:center;">댓글목록</h3>
 		<table>
 			<tr>
@@ -136,12 +140,7 @@
 				<tr style="display: none;">
 					<td colspan="3">
 						<form action="commentReply.do" name = "comment" method="post">
-							<input type="hidden" name="b_idx" value="${board.b_idx }">
-							<input type="hidden" name="c_group" value="${comment.c_group }">
-							<input type="hidden" name="c_order" value="${comment.c_order }">
-							<input type="hidden" name="c_depth" value="${comment.c_depth }">
-							
-							<textarea name="c_content" rows="2" cols="80"></textarea>
+							<textarea name="c_content" rows="2" cols="70"></textarea>
 							<button type="button" 
 									class="Reply" 
 									c_group="${comment.c_group}" 
@@ -158,14 +157,12 @@
 						<form action="commentEdit.do" name = "edit" method="post">
 								<input type="hidden" name="c_idx" value="${comment.c_idx }">
 								<input type="hidden" name="b_idx" value="${board.b_idx }">
-								<input type = "text" name="c_content" value="${comment.c_content }">
+								<textarea name="c_content" rows="2" cols="70">${comment.c_content }</textarea>
 								<button type="button"
 										class = "Edit"
-										c_group="${comment.c_group}" 
-										c_order="${comment.c_order}" 
-										c_depth="${comment.c_depth}"
 										c_idx="${comment.c_idx }"
-										b_idx="${board.b_idx }">수정완료</button>
+										b_idx="${board.b_idx }"
+										>수정완료</button>
 								<button type="button" class="commentCancel">취소</button>
 						</form>
 					</td>
@@ -173,17 +170,18 @@
 				<!-- 삭제 -->
 				<tr style="display: none;">
 					<td colspan="3">
-						<form action="commentDelete.do" name = "delete" method="post" class="Delete">
+						<form action="commentDelete.do" name = "delete" method="post">
 								<input type="hidden" name="c_idx" value="${comment.c_idx }">
 								<input type="hidden" name="b_idx" value="${board.b_idx }">
-								<input type = "text" name="c_content" value="${comment.c_content }">
 								<button type="button"
 										class = "Delete"
 										c_group="${comment.c_group}" 
 										c_order="${comment.c_order}" 
 										c_depth="${comment.c_depth}"
 										c_idx="${comment.c_idx }"
-										b_idx="${board.b_idx }">삭제완료</button>
+										b_idx="${board.b_idx }">
+										삭제</button>
+								
 								<button type="button" class="commentCancel">취소</button>
 						</form>
 					</td>
@@ -227,9 +225,9 @@
 	</div>
 	<script>
 		//1. 댓글달기
-		$(document).on('click', '.btnCommentReg', function () {
-			$('#frmComment').submit();
-		}); //했음
+		//$(document).on('click', '.btnCommentReg', function () {
+			//$('#frmComment').submit();
+		//}); //했음
 		
 		//2. 대댓글창 띄우기
 		$(document).on('click', '.commentComment', function () {
@@ -238,6 +236,7 @@
 
 		//3. 대댓글 수정하기 창 띄우기
 		$(document).on('click','.commentEdit', function() {
+			console.log('edit');
 			$(this).parent().parent().next().next().css('display', '');
 		}); //했음
 
@@ -248,7 +247,7 @@
 		
 		//5. 댓글달기 취소
 		$(document).on('click', '.commentCancel', function () {
-			$(this).parent().parent().css('display', 'none');
+			$(this).parent().parent().parent().css('display', 'none');
 		}); //했음
 
 		//6. 대댓글등록하기, 했음
@@ -274,48 +273,53 @@
 			
 		}); 
 		
-		//7. 대댓글 수정하기
+		//7. 대댓글 수정하기, 했음
 		$(document).on('click', '.Edit', function () {
 			//$(this).submit();
-			
 			//let, var은 변수 선언 방식으로 let이 최신 방법, var은 예전에 많이 쓰던 방법
 			let cIdx = $(this).attr('c_idx');
-			let cGroup = $(this).attr('c_group');
-			let cOrder = $(this).attr('c_order');
-			let cDepth = $(this).attr('c_depth');
 			let bIdx = $(this).attr('b_idx');
-			let cContent = $(this).prev().prev().val();
+			let cContent = $(this).prev().val();
 
 			$.ajax({
 				method: "POST",
 				url: "aj-commentEdit.do",
-				data: { c_group: cGroup, c_order: cOrder, c_depth:cDepth, c_idx:cIdx, b_idx:bIdx, c_content:cContent }
+				data: { c_idx:cIdx, b_idx:bIdx, c_content:cContent }
 			})
 			.done(function( msg ) {
 			    //alert( "Data Saved: " + msg );
 				$('#commentList').html(msg);
 			});
-			
 		});
 		//8. 대댓글 삭제하기
 		$(document).on('click', '.Delete', function() {
 			let cIdx = $(this).attr('c_idx');
-			let cGroup = $(this).attr('c_group');
-			let cOrder = $(this).attr('c_order');
-			let cDepth = $(this).attr('c_depth');
 			let bIdx = $(this).attr('b_idx');
-			let cContent = $(this).prev().prev().val();
 
 			$.ajax({
 				method: "POST",
 				url: "aj-commentDelete.do",
-				data: { c_group: cGroup, c_order: cOrder, c_depth:cDepth, c_idx:cIdx, b_idx:bIdx, c_content:cContent }
+				data: {c_idx:cIdx, b_idx:bIdx }
 			})
 			.done(function( msg ) {
 			    //alert( "Data Saved: " + msg );
 				$('#commentList').html(msg);
 			});
+		});
+		//9. 댓글달기
+		$(document).on('click', '.Insert', function() {
+			let bIdx = $(this).attr('b_idx');
+			let cIdx = $(this).attr('c_idx');
+			let cContent = $(this).prev().val();
 			
+			$.ajax({
+				method: "POST",
+				url: "aj-commentInsert.do",
+				data: {c_idx:cIdx, b_idx:bIdx, c_content:cContent }
+			})
+			.done(function(msg) {
+				$('#comment').html(msg);
+			});
 		});
 	</script>
 </body>
