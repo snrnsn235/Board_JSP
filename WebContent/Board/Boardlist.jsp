@@ -29,12 +29,7 @@
 		color:#000;
 		font-weight:700;
 	}
-	div {
-		border-collapse:collapse;
-		width:360px;
-		margin:40px auto;
-	}
-	
+		
 	ul {
 		width:600px;
 		height:50px;
@@ -53,7 +48,23 @@
 </style>
 <body>
 	<h1>게시판 목록</h1>
-	<div>
+	<div style = "border-collapse:collapse;	width:500px; margin:40px auto;">
+		<h3 style = "text-align:center;"> 게시글 검색하기 </h3>
+			<form>
+				<fieldset>
+					<legend>게시글 검색 필드</legend>
+					<label>검색분류</label>
+						<select name="f">
+							<option value="b_idx">번호</option>
+							<option value="title">제목</option>
+							<option value="content">내용</option>
+						</select>
+					<label>검색어</label>
+						<input type="text" name="q" value=""/>
+						<input type="submit" value="검색">	
+				</fieldset>
+			</form>
+	</div>
 		<a href="boardinsert.do" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">게시글 추가하기</a>
 			<table>
 				<tr>
@@ -77,8 +88,10 @@
 					</tr>
 				</c:forEach>
 			</table>
-	</div>
-	<div>
+	
+	<div style = "border-collapse:collapse;
+		width:360px;
+		margin:40px auto;">
 		<ul>
 			<c:choose>
 					<c:when test="${pagination.startPage-1 != 0}">
@@ -110,5 +123,6 @@
 				</c:choose>	
 		</ul>
 	</div>
+	<script></script>
 </body>
 </html>

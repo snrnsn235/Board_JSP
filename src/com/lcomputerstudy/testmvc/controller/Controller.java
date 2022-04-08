@@ -148,9 +148,21 @@ public class Controller extends HttpServlet{
 				if (reqPage1 != null  && !(reqPage1.equals("")) && !(reqPage1.equals("0"))) {
 					page = Integer.parseInt(reqPage1);
 				}
+				//검색
+				String field_ = request.getParameter("f");
+				String query_ = request.getParameter("q");
+				
+				String field = "title";
+				if(field_ != null)
+					field = field_;
+				String query = "";
+				if(query_ != null)
+					query = query_;
+				//전체 게시판 개수 
 				boardService = Boardservice.getInstance();
-				boardCount = boardService.getBoardsCount(); //전체 게시판 개수 
-				pagination = new Pagination(); //pagination
+				boardCount = boardService.getBoardsCount(); 
+				//pagination
+				pagination = new Pagination(); 
 				pagination.setPage(page);
 				pagination.setCount(boardCount);
 				pagination.init();
@@ -161,6 +173,7 @@ public class Controller extends HttpServlet{
 				request.setAttribute("boardlist", Boardlist);
 				request.setAttribute("pagination", pagination);
 				break;
+				
 			//상세페이지 칸
 			case "/boarddetail.do":
 				board = new Board();
@@ -418,6 +431,33 @@ public class Controller extends HttpServlet{
 				request.setAttribute("commentList", commentList3);
 				request.setAttribute("pagination", pagination);
 				break;
+			case "/aj-commentList.do":
+				comment = new Comment();
+				board = new Board();
+				
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				String reqPage3 = request.getParameter("page");
+				if (reqPage3 != null  && !(reqPage3.equals("")) && !(reqPage3.equals("0"))) {
+					page = Integer.parseInt(reqPage3);
+				}
+				//댓글 개수
+				commentservice = Commentservice.getInstance();
+				commentCount = commentservice.getCommentsCount(comment);
+				
+				//Pagination, list, view
+				pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(commentCount);
+				pagination.init();
+				List<Comment> commentList4 = Commentservice.getCommentss(pagination, comment);
+				view="comment/commentlist";
+				request.setAttribute("board", board);
+				request.setAttribute("comment", comment);
+				request.setAttribute("commentList", commentList4);
+				request.setAttribute("pagination", pagination);
+				break;
+				
 		}
 		
 		if (isRedirected) {

@@ -96,13 +96,10 @@
 				</td>
 			</tr>		
 	</table>
-	<!-- 댓글 작성하기 -->
 
 	<!-- 댓글리스트   -->
 	<div id="commentList">
 		<form action="commentinsert.do" method="post">
-			<input type="hidden" name="b_idx" value="${board.b_idx }">
-			<input type="hidden" name="c_idx" value="${comment.c_idx }">
 			<textarea name="c_content" placeholder = "여러분의 댓글을 입력해주세요." rows="4" cols="70"></textarea>
 			<button type="button" 
 					class = "Insert"
@@ -195,7 +192,11 @@
 				<c:choose>
 						<c:when test="${pagination.startPage-1 != 0}">
 							<li style="">
-								<a href="boarddetail.do?b_idx=${board.b_idx }&page=${pagination.prevPage}">◀</a>
+								<a href="#"
+									class="List"
+									b_idx="${board.b_idx }"
+									page="${pagination.prevPage}">
+								◀</a>
 							</li>
 						</c:when>
 				</c:choose>
@@ -208,7 +209,11 @@
 							</c:when>
 							<c:when test="${ pagination.page ne i }">
 								<li>
-									<a href="boarddetail.do?b_idx=${board.b_idx }&page=${i}">${i}</a>
+									<a href="#"
+										class="List"
+										b_idx="${board.b_idx }"
+										page="${i}">
+										${i}</a>
 								</li>
 							</c:when>
 						</c:choose>
@@ -216,7 +221,11 @@
 				<c:choose>
 						<c:when test = "${pagination.nextPage-1 != pagination.lastPage }">
 							<li style="">
-								<a href="boarddetail.do?b_idx=${board.b_idx }&page=${pagination.nextPage}">▶</a>
+								<a href="#"
+									class="List"
+									b_idx="${board.b_idx }"
+									page="${pagination.nextPage}">
+									▶</a>
 							</li>
 						</c:when>
 					</c:choose>	
@@ -309,16 +318,29 @@
 		//9. 댓글달기
 		$(document).on('click', '.Insert', function() {
 			let bIdx = $(this).attr('b_idx');
-			let cIdx = $(this).attr('c_idx');
 			let cContent = $(this).prev().val();
 			
 			$.ajax({
 				method: "POST",
 				url: "aj-commentInsert.do",
-				data: {c_idx:cIdx, b_idx:bIdx, c_content:cContent }
+				data: {b_idx:bIdx, c_content:cContent }
 			})
 			.done(function(msg) {
-				$('#comment').html(msg);
+				$('#commentList').html(msg);
+			});
+		});
+		//10. pagination
+		$(document).on('click', '.List', function() {
+			let bIdx = $(this).attr('b_idx');
+			let Page = $(this).attr('page');
+					
+			$.ajax({
+				method: "POST",
+				url: "aj-commentList.do",
+				data: {b_idx:bIdx, page:Page }
+			})
+			.done(function(msg) {
+				$('#commentList').html(msg);
 			});
 		});
 	</script>
