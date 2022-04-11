@@ -35,8 +35,12 @@ public class Controller extends HttpServlet{
 		int userCount = 0;
 		int boardCount = 0;
 		int commentCount = 0;
+		//로그인
 		String pw = null;
 		String idx = null;
+		//검색
+		Search search = null;
+		
 		HttpSession session = null;
 		command = checkSession(request, response, command);
 		
@@ -44,6 +48,7 @@ public class Controller extends HttpServlet{
 		Board board = null;
 		Comment comment = null;
 		Pagination pagination = null;
+		
 		
 		Boardservice boardService = null;
 		Commentservice commentservice = null;
@@ -144,20 +149,16 @@ public class Controller extends HttpServlet{
 			//Board
 			//게시판 리스트
 			case "/boardlist.do":
+				//검색창
+				search = new Search();
+				search.setField(request.getParameter("field"));//select의 option value에 들어감
+				search.setValue(request.getParameter("value"));//검색버튼을 누르면 field, query에 값을 넣어줌
+				
+				//페이지, 리스트
 				String reqPage1 = request.getParameter("page");
 				if (reqPage1 != null  && !(reqPage1.equals("")) && !(reqPage1.equals("0"))) {
 					page = Integer.parseInt(reqPage1);
 				}
-				//검색
-				String field_ = request.getParameter("f");
-				String query_ = request.getParameter("q");
-				
-				String field = "title";
-				if(field_ != null)
-					field = field_;
-				String query = "";
-				if(query_ != null)
-					query = query_;
 				//전체 게시판 개수 
 				boardService = Boardservice.getInstance();
 				boardCount = boardService.getBoardsCount(); 
@@ -165,8 +166,10 @@ public class Controller extends HttpServlet{
 				pagination = new Pagination(); 
 				pagination.setPage(page);
 				pagination.setCount(boardCount);
+				pagination.setSearch(search);
 				pagination.init();
-				List<Board> Boardlist = Boardservice.getBoards(pagination);
+				List<Board> Boardlist = Boardservice.getBoardlist(pagination, search);
+//				List<Board> Boardlist1 = Boardservice.getBoards(pagination);
 								
 				view = "board/boardlist";
 				request.setAttribute("board", board);

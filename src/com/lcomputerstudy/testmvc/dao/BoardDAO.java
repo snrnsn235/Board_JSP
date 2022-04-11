@@ -26,13 +26,61 @@ public class BoardDAO {
 		return dao;
 	}
 	
-	public List<Board> getBoards(Pagination pagination) {
+//	public List<Board> getBoards(Pagination pagination) {
+//		Connection conn = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		List<Board> list = null;
+//		int pageNum = pagination.getPageNum();
+//		
+//		try {
+//			conn = DBConnection.getConnection();
+//			String query =new StringBuilder()
+//					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
+//					.append("				ta.*\n")
+//					.append("FROM 			board ta,\n")
+//					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
+//					.append("order by		b_group desc, b_order asc\n")
+//					.append("LIMIT			?, ?\n")
+//					.toString();
+//			pstmt = conn.prepareStatement(query);
+//			pstmt.setInt(1, pageNum);
+//			pstmt.setInt(2, pageNum);
+//			pstmt.setInt(3, Pagination.perPage);
+//			rs = pstmt.executeQuery();
+//			list = new ArrayList<Board>();
+//			
+//			while(rs.next()) {
+//				Board board = new Board();
+//				board.setRownum(rs.getInt("ROWNUM"));
+//				board.setB_idx(rs.getInt("b_idx"));
+//				board.setB_hit(rs.getInt("b_hit"));
+//				board.setB_content(rs.getString("b_content"));
+//				board.setB_date(rs.getString("b_date"));
+//				board.setB_title(rs.getString("b_title"));
+//				
+//				list.add(board);
+//				}
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				if(rs != null) rs.close();
+//				if(pstmt != null) pstmt.close();
+//				if(conn != null) conn.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return list;
+//	}
+	public List<Board> getBoardlist(Pagination pagination, Search search) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Board> list = null;
-		int pageNum = pagination.getPageNum();
-		
+		int pageNum = pagination.getPageNum(); 
+				
 		try {
 			conn = DBConnection.getConnection();
 			String query =new StringBuilder()
@@ -40,13 +88,17 @@ public class BoardDAO {
 					.append("				ta.*\n")
 					.append("FROM 			board ta,\n")
 					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
+					.append("where " 		+search.getField()+ " like ?\n")
 					.append("order by		b_group desc, b_order asc\n")
 					.append("LIMIT			?, ?\n")
 					.toString();
+//			String sql = "select * from board order by no"; //검색어가 없을 때 기본값
+//			String sql2 = "select * from board where " + field + " like ?"; //검색어가 있을 때
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
-			pstmt.setInt(2, pageNum);
-			pstmt.setInt(3, Pagination.perPage);
+			pstmt.setString(2, search.getValue());
+			pstmt.setInt(3, pageNum);
+			pstmt.setInt(4, Pagination.perPage);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Board>();
 			
@@ -74,6 +126,7 @@ public class BoardDAO {
 		}
 		return list;
 	}
+	
 	public void editBoard(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

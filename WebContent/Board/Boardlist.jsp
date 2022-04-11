@@ -54,16 +54,16 @@
 				<fieldset>
 					<legend>게시글 검색 필드</legend>
 					<label>검색분류</label>
-						<select name="f">
+						<select name="field">
 							<option value="b_idx">번호</option>
-							<option value="title">제목</option>
-							<option value="content">내용</option>
+							<option value="b_title">제목</option>
+							<option value="b_content">내용</option>
 						</select>
-					<label>검색어</label>
-						<input type="text" name="q" value=""/>
-						<input type="submit" value="검색">	
-				</fieldset>
-			</form>
+					<label class="hidden">검색어</label>
+							<input type="text" name="value" value="${param.q}"/>
+							<input class="btn btn-search" type="submit" value="검색">	
+					</fieldset>
+				</form>
 	</div>
 		<a href="boardinsert.do" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">게시글 추가하기</a>
 			<table>
