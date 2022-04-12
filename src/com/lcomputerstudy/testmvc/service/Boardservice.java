@@ -21,9 +21,6 @@ public class Boardservice {
 		return service;
 	}
 	
-//	public static List<Board> getBoards(Pagination pagination) {
-//		return dao.getBoards(pagination);
-//	}
 	public static List<Board> getBoardlist(Pagination pagination, Search search) {
 		return dao.getBoardlist(pagination, search);
 	}
@@ -38,8 +35,8 @@ public class Boardservice {
 	public void deleteBoard(Board board) {
 		dao.deleteBoard(board);
 	}
-	public int getBoardsCount() {
-		return dao.getBoardsCount();
+	public int getBoardsCount(Search search) {
+		return dao.getBoardsCount(search);
 	}
 	
 	public void replyBoard(Board board) {

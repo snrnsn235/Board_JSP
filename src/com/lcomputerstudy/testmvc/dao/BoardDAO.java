@@ -26,62 +26,31 @@ public class BoardDAO {
 		return dao;
 	}
 	
-//	public List<Board> getBoards(Pagination pagination) {
-//		Connection conn = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		List<Board> list = null;
-//		int pageNum = pagination.getPageNum();
-//		
-//		try {
-//			conn = DBConnection.getConnection();
-//			String query =new StringBuilder()
-//					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
-//					.append("				ta.*\n")
-//					.append("FROM 			board ta,\n")
-//					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
-//					.append("order by		b_group desc, b_order asc\n")
-//					.append("LIMIT			?, ?\n")
-//					.toString();
-//			pstmt = conn.prepareStatement(query);
-//			pstmt.setInt(1, pageNum);
-//			pstmt.setInt(2, pageNum);
-//			pstmt.setInt(3, Pagination.perPage);
-//			rs = pstmt.executeQuery();
-//			list = new ArrayList<Board>();
-//			
-//			while(rs.next()) {
-//				Board board = new Board();
-//				board.setRownum(rs.getInt("ROWNUM"));
-//				board.setB_idx(rs.getInt("b_idx"));
-//				board.setB_hit(rs.getInt("b_hit"));
-//				board.setB_content(rs.getString("b_content"));
-//				board.setB_date(rs.getString("b_date"));
-//				board.setB_title(rs.getString("b_title"));
-//				
-//				list.add(board);
-//				}
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if(rs != null) rs.close();
-//				if(pstmt != null) pstmt.close();
-//				if(conn != null) conn.close();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return list;
-//	}
 	public List<Board> getBoardlist(Pagination pagination, Search search) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Board> list = null;
 		int pageNum = pagination.getPageNum(); 
-				
+		
 		try {
+			conn = DBConnection.getConnection();
+			if(search.getValue() == null || search.getValue() == "") {	//검색어가 없으면
+			String query =new StringBuilder()
+					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
+					.append("				ta.*\n")
+					.append("FROM 			board ta,\n")
+					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
+					.append("order by		b_group desc, b_order asc\n")
+					.append("LIMIT			?, ?\n")
+					.toString();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, pageNum);
+			pstmt.setInt(2, pageNum);
+			pstmt.setInt(3, Pagination.perPage);
+			rs = pstmt.executeQuery();
+			list = new ArrayList<Board>();
+		} else {//검색어가 있으면
 			conn = DBConnection.getConnection();
 			String query =new StringBuilder()
 					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
@@ -92,17 +61,15 @@ public class BoardDAO {
 					.append("order by		b_group desc, b_order asc\n")
 					.append("LIMIT			?, ?\n")
 					.toString();
-//			String sql = "select * from board order by no"; //검색어가 없을 때 기본값
-//			String sql2 = "select * from board where " + field + " like ?"; //검색어가 있을 때
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
-			pstmt.setString(2, search.getValue());
+			pstmt.setString(2, "%"+search.getValue()+"%");
 			pstmt.setInt(3, pageNum);
 			pstmt.setInt(4, Pagination.perPage);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Board>();
-			
-			while(rs.next()) {
+		}
+			while(rs.next()) { //DB에 있는 column들을 기제
 				Board board = new Board();
 				board.setRownum(rs.getInt("ROWNUM"));
 				board.setB_idx(rs.getInt("b_idx"));
@@ -231,16 +198,30 @@ public class BoardDAO {
 		}
 	}
 	
-	public int getBoardsCount() {
+	public int getBoardsCount(Search search) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int count = 0 ;
+		String where = ""; //where를 공백으로 처리
 		
 		try {
 			conn = DBConnection.getConnection();
-			String query = "SELECT COUNT(*) count FROM board";
+			if(search.getValue() != null && !(search.getValue().equals(""))) { //만약 공백이 아니라면?
+				where = "where " + search.getField() + " like ?"; 
+			}
+			//
+			String query = "SELECT COUNT(*) count \n"
+						  +"FROM board \n"
+						  + where; //where 절이 실행이 되는 것
+			
 			pstmt = conn.prepareStatement(query);
+			
+			if(search.getValue() != null && !(search.getValue().equals(""))) {
+				pstmt.setString(1, "%"+search.getValue()+"%");
+				
+			}
+			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {

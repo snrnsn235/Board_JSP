@@ -61,11 +61,15 @@
 						</select>
 					<label class="hidden">검색어</label>
 							<input type="text" name="value" value="${param.q}"/>
-							<input class="btn btn-search" type="submit" value="검색">	
+							<input type="submit" value="검색">	
 					</fieldset>
 				</form>
 	</div>
+	<hr>
+	<br>
+	<div style = "text-align:center; border-collapse:collapse;	width:500px; margin:40px auto;">		
 		<a href="boardinsert.do" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">게시글 추가하기</a>
+	</div>
 			<table>
 				<tr>
 					<td colspan="3">전체 게시판 개수 : ${pagination.count }</td>
@@ -88,15 +92,13 @@
 					</tr>
 				</c:forEach>
 			</table>
-	
-	<div style = "border-collapse:collapse;
-		width:360px;
-		margin:40px auto;">
+	<!-- pagination -->
+	<div style = "border-collapse:collapse;	width:360px; margin:40px auto;">
 		<ul>
 			<c:choose>
 					<c:when test="${pagination.startPage-1 != 0}">
 						<li style="">
-							<a href="boardlist.do?page=${pagination.prevPage}">◀</a>
+							<a href="boardlist.do?page=${pagination.prevPage}&field=${search.field}&value=${search.value}">◀</a>
 						</li>
 					</c:when>
 			</c:choose>
@@ -109,7 +111,7 @@
 						</c:when>
 						<c:when test="${ pagination.page ne i }">
 							<li>
-								<a href="boardlist.do?page=${i}">${i}</a>
+								<a href="boardlist.do?page=${i}&field=${search.field}&value=${search.value}">${i}</a>
 							</li>
 						</c:when>
 					</c:choose>
@@ -117,7 +119,7 @@
 			<c:choose>
 					<c:when test = "${pagination.nextPage-1 != pagination.lastPage }">
 						<li style="">
-							<a href="boardlist.do?page=${pagination.nextPage}">▶</a>
+							<a href="boardlist.do?page=${pagination.nextPage}&field=${search.field}&value=${search.value}">▶</a>
 						</li>
 					</c:when>
 				</c:choose>	

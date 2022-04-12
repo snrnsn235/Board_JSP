@@ -161,7 +161,7 @@ public class Controller extends HttpServlet{
 				}
 				//전체 게시판 개수 
 				boardService = Boardservice.getInstance();
-				boardCount = boardService.getBoardsCount(); 
+				boardCount = boardService.getBoardsCount(search); 
 				//pagination
 				pagination = new Pagination(); 
 				pagination.setPage(page);
@@ -169,12 +169,12 @@ public class Controller extends HttpServlet{
 				pagination.setSearch(search);
 				pagination.init();
 				List<Board> Boardlist = Boardservice.getBoardlist(pagination, search);
-//				List<Board> Boardlist1 = Boardservice.getBoards(pagination);
 								
 				view = "board/boardlist";
 				request.setAttribute("board", board);
 				request.setAttribute("boardlist", Boardlist);
 				request.setAttribute("pagination", pagination);
+				request.setAttribute("search", search);
 				break;
 				
 			//상세페이지 칸
