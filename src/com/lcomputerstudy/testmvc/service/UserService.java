@@ -41,6 +41,11 @@ public class UserService {
 	public User getUsers(User user) {
 		return dao.getUsers(user);
 	}
+	
+	public void editUser(User user) {
+		dao.editUser(user);
+	}
+	
 	public void deleteUser(User user) {
 		dao.deleteUser(user);
 	}

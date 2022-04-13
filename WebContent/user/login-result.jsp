@@ -43,10 +43,10 @@
 	}	
 </style>
 <body>
-<div>
-${sessionScope.user.u_name} 님 
+<div style = "text-align:center; ">
+${sessionScope.user.u_name} 님 환영합니다. 
 </div>
-<div>
+<div style = "border-collapse:collapse; margin:40px auto;">
 	<ul>
 		<li><a href="userlist.do">회원 목록</a></li>
 		<li><a href="logout.do">로그아웃</a></li>

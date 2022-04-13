@@ -58,6 +58,7 @@
 							<option value="b_idx">번호</option>
 							<option value="b_title">제목</option>
 							<option value="b_content">내용</option>
+							<option value="u_idx">아이디</option>
 						</select>
 					<label class="hidden">검색어</label>
 							<input type="text" name="value" value="${param.q}"/>
@@ -78,6 +79,7 @@
 					<th>번호</th>
 					<th>제목</th>
 					<th>내용</th>
+					<th>아이디</th>
 				</tr>
 				<c:forEach items="${boardlist}" var="board" varStatus = "status">
 					<tr>
@@ -89,6 +91,7 @@
 							</c:forEach>
 							${board.b_content }
 						</td>
+						<td>${user.u_idx }</td>
 					</tr>
 				</c:forEach>
 			</table>

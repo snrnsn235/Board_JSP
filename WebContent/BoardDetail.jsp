@@ -71,6 +71,10 @@
 				<td>${board.b_idx }</td>
 			</tr>
 			<tr>
+				<td>아이디</td>
+				<td>${user.u_id }</td>
+			</tr>
+			<tr>
 				<td>제목</td>
 				<td>${board.b_title }</td>
 			</tr>

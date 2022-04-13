@@ -106,6 +106,33 @@ public class Controller extends HttpServlet{
 				view = "userDetail";
 				request.setAttribute("user", user);
 				break;
+				
+			case "/userEdit.do":
+				user = new User();
+				user.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+				userService = UserService.getInstance();
+				user = userService.getUsers(user);				
+				view = "userEdit";
+				request.setAttribute("user", user);
+				break;
+				
+			case "/userEdit-process.do":
+				user = new User();
+				user.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+				user.setU_id(request.getParameter("u_id"));
+				user.setU_pw(request.getParameter("u_pw"));
+				user.setU_name(request.getParameter("u_name"));
+				user.setU_tel(request.getParameter("u_tel1") + "-" + request.getParameter("u_tel2")+"-"+request.getParameter("u_tel3"));
+				user.setU_age(request.getParameter("u_age"));
+				
+				userService = UserService.getInstance();
+				userService.editUser(user);
+				
+				view = "editProcess";
+				request.setAttribute("user", user);
+				break;
+				
+				//고객정보삭제
 			case "/userDelete.do":
 				user = new User();
 				user.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
@@ -208,8 +235,10 @@ public class Controller extends HttpServlet{
 			case "/boardedit.do":
 				board = new Board();
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				
 				boardService = Boardservice.getInstance();
 				board = boardService.getBoard(board);
+				
 				view = "BoardEdit";
 				request.setAttribute("board", board);
 				break;
@@ -475,12 +504,12 @@ public class Controller extends HttpServlet{
 		HttpSession session = request.getSession();
 		
 		String[] authList = {
-				"/user-list.do"
-				,"/user-insert.do"
-				,"/user-insert-process.do"
-				,"/user-detail.do"
-				,"/user-edit.do"
-				,"/user-edit-process.do"
+				"/userlist.do"
+				,"/logininsert.do"
+				,"/insert-process.do"
+				,"/userdetail.do"
+				,"/userEdit.do"
+				,"/userEdit-process.do"
 				,"/logout.do"
 			};
 		

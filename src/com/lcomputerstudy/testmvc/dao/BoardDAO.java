@@ -56,6 +56,7 @@ public class BoardDAO {
 					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
 					.append("				ta.*\n")
 					.append("FROM 			board ta,\n")
+//					.append("SELECT		*	FROM board ta LEFT JOIN	user tb ON ta.u_idx = tb.u_idx \n");
 					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
 					.append("where " 		+search.getField()+ " like ?\n")
 					.append("order by		b_group desc, b_order asc\n")
@@ -77,6 +78,10 @@ public class BoardDAO {
 				board.setB_content(rs.getString("b_content"));
 				board.setB_date(rs.getString("b_date"));
 				board.setB_title(rs.getString("b_title"));
+				
+				User user = new User();
+				user.setU_name(rs.getString("u_idx"));
+				board.setUser(user);
 				
 				list.add(board);
 				}

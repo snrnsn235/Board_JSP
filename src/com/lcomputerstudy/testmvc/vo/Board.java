@@ -13,10 +13,12 @@ public class Board {
 	//private String b_id;
 	private String b_title;
 	private int u_idx;
+	private String u_id;
 	private int b_group;
 	private int b_order;
 	private int b_depth;
 	private List<Comment> commentList;
+	private User user;
 	
 	
 	public int getU_idx() {
@@ -91,6 +93,16 @@ public class Board {
 	public void setCommentList(List<Comment> commentList) {
 		this.commentList = commentList;
 	}
-	
-	
+	public String getU_id() {
+		return u_id;
+	}
+	public void setU_id(String u_id) {
+		this.u_id = u_id;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

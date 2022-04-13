@@ -7,8 +7,12 @@
 <title>회원 상세</title>
 </head>
 <style>
+	h1 {
+		text-align : center;
+	}
 	table {
-		border-collapese : collapse;
+		border-collapse:collapse;
+		margin:40px auto;
 	}
 	table tr th {
 		font-weight:700;
