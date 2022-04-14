@@ -199,6 +199,7 @@ public class Controller extends HttpServlet{
 								
 				view = "board/boardlist";
 				request.setAttribute("board", board);
+				request.setAttribute("user", user);
 				request.setAttribute("boardlist", Boardlist);
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("search", search);
@@ -271,9 +272,13 @@ public class Controller extends HttpServlet{
 				break;
 				
 			case "/boardinsert-process.do":
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				
 				board = new Board();
 				board.setB_content(request.getParameter("content"));
 				board.setB_title(request.getParameter("title"));
+				board.setU_idx(user.getU_idx());
 								
 				boardService = Boardservice.getInstance();
 				boardService.insertBoard(board);

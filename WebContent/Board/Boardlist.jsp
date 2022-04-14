@@ -73,7 +73,7 @@
 	</div>
 			<table>
 				<tr>
-					<td colspan="3">전체 게시판 개수 : ${pagination.count }</td>
+					<td colspan="4">전체 게시판 개수 : ${pagination.count }</td>
 				</tr>
 				<tr>
 					<th>번호</th>
@@ -85,13 +85,13 @@
 					<tr>
 						<td><a href="boarddetail.do?b_idx=${board.b_idx}">${board.rownum}</a></td>
 						<td>${board.b_title }</td>
-						<td style="text-align: left;">
+						<td style="text-align: center;">
 							<c:forEach var="i" begin="1" end="${board.b_depth}">
 							->
 							</c:forEach>
 							${board.b_content }
 						</td>
-						<td>${user.u_idx }</td>
+						<td>${user.u_id }</td>
 					</tr>
 				</c:forEach>
 			</table>

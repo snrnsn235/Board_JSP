@@ -55,18 +55,18 @@ public class BoardDAO {
 			String query =new StringBuilder()
 					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")
 					.append("				ta.*\n")
-					.append("FROM 			board ta,\n")
-//					.append("SELECT		*	FROM board ta LEFT JOIN	user tb ON ta.u_idx = tb.u_idx \n");
-					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tb\n")
+					.append("FROM 			board ta\n")
+					.append("INNER JOIN	(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta WHERE "+search.getField()+" LIKE ?)) tb ON 1=1\n")
 					.append("where " 		+search.getField()+ " like ?\n")
-					.append("order by		b_group desc, b_order asc\n")
+					.append("order by		ta.b_group desc, ta.b_order asc\n")
 					.append("LIMIT			?, ?\n")
 					.toString();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
 			pstmt.setString(2, "%"+search.getValue()+"%");
-			pstmt.setInt(3, pageNum);
-			pstmt.setInt(4, Pagination.perPage);
+			pstmt.setString(3, "%"+search.getValue()+"%");
+			pstmt.setInt(4, pageNum);
+			pstmt.setInt(5, Pagination.perPage);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Board>();
 		}
@@ -80,7 +80,7 @@ public class BoardDAO {
 				board.setB_title(rs.getString("b_title"));
 				
 				User user = new User();
-				user.setU_name(rs.getString("u_idx"));
+				user.setU_id(rs.getString("u_idx"));
 				board.setUser(user);
 				
 				list.add(board);
@@ -149,10 +149,11 @@ public class BoardDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into board(b_title,b_content,b_date,b_hit,b_group,b_order,b_depth) values(?,?,now(),0,0,1,0)";
+			String sql = "insert into board(b_title,b_content,b_date,u_idx,b_hit,b_group,b_order,b_depth) values(?,?,now(),?,0,0,1,0)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board.getB_title());
 			pstmt.setString(2, board.getB_content());
+			pstmt.setInt(3, board.getU_idx());
 			pstmt.executeUpdate();
 			pstmt.close();
 			
@@ -217,7 +218,7 @@ public class BoardDAO {
 			}
 			//
 			String query = "SELECT COUNT(*) count \n"
-						  +"FROM board \n"
+						  +"FROM board\n"
 						  + where; //where 절이 실행이 되는 것
 			
 			pstmt = conn.prepareStatement(query);
