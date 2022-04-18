@@ -468,6 +468,48 @@ public class Controller extends HttpServlet{
 				request.setAttribute("commentList", commentList3);
 				request.setAttribute("pagination", pagination);
 				break;
+			case "/aj-levelInsert.do":
+				user = new User();
+				
+				user.setU_level(request.getParameter("u_level"));
+				userService = UserService.getInstance();
+				userService.levelInsert(user);
+				userCount = userService.getUsersCount();
+				
+				pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(userCount);
+				pagination.init();
+				
+				List<User> list1 = userService.getUsers(pagination);
+				view="user/list";
+				request.setAttribute("user", user);
+				request.setAttribute("list", list1);
+				request.setAttribute("pagination", pagination);
+				break;
+				
+			case "/aj-levelRemove.do":
+				user = new User();
+				
+				user.setU_level(request.getParameter("u_level"));
+				user.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+				
+				userService = UserService.getInstance();
+				userService.levelRemove(user);
+				userCount = userService.getUsersCount();
+				
+				pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(userCount);
+				pagination.init();
+				
+				List<User> list2 = userService.getUsers(pagination);
+				view="user/list";
+				request.setAttribute("user", user);
+				request.setAttribute("list", list2);
+				request.setAttribute("pagination", pagination);
+				break;
+				
 			case "/aj-commentList.do":
 				comment = new Comment();
 				board = new Board();
@@ -509,8 +551,7 @@ public class Controller extends HttpServlet{
 		HttpSession session = request.getSession();
 		
 		String[] authList = {
-				"/userlist.do"
-				,"/logininsert.do"
+				"/logininsert.do"
 				,"/insert-process.do"
 				,"/userdetail.do"
 				,"/userEdit.do"

@@ -56,7 +56,7 @@ public class UserDAO {
 				user.setU_name(rs.getString("u_name"));
 				user.setU_tel(rs.getString("u_tel"));
 				user.setU_age(rs.getString("u_age"));
-				
+				user.setU_level(rs.getString("u_level"));
 				list.add(user);
 				}
 			} catch (Exception e) {
@@ -80,6 +80,7 @@ public class UserDAO {
 		try {
 			conn = DBConnection.getConnection();
 			String sql = "insert into user(u_id, u_pw, u_name, u_tel, u_age) values(?,?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,  user.getU_id());
 			pstmt.setString(2,  user.getU_pw());
 			pstmt.setString(3,  user.getU_name());
@@ -93,6 +94,29 @@ public class UserDAO {
 				if(pstmt != null) pstmt.close();
 				if(conn != null) conn.close();
 			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void levelInsert(User user) {
+		Connection conn= null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "update user SET u_level=? where u_idx=? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user.getU_level());
+			pstmt.setInt(2, user.getU_idx());
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
@@ -146,6 +170,7 @@ public class UserDAO {
 					user.setU_tel(rs.getString("u_tel"));
 					user.setArr_tel(user.getU_tel().split("-"));
 					user.setU_age(rs.getString("u_age"));
+					
 				}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -206,6 +231,30 @@ public class UserDAO {
 				if(conn != null) conn.close();
 				if(pstmt != null) pstmt.close();
 			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void levelRemove(User user) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			if(user.getU_level() == "yes") {
+				String sql = "update user SET u_level=? where u_idx=? ";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, user.getU_idx());
+				pstmt.executeUpdate();
+				}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}

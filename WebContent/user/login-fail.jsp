@@ -8,5 +8,10 @@
 </head>
 <body>
 <h1>로그인 실패</h1>
+<script>
+setTimeout(function() {
+	window.location.href = "userlogin.do";
+}, 3000);
+</script>
 </body>
 </html>

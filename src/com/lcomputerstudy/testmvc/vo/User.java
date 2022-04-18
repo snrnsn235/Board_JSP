@@ -8,6 +8,7 @@ public class User {
 	private String u_name;
 	private String u_tel;
 	private String u_age;
+	private String u_level;
 	private String[] arr_tel;
 	
 	public int getRownum() {
@@ -58,7 +59,12 @@ public class User {
 	public void setArr_tel(String[] arr_tel) {
 		this.arr_tel = arr_tel;
 	}
-	
+	public String getU_level() {
+		return u_level;
+	}
+	public void setU_level(String u_level) {
+		this.u_level = u_level;
+	}
 }
 
 

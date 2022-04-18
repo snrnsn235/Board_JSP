@@ -218,7 +218,7 @@ public class BoardDAO {
 			}
 			//
 			String query = "SELECT COUNT(*) count \n"
-						  +"FROM board\n"
+						  +"FROM board\n" //여기에 join을 하면 아이디로 검색이 가능할시에 count가 된다
 						  + where; //where 절이 실행이 되는 것
 			
 			pstmt = conn.prepareStatement(query);
