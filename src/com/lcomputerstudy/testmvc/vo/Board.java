@@ -19,6 +19,7 @@ public class Board {
 	private int b_depth;
 	private List<Comment> commentList;
 	private User user;
+	private String filename;
 	
 	
 	public int getU_idx() {
@@ -104,5 +105,11 @@ public class Board {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 }

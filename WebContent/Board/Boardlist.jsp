@@ -70,10 +70,11 @@
 	<div style = "text-align:center; border-collapse:collapse;	width:500px; margin:40px auto;">		
 		<a href="boardinsert.do" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">게시글 추가하기</a>
 		<a href="login-process.do?u_idx${user.u_idx }" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">돌아가기</a>
+		
 	</div>
 			<table>
 				<tr>
-					<td colspan="4">전체 게시판 개수 : ${pagination.count }</td>
+					<td colspan="5">전체 게시판 개수 : ${pagination.count }</td>
 				</tr>
 				<tr>
 					<th>번호</th>
@@ -83,14 +84,9 @@
 				</tr>
 				<c:forEach items="${boardlist}" var="board" varStatus = "status">
 					<tr>
-						<td><a href="boarddetail.do?b_idx=${board.b_idx}">${board.rownum}</a></td>
+						<td><a href="boarddetail.do?b_idx=${board.b_idx}&u_level=${user.u_level}">${board.rownum}</a></td>
 						<td>${board.b_title }</td>
-						<td style="text-align: center;">
-							<c:forEach var="i" begin="1" end="${board.b_depth}">
-							->
-							</c:forEach>
-							${board.b_content }
-						</td>
+						<td style="text-align: center;">${board.b_content }</td>
 						<td>${user.u_id }</td>
 					</tr>
 				</c:forEach>
@@ -128,6 +124,5 @@
 				</c:choose>	
 		</ul>
 	</div>
-	<script></script>
 </body>
 </html>

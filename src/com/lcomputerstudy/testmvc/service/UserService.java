@@ -30,12 +30,12 @@ public class UserService {
 	public void insertUser(User user) {
 		dao.insertUser(user);
 	}
-	public void levelInsert(User user) {
-		dao.levelInsert(user);
+	public void levelUpdate(User user) {
+		dao.levelUpdate(user);
 	}
-	public void levelRemove(User user) {
-		dao.levelRemove(user);
-	}
+//	public void levelRemove(User user) {
+//		dao.levelRemove(user);
+//	}
 	public int getUsersCount() {
 		return dao.getUsersCount();
 	}

@@ -1,5 +1,7 @@
 package com.lcomputerstudy.testmvc.vo;
 
+import java.util.Arrays;
+
 public class User {
 	private int rownum;
 	private int u_idx;
@@ -65,6 +67,13 @@ public class User {
 	public void setU_level(String u_level) {
 		this.u_level = u_level;
 	}
+	@Override
+	public String toString() {
+		return "User [rownum=" + rownum + ", u_idx=" + u_idx + ", u_id=" + u_id + ", u_pw=" + u_pw + ", u_name="
+				+ u_name + ", u_tel=" + u_tel + ", u_age=" + u_age + ", u_level=" + u_level + ", arr_tel="
+				+ Arrays.toString(arr_tel) + "]";
+	}
+	
 }
 
 

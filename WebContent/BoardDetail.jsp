@@ -82,15 +82,30 @@
 				<td>내용</td>
 				<td>${board.b_content }</td>
 			</tr>
-			
-			<tr style = "height:50px;">
-				<td style = "boarder:none;">
-					<a href = "boardedit.do?b_idx=${board.b_idx}" style="width:70%; font-weight:700; background-color:#818181; color:#fff;">수정</a>
-				</td>
-				<td style = "boarder:none;">
-					<a href = "boarddelete.do?b_idx=${board.b_idx}" style="width:70%; font-weight:700; background-color:red; color:#fff;">삭제</a>
-				</td>
-			</tr>
+			<p>
+			---
+			${sessionScope.user.u_level}
+			---
+			</p>
+			<c:choose>
+				<c:when test="${sessionScope.user.u_level eq 'yes' }">
+					<tr style = "height:50px;">
+						<td style = "boarder:none;" colspan="2">
+							<a href = "boarddelete.do?b_idx=${board.b_idx}" style="width:70%; font-weight:700; background-color:red; color:#fff;">삭제</a>
+						</td>
+					</tr>
+				</c:when>
+				<c:when test="${sessionScope.user.u_level eq 'no' }">
+					<tr style = "height:50px;">
+						<td style = "boarder:none;">
+							<a href = "boardedit.do?b_idx=${board.b_idx}" style="width:70%; font-weight:700; background-color:#818181; color:#fff;">수정</a>
+						</td>
+						<td style = "boarder:none;">
+							<a href = "boarddelete.do?b_idx=${board.b_idx}" style="width:70%; font-weight:700; background-color:red; color:#fff;">삭제</a>
+						</td>
+					</tr>
+				</c:when>
+			</c:choose>
 			<tr>
 				<td style = "boarder:none;">
 					<a href ="boardreply.do?b_group=${board.b_group}&b_order=${board.b_order}&b_depth=${board.b_depth}" style="width:70%; font-weight:700; background-color:green; color:#fff;">답글달기</a>

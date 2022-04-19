@@ -180,6 +180,7 @@ public class Controller extends HttpServlet{
 				search = new Search();
 				search.setField(request.getParameter("field"));//select의 option value에 들어감
 				search.setValue(request.getParameter("value"));//검색버튼을 누르면 field, query에 값을 넣어줌
+				//파일 업로드
 				
 				//페이지, 리스트
 				String reqPage1 = request.getParameter("page");
@@ -207,7 +208,10 @@ public class Controller extends HttpServlet{
 				
 			//상세페이지 칸
 			case "/boarddetail.do":
+				session = request.getSession();
+				//user = (User)session.getAttribute("user");
 				board = new Board();
+				
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				boardService = Boardservice.getInstance();
 				board = boardService.getBoard(board);
@@ -226,8 +230,8 @@ public class Controller extends HttpServlet{
 				List<Comment> commentlist = Commentservice.getComments(pagination, board);
 				board.setCommentList(commentlist);
 						
-				
 				view = "BoardDetail";
+				request.setAttribute("user", user);
 				request.setAttribute("board", board);
 				request.setAttribute("commentList", commentlist);
 				request.setAttribute("pagination", pagination);
@@ -278,6 +282,7 @@ public class Controller extends HttpServlet{
 				board = new Board();
 				board.setB_content(request.getParameter("content"));
 				board.setB_title(request.getParameter("title"));
+				board.setFilename(request.getParameter("filename"));
 				board.setU_idx(user.getU_idx());
 								
 				boardService = Boardservice.getInstance();
@@ -446,6 +451,7 @@ public class Controller extends HttpServlet{
 				request.setAttribute("commentList", commentList2);
 				request.setAttribute("pagination", pagination);
 				break;
+				
 			case "/aj-commentInsert.do":
 				comment = new Comment();
 				
@@ -468,12 +474,15 @@ public class Controller extends HttpServlet{
 				request.setAttribute("commentList", commentList3);
 				request.setAttribute("pagination", pagination);
 				break;
-			case "/aj-levelInsert.do":
+				
+			//관리자 권한 추가, 제거하기
+			case "/aj-levelUpdate.do":
 				user = new User();
 				
 				user.setU_level(request.getParameter("u_level"));
+				user.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
 				userService = UserService.getInstance();
-				userService.levelInsert(user);
+				userService.levelUpdate(user);
 				userCount = userService.getUsersCount();
 				
 				pagination = new Pagination();
@@ -485,28 +494,6 @@ public class Controller extends HttpServlet{
 				view="user/list";
 				request.setAttribute("user", user);
 				request.setAttribute("list", list1);
-				request.setAttribute("pagination", pagination);
-				break;
-				
-			case "/aj-levelRemove.do":
-				user = new User();
-				
-				user.setU_level(request.getParameter("u_level"));
-				user.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
-				
-				userService = UserService.getInstance();
-				userService.levelRemove(user);
-				userCount = userService.getUsersCount();
-				
-				pagination = new Pagination();
-				pagination.setPage(page);
-				pagination.setCount(userCount);
-				pagination.init();
-				
-				List<User> list2 = userService.getUsers(pagination);
-				view="user/list";
-				request.setAttribute("user", user);
-				request.setAttribute("list", list2);
 				request.setAttribute("pagination", pagination);
 				break;
 				
