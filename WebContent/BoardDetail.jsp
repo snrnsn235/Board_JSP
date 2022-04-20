@@ -113,7 +113,7 @@
 				<td style = "boarder:none;">
 					<a href ="boardlist.do" style="width:70%; font-weight:700; background-color:skyblue; color:#fff;">돌아가기</a>
 				</td>
-			</tr>		
+			</tr>
 	</table>
 
 	<!-- 댓글리스트   -->

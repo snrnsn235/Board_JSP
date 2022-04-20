@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.fileupload.DiskFileUpload;
 
 import com.lcomputerstudy.testmvc.vo.*;
 import com.lcomputerstudy.testmvc.database.DBConnection;
@@ -78,7 +81,8 @@ public class BoardDAO {
 				board.setB_content(rs.getString("b_content"));
 				board.setB_date(rs.getString("b_date"));
 				board.setB_title(rs.getString("b_title"));
-				
+				board.setFilename1(rs.getString("filename1"));
+				board.setFilename2(rs.getString("filename2"));
 				User user = new User();
 				user.setU_id(rs.getString("u_idx"));
 				board.setUser(user);
@@ -149,11 +153,13 @@ public class BoardDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into board(b_title,b_content,b_date,u_idx,b_hit,b_group,b_order,b_depth) values(?,?,now(),?,0,0,1,0)";
+			String sql = "insert into board(b_title,b_content,b_date,u_idx,b_hit,b_group,b_order,b_depth,filename1,filename2) values(?,?,now(),?,0,0,1,0,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board.getB_title());
 			pstmt.setString(2, board.getB_content());
 			pstmt.setInt(3, board.getU_idx());
+			pstmt.setString(4, board.getFilename1());
+			pstmt.setString(5, board.getFilename2());
 			pstmt.executeUpdate();
 			pstmt.close();
 			

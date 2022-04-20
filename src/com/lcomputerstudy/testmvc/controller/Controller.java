@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.lcomputerstudy.testmvc.service.*;
 import com.lcomputerstudy.testmvc.vo.*;
 
+import com.oreilly.servlet.MultipartRequest.*;
 @WebServlet("*.do")
 public class Controller extends HttpServlet{
 	private static final long serialVersionUID = 1L;
@@ -40,6 +41,10 @@ public class Controller extends HttpServlet{
 		String idx = null;
 		//검색
 		Search search = null;
+		
+		//파일 업로드
+		String path = null;
+		String fileUploadPath = null;
 		
 		HttpSession session = null;
 		command = checkSession(request, response, command);
@@ -280,9 +285,10 @@ public class Controller extends HttpServlet{
 				user = (User)session.getAttribute("user");
 				
 				board = new Board();
-				board.setB_content(request.getParameter("content"));
 				board.setB_title(request.getParameter("title"));
-				board.setFilename(request.getParameter("filename"));
+				board.setB_content(request.getParameter("content"));
+				board.setFilename1(request.getParameter("filename1"));
+				board.setFilename2(request.getParameter("filename2"));
 				board.setU_idx(user.getU_idx());
 								
 				boardService = Boardservice.getInstance();
@@ -290,7 +296,7 @@ public class Controller extends HttpServlet{
 				
 				view = "board/boardinsert-result";
 				break;
-			
+				
 			//답글달기
 			case "/boardreply.do":
 				board = new Board();
@@ -523,7 +529,6 @@ public class Controller extends HttpServlet{
 				request.setAttribute("commentList", commentList4);
 				request.setAttribute("pagination", pagination);
 				break;
-				
 		}
 		
 		if (isRedirected) {

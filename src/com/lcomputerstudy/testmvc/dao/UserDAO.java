@@ -236,30 +236,6 @@ public class UserDAO {
 		}
 	}
 	
-//	public void levelRemove(User user) {
-//		Connection conn = null;
-//		PreparedStatement pstmt = null;
-//		
-//		try {
-//			conn = DBConnection.getConnection();
-//			if(user.getU_level() == "yes") {
-//				String sql = "update user SET u_level=? where u_idx=? ";
-//				pstmt = conn.prepareStatement(sql);
-//				pstmt.setInt(1, user.getU_idx());
-//				pstmt.executeUpdate();
-//				}
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if(conn != null) conn.close();
-//				if(pstmt != null) pstmt.close();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-	
 	public User loginUser(String idx, String pw) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
