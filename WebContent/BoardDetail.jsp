@@ -79,6 +79,10 @@
 				<td>${board.b_title }</td>
 			</tr>
 			<tr>
+				<td>첨부파일</td>
+				<td><img src="/lcomputerstudy/upload/${board.filename }" style="color:red;"></td>
+			</tr>
+			<tr>
 				<td>내용</td>
 				<td>${board.b_content }</td>
 			</tr>
