@@ -1,5 +1,7 @@
 package com.lcomputerstudy.testmvc.dao;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.fileupload.DiskFileUpload;
+import org.apache.commons.fileupload.FileItem;
 
 import com.lcomputerstudy.testmvc.vo.*;
 import com.lcomputerstudy.testmvc.database.DBConnection;
@@ -81,7 +84,7 @@ public class BoardDAO {
 				board.setB_content(rs.getString("b_content"));
 				board.setB_date(rs.getString("b_date"));
 				board.setB_title(rs.getString("b_title"));
-
+				board.setFilename(rs.getString("filename"));
 				User user = new User();
 				user.setU_id(rs.getString("u_idx"));
 				board.setUser(user);
@@ -286,7 +289,6 @@ public class BoardDAO {
 		return board;
 	}
 }
-	
 	
 
 

@@ -7,6 +7,7 @@
 <title>게시물 추가</title>
 </head>
 <body>
+<div style = "text-align:center; border-collapse:collapse;	width:500px; margin:40px auto;">
 <h2>게시판 추가하기</h2>
 <form action="boardinsert-process.do" method="post" enctype="multipart/form-data">
 	<p> 제목: <input type = "text" name="title" ></p>
@@ -15,6 +16,7 @@
 	<p> 파일 업로드 : <input type = "file" name="filename">
 	<p> <input type="submit" value="추가하기"></p>
 </form>
+</div>
 </body>
 </html>
 <!-- enctype속성은 <form>태그의 데이터들을 전송할때 데이터들을 어떤 형식으로 변환할것인지에 대한 값을 지정하는 속성 -->

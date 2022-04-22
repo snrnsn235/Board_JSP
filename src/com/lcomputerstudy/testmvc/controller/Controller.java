@@ -3,7 +3,6 @@ package com.lcomputerstudy.testmvc.controller;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -14,11 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 
 import com.lcomputerstudy.testmvc.service.*;
 import com.lcomputerstudy.testmvc.vo.*;
@@ -36,15 +34,20 @@ import com.lcomputerstudy.testmvc.vo.*;
 public class Controller extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
+	private static final String CHARSET = "utf-8";
+    private static final String ATTACHES_DIR = "C:\\attaches";
+    private static final int LIMIT_SIZE_BYTES = 1024 * 1024;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 		    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=utf-8");
 		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
-
+		out.println("<HTML><HEAD><TITLE>Multipart Test</TITLE></HEAD><BODY>");
+		
 		String requestURI = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		String command = requestURI.substring(contextPath.length());
@@ -80,30 +83,6 @@ public class Controller extends HttpServlet{
 		Commentservice commentservice = null;
 		
 		boolean isRedirected = false;
-		//파일 업로드
-		String path = "c:\\attaches";
-		
-		DiskFileUpload upload = new DiskFileUpload();
-		upload.setSizeMax(1000000);;
-		upload.setSizeThreshold(4096);
-		upload.setRepositoryPath(path);
-		
-		List items = null;
-		try {
-			items = upload.parseRequest(request);
-		} catch (FileUploadException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		Iterator params = items.iterator();
-				
-//	    File attaches = new File(ATTACHES_DIR);
-//	    
-//        DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();//DiskFileItemFactory 업로드된 파일을 저장할 저장소와 관련된 클래스
-//        fileItemFactory.setRepository(attaches);//setRepository()는 업로드된 파일을 저장할 위치를 file객체로 지정
-//        fileItemFactory.setSizeThreshold(LIMIT_SIZE_BYTES);//setSizeThreshold() 저장소에 임시파일을 생성할 한계 크기를 byte단위로 정한다. 현재 1024 byte로 지정되었음
-//        ServletFileUpload fileUpload = new ServletFileUpload(fileItemFactory);
-//        //ServletFileUpload클래스는 HTTP 요청에 대한 HttpServletRequest 객체로부터 multipart/form-data형식으로 넘어온 HTTP Body 부분을 다루기 쉽게 변환(parse)해주는 역할을 수행합니다.
         
 		switch (command) {
 			//user
@@ -327,68 +306,58 @@ public class Controller extends HttpServlet{
 				user = (User)session.getAttribute("user");
 				
 				board = new Board();
-				
 				board.setB_title(request.getParameter("title"));
 				board.setB_content(request.getParameter("content"));
 				board.setU_idx(user.getU_idx());
 				
-				while (params.hasNext()) {
-					FileItem item = (FileItem) params.next();
-					if(item.isFormField()) {
-						String name = item.getFieldName();
-						String value = item.getString("utf-8");
-						out.println(name + "=" + value + "<br>");
-					} else {
-						String fileFieldName = item.getFieldName();
-						String fileName = item.getName();
-						String contentType = item.getContentType();
-						
-						fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
-						long fileSize = item.getSize();
-						
-						File file = new File(path+"/"+fileName);
-						try {
-							item.write(file);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-						out.println("--------------------------<br>");
-						out.println("요청 파라미터 이름 : " + fileFieldName + "<br>");
-						out.println("저장 파일 이름 : " + fileName + "<br>");
-						out.println("파일 콘텐츠 유형 : " + contentType + "<br>");
-						out.println("파일 크기 : " + fileSize);
-					}
-				}
-//				try {
-//		            List<FileItem> items = fileUpload.parseRequest(request);
-//		            for (FileItem item : items) {
-//		                if (item.isFormField()) {
-//		                    System.out.printf("파라미터 명 : %s, 파라미터 값 :  %s \n", item.getFieldName(), item.getString(CHARSET));
-//		                } else {
-//		                    System.out.printf("파라미터 명 : %s, 파일 명 : %s,  파일 크기 : %s bytes \n", item.getFieldName(),
-//		                            item.getName(), item.getSize());
-//		                    if (item.getSize() > 0) {
-//		                        String separator = File.separator;
-//		                        int index =  item.getName().lastIndexOf(separator);
-//		                        String fileName = item.getName().substring(index  + 1);
-//		                        File uploadFile = new File(ATTACHES_DIR +  separator + fileName);
-//		                        item.write(uploadFile);
-//		                    }
-//		                }
-//		            }
-//		            out.println("<h1>파일 업로드 완료</h1>");
-//		        } catch (Exception e) {
-//		            // 파일 업로드 처리 중 오류가 발생하는 경우
-//		            e.printStackTrace();
-//		            out.println("<h1>파일 업로드 중 오류가  발생하였습니다.</h1>");
-//		        }
-				//parameter가 전달된 녀석의 문자를 얻어오는 것이라면
-				//part는 전달한 name값을 가지고 특정 파트를 읽는 것이다.
-				//저장경로는 상대경로를 쓸 수 없다 절대경로여야한다
-				//request.getServletContext() 상대경로 넘겨주면 실제 물리경로를 얻어주는 녀석
-				//request.getParts()메서드를 통해 여러개의 Part를 Collection에 담아 리턴합니다.
-				//String 클래스는 불변이지만 StringBuilder는 가변
+				//파일 업로드
+				try {
+					 File attaches = new File(ATTACHES_DIR);
+				       
+					 DiskFileItemFactory diskFactory = new DiskFileItemFactory();//업로드 파일의 크기가 지정한 크기를 넘기 전까지는 업로드 한 파일 데이터를 메모리에 저장하고 지정한 크기를 넘길 경우 임시 디렉터리에 파일로 저장
+				     diskFactory.setRepository(attaches);//setRepository()는 메모리 저장 최대 크기를 넘길 경우 파일을 생성할 디렉터리를 지정. 지정하지 않을 경우 시스템의 기본 임시 디렉터리를 사용.( System.getProperty("java.io.tmpdir") 로 기본임시 디렉터리를 구할 수 있음 )
+				     diskFactory.setSizeThreshold(LIMIT_SIZE_BYTES);//setSizeThreshold() 메모리에 저장할 수있는 최대 크기.단위는 바이트이다. 기본값은 10240바이트(10kb)
+				    
+				     //2. 업로드 요청을 처리하는 ServletFileUpload생성 
+				     ServletFileUpload upload = new ServletFileUpload(diskFactory);
+				     //ServletFileUpload클래스는 HTTP 요청에 대한 HttpServletRequest 객체로부터 multipart/form-data형식으로 넘어온 HTTP Body 부분을 다루기 쉽게 변환(parse)해주는 역할을 수행합니다.
+				     upload.setSizeMax(3 * 1024 * 1024); 
+				     //3. 업로드 요청파싱해서 FileItem 목록구함
+				     List<FileItem> items = upload.parseRequest(request);
+				     	for (FileItem item : items) {
+				            if (item.isFormField()) {
+				                 System.out.printf("파라미터 명 : %s, 파라미터 값 :  %s \n", item.getFieldName(), item.getString(CHARSET));
+				             } else {
+				                 System.out.printf("파라미터 명 : %s, 파일 명 : %s,  파일 크기 : %s bytes \n", item.getFieldName(),
+				                         item.getName(), item.getSize());
+				                 if (item.getSize() > 0) {
+				                      String separator = File.separator;
+				                      int index =  item.getName().lastIndexOf(separator);
+				                      String fileName = item.getName().substring(index  + 1);
+				                      File uploadFile = new File(ATTACHES_DIR +  separator + fileName);
+				                      item.write(uploadFile);
+				                  }
+				              }
+				          }
+				          out.println("<h1>파일 업로드 완료</h1>");
+				      } catch (Exception e) {
+				          // 파일 업로드 처리 중 오류가 발생하는 경우
+				          e.printStackTrace();
+				          out.println("<h1>파일 업로드 중 오류가  발생하였습니다.</h1>");
+				      }
+				boardService = Boardservice.getInstance() ;
+				boardService.insertBoard(board);
+			    view = "board/boardinsert-result";
+				break;
+	    
+		
+		           
+//				parameter가 전달된 녀석의 문자를 얻어오는 것이라면
+//				part는 전달한 name값을 가지고 특정 파트를 읽는 것이다.
+//				저장경로는 상대경로를 쓸 수 없다 절대경로여야한다
+//				request.getServletContext() 상대경로 넘겨주면 실제 물리경로를 얻어주는 녀석
+//				request.getParts()메서드를 통해 여러개의 Part를 Collection에 담아 리턴합니다.
+//				String 클래스는 불변이지만 StringBuilder는 가변
 //				Collection<Part> parts = request.getParts();
 //				StringBuilder builder = new StringBuilder();
 //				for(Part p : parts) {
@@ -425,11 +394,6 @@ public class Controller extends HttpServlet{
 //				
 //				builder.delete(builder.length()-1, builder.length());
 //				board.setFilename(builder.toString());
-				boardService = Boardservice.getInstance() ;
-				boardService.insertBoard(board);
-				
-				view = "board/boardinsert-result";
-				break;
 				
 			//답글달기
 			case "/boardreply.do":
@@ -663,6 +627,7 @@ public class Controller extends HttpServlet{
 				request.setAttribute("commentList", commentList4);
 				request.setAttribute("pagination", pagination);
 				break;
+				
 		}
 		
 		if (isRedirected) {
@@ -671,7 +636,9 @@ public class Controller extends HttpServlet{
 			RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
 			rd.forward(request, response);
 		}
+		
 	}
+
 
 	String checkSession(HttpServletRequest request, HttpServletResponse response, String command) {
 		HttpSession session = request.getSession();
