@@ -73,7 +73,6 @@ public class User {
 				+ u_name + ", u_tel=" + u_tel + ", u_age=" + u_age + ", u_level=" + u_level + ", arr_tel="
 				+ Arrays.toString(arr_tel) + "]";
 	}
-	
 }
 
 

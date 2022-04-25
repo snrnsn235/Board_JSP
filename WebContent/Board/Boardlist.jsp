@@ -69,7 +69,7 @@
 	<br>
 	<div style = "text-align:center; border-collapse:collapse;	width:500px; margin:40px auto;">		
 		<a href="boardinsert.do" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">게시글 추가하기</a>
-		<a href="login-process.do?u_id${user.u_id }" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">돌아가기</a>
+		<a href="login-process.do?u_id=${user.u_id }" style="text-align: center; width:70%; font-weight:700; background-color:yellowgreen; color:#fff;">돌아가기</a>
 	</div>
 			<table>
 				<tr>

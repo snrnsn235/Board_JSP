@@ -20,8 +20,15 @@ public class Board {
 	private List<Comment> commentList;
 	private User user;
 	private String filename;
+	private List<BoardFile> fileList;
 	
 	
+	public List<BoardFile> getFileList() {
+		return fileList;
+	}
+	public void setFileList(List<BoardFile> fileList) {
+		this.fileList = fileList;
+	}
 	public int getU_idx() {
 		return u_idx;
 	}
@@ -112,5 +119,4 @@ public class Board {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	
 }

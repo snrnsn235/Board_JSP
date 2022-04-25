@@ -3,6 +3,7 @@ package com.lcomputerstudy.testmvc.controller;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -20,15 +21,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.lcomputerstudy.testmvc.service.*;
 import com.lcomputerstudy.testmvc.vo.*;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
-////파일업로드
-//@MultipartConfig(
-////location = "/tmp", 절대경로는 서비스를 실행하는 리눅스와 윈도우에 차이있으므로 
-//		//설정하지 않고 자바가 지정된 임시 디렉토리를 사용하도록 하자
-//fileSizeThreshold=1024*1024,
-//maxFileSize=1024*1024*50, //하나의 파일size 5MB가 최대로 설정됨
-//maxRequestSize=1024*1024*50*5 //전체요청으로 50MB를 5개까지. 초과는 불가능하다
-//)
 
 @WebServlet("*.do")
 public class Controller extends HttpServlet{
@@ -304,53 +299,64 @@ public class Controller extends HttpServlet{
 			case "/boardinsert-process.do":
 				session = request.getSession();
 				user = (User)session.getAttribute("user");
-				
 				board = new Board();
-				board.setB_title(request.getParameter("title"));
-				board.setB_content(request.getParameter("content"));
 				board.setU_idx(user.getU_idx());
 				
-				//파일 업로드
-				try {
-					 File attaches = new File(ATTACHES_DIR);
-				       
-					 DiskFileItemFactory diskFactory = new DiskFileItemFactory();//업로드 파일의 크기가 지정한 크기를 넘기 전까지는 업로드 한 파일 데이터를 메모리에 저장하고 지정한 크기를 넘길 경우 임시 디렉터리에 파일로 저장
-				     diskFactory.setRepository(attaches);//setRepository()는 메모리 저장 최대 크기를 넘길 경우 파일을 생성할 디렉터리를 지정. 지정하지 않을 경우 시스템의 기본 임시 디렉터리를 사용.( System.getProperty("java.io.tmpdir") 로 기본임시 디렉터리를 구할 수 있음 )
-				     diskFactory.setSizeThreshold(LIMIT_SIZE_BYTES);//setSizeThreshold() 메모리에 저장할 수있는 최대 크기.단위는 바이트이다. 기본값은 10240바이트(10kb)
-				    
-				     //2. 업로드 요청을 처리하는 ServletFileUpload생성 
-				     ServletFileUpload upload = new ServletFileUpload(diskFactory);
-				     //ServletFileUpload클래스는 HTTP 요청에 대한 HttpServletRequest 객체로부터 multipart/form-data형식으로 넘어온 HTTP Body 부분을 다루기 쉽게 변환(parse)해주는 역할을 수행합니다.
-				     upload.setSizeMax(3 * 1024 * 1024); 
-				     //3. 업로드 요청파싱해서 FileItem 목록구함
-				     List<FileItem> items = upload.parseRequest(request);
-				     	for (FileItem item : items) {
-				            if (item.isFormField()) {
-				                 System.out.printf("파라미터 명 : %s, 파라미터 값 :  %s \n", item.getFieldName(), item.getString(CHARSET));
-				             } else {
-				                 System.out.printf("파라미터 명 : %s, 파일 명 : %s,  파일 크기 : %s bytes \n", item.getFieldName(),
-				                         item.getName(), item.getSize());
-				                 if (item.getSize() > 0) {
-				                      String separator = File.separator;
-				                      int index =  item.getName().lastIndexOf(separator);
-				                      String fileName = item.getName().substring(index  + 1);
-				                      File uploadFile = new File(ATTACHES_DIR +  separator + fileName);
-				                      item.write(uploadFile);
-				                  }
-				              }
-				          }
-				          out.println("<h1>파일 업로드 완료</h1>");
-				      } catch (Exception e) {
-				          // 파일 업로드 처리 중 오류가 발생하는 경우
-				          e.printStackTrace();
-				          out.println("<h1>파일 업로드 중 오류가  발생하였습니다.</h1>");
-				      }
+				File attachesDir = new File(ATTACHES_DIR);
+				 
+		        DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
+		        fileItemFactory.setRepository(attachesDir);
+		        fileItemFactory.setSizeThreshold(LIMIT_SIZE_BYTES);
+		        ServletFileUpload upload = new ServletFileUpload(fileItemFactory);
+				
+		        try {
+		        	List<FileItem> items = upload.parseRequest(request);
+		        	List<BoardFile> bfList = new ArrayList<BoardFile>();
+			        for (FileItem item : items) {
+			            if (item.isFormField()) {
+			            	switch (item.getFieldName()) {
+			            	case "title":
+			            		board.setB_title(item.getString());
+			            		System.out.printf("파라미터 명 : %s, 파라미터 값 : %s \n", item.getFieldName(), item.getString(CHARSET));
+			            		break;
+			            	case "content":
+			            		board.setB_content(item.getString());
+			            		System.out.printf("파라미터 명 : %s, 파라미터 값 : %s \n", item.getFieldName(), item.getString(CHARSET));
+			            		break;
+			            	}
+			             } else if (item.getSize() > 0){		 
+			            	  BoardFile bf = new BoardFile();
+			            	 
+		                      String separator = File.separator;
+		                      int index =  item.getName().lastIndexOf(separator);
+		                      String fileName = item.getName().substring(index  + 1);
+		                      System.out.printf("파라미터 명 : %s, 파일 명 : %s, 파일 크기 : %s bytes \n", item.getFieldName(), item.getName(), item.getSize());
+		                      board.setFilename(item.getName());
+		                      File uploadFile = new File(ATTACHES_DIR +  separator + fileName);
+		                      item.write(uploadFile);
+		                      
+		                      bf.setFileName(item.getName());
+		                      
+		                      bfList.add(bf);
+		                }
+			            board.setFileList(bfList);
+			        }
+			        out.println("<h1>파일 업로드 완료</h1>");
+		        } catch (Exception e) {
+			          // 파일 업로드 처리 중 오류가 발생하는 경우
+			          e.printStackTrace();
+			          out.println("<h1>파일 업로드 중 오류가  발생하였습니다.</h1>");
+			    }
 				boardService = Boardservice.getInstance() ;
 				boardService.insertBoard(board);
 			    view = "board/boardinsert-result";
-				break;
+			    break;
 	    
-		
+			  //MultipartRequest 구문
+//				MultipartRequest multipartRequest = new MultipartRequest(request, ATTACHES_DIR, LIMIT_SIZE_BYTES, "UTF-8", new DefaultFileRenamePolicy() );
+//				board.setB_content(multipartRequest.getParameter("content"));
+//				board.setB_title(multipartRequest.getParameter("title"));
+//				board.setFilename(multipartRequest.getFilesystemName("filename"));
 		           
 //				parameter가 전달된 녀석의 문자를 얻어오는 것이라면
 //				part는 전달한 name값을 가지고 특정 파트를 읽는 것이다.
@@ -358,42 +364,6 @@ public class Controller extends HttpServlet{
 //				request.getServletContext() 상대경로 넘겨주면 실제 물리경로를 얻어주는 녀석
 //				request.getParts()메서드를 통해 여러개의 Part를 Collection에 담아 리턴합니다.
 //				String 클래스는 불변이지만 StringBuilder는 가변
-//				Collection<Part> parts = request.getParts();
-//				StringBuilder builder = new StringBuilder();
-//				for(Part p : parts) {
-//					if(!p.getName().equals("filename")) continue;//여기서 getName()은 밑에 줄에 getPart("filename")을 뜻한다.
-//					if(p.getSize() == 0) continue; //비어있는 데이터 그럴 경우 continue를 통해서 건너띄게 만들었음
-//					
-//					javax.servlet.http.Part filePart = request.getPart("filename");
-//					Part filePart = p;
-//					String fileName = filePart.getSubmittedFileName();
-//					builder.append(fileName);
-//					builder.append(",");//첫번째 파일명 들어가고 그다음에 구분자 들어가고
-//					
-//					InputStream fis = filePart.getInputStream();
-//					String realPath = request.getServletContext().getRealPath("/member/upload");
-//					//getServletContext() : 웹 어플리케이션이 설치되어 있는 경로를 리턴해줌
-//					//getRealPath("/member/upload"); : ServletContext()의 getRealPath는 웹어플리케이션이 실행된 곳, 즉 설치된 곳의 경로를 찾음
-//					System.out.println(realPath);
-//					
-//					File path = new File(realPath);
-//					if(!path.exists())
-//						path.mkdirs();
-//					
-//					String filePath = realPath + File.separator + fileName;
-//					FileOutputStream fos = new FileOutputStream(filePath);
-//					
-//					byte[] buf = new byte[1024];
-//					int size=0;
-//					while((size=fis.read(buf)) != -1)
-//					//데이트를 byte단위로 읽어주며, 스트림 끝에 도달한 경우 -1라는 정수형을 반환한다.
-//						fos.write(buf, 0, size); 
-//					fos.close();
-//					fis.close();
-//				}
-//				
-//				builder.delete(builder.length()-1, builder.length());
-//				board.setFilename(builder.toString());
 				
 			//답글달기
 			case "/boardreply.do":

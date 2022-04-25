@@ -150,25 +150,43 @@ public class BoardDAO {
 	}
 	
 	public void insertBoard(Board board) {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			
+			try {
+				conn = DBConnection.getConnection();
+				String sql = "insert into board(b_title,b_content,b_date,u_idx,b_hit,b_group,b_order,b_depth,filename) values(?,?,now(),?,0,0,1,0,?)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, board.getB_title());
+				pstmt.setString(2, board.getB_content());
+				pstmt.setInt(3, board.getU_idx());
+				pstmt.setString(4, board.getFilename());
+				pstmt.executeUpdate();
+				pstmt.close();
+				
+				sql = "update board set b_group=last_insert_id() where b_idx = last_insert_id()";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.executeUpdate();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			} finally {
+				try {
+					if(pstmt != null ) pstmt.close();
+					if(conn != null ) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void insertBoardFile(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into board(b_title,b_content,b_date,u_idx,b_hit,b_group,b_order,b_depth,filename) values(?,?,now(),?,0,0,1,0,?)";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, board.getB_title());
-			pstmt.setString(2, board.getB_content());
-			pstmt.setInt(3, board.getU_idx());
-			pstmt.setString(4, board.getFilename());
-			pstmt.executeUpdate();
-			pstmt.close();
-			
-			sql = "update board set b_group=last_insert_id() where b_idx = last_insert_id()";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.executeUpdate();
-		} catch(Exception ex) {
-			ex.printStackTrace();
+			String sql = "insert into board"
+		} catch(Exception e) {
+			e.printStackTrace();
 		} finally {
 			try {
 				if(pstmt != null ) pstmt.close();
@@ -176,9 +194,8 @@ public class BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		}
 	}
-	}
-
 	public void replyBoard(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

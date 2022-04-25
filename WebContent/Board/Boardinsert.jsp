@@ -19,7 +19,7 @@
 </div>
 </body>
 </html>
-<!-- enctype속성은 <form>태그의 데이터들을 전송할때 데이터들을 어떤 형식으로 변환할것인지에 대한 값을 지정하는 속성 -->
+
 
 	
 	
@@ -33,7 +33,7 @@
 	
 	
 	
-	
+	<!-- enctype속성은 <form>태그의 데이터들을 전송할때 데이터들을 어떤 형식으로 변환할것인지에 대한 값을 지정하는 속성 -->
 	<!-- multipart/form-data를 사용하면  request.getParameter()로 데이터를 불러올 수 없게 된다.-->
 	<!-- multipart/form-data를 사용하면 post방식에서만 사용가능하다 -->
 	

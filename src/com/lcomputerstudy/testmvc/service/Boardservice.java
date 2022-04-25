@@ -29,6 +29,7 @@ public class Boardservice {
 	}
 	public void insertBoard(Board board) {
 		dao.insertBoard(board);
+		dao.insertBoardFile(board);
 	}
 	
 	public void editBoard(Board board) {
