@@ -27,9 +27,9 @@ public class Boardservice {
 	public static List<Board> getBoardlist(Pagination pagination, Search search) {
 		return dao.getBoardlist(pagination, search);
 	}
-	public void insertBoard(Board board) {
+	public void insertBoard(Board board, BoardFile boardfile) {
 		dao.insertBoard(board);
-		dao.insertBoardFile(board);
+		dao.insertBoardFile(boardfile);
 	}
 	
 	public void editBoard(Board board) {

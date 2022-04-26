@@ -79,13 +79,14 @@ public class UserDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into user(u_id, u_pw, u_name, u_tel, u_age) values(?,?,?,?,?)";
+			String sql = "insert into user(u_id, u_pw, u_name, u_tel, u_age, u_level) values(?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,  user.getU_id());
-			pstmt.setString(2,  user.getU_pw());
-			pstmt.setString(3,  user.getU_name());
-			pstmt.setString(4,  user.getU_tel());
-			pstmt.setString(5,  user.getU_age());
+			pstmt.setString(1, user.getU_id());
+			pstmt.setString(2, user.getU_pw());
+			pstmt.setString(3, user.getU_name());
+			pstmt.setString(4, user.getU_tel());
+			pstmt.setString(5, user.getU_age());
+			pstmt.setString(6, user.getU_level());
 			pstmt.executeUpdate();
 		} catch (Exception ex) {
 			System.out.println("SQLException : " + ex.getMessage());

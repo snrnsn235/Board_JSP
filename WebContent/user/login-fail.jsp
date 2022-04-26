@@ -11,7 +11,7 @@
 <script>
 setTimeout(function() {
 	window.location.href = "userlogin.do";
-}, 3000);
+}, 2000);
 </script>
 </body>
 </html>

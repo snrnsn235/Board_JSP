@@ -21,9 +21,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.lcomputerstudy.testmvc.service.*;
 import com.lcomputerstudy.testmvc.vo.*;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-
 
 @WebServlet("*.do")
 public class Controller extends HttpServlet{
@@ -72,7 +69,7 @@ public class Controller extends HttpServlet{
 		Board board = null;
 		Comment comment = null;
 		Pagination pagination = null;
-		
+		BoardFile boardfile = null;
 		//Boardservice, Commentservice 클래스에 변수 각각 선언해준것
 		Boardservice boardService = null;
 		Commentservice commentservice = null;
@@ -101,16 +98,17 @@ public class Controller extends HttpServlet{
 				request.setAttribute("pagination", pagination);
 				break;
 				//회원추가
-			case "/logininsert.do":
+			case "/insert.do":
 				view = "user/insert";
 				break;
 			case "/insert-process.do":
 				user = new User();
 				user.setU_id(request.getParameter("id"));
-				user.setU_pw(request.getParameter("pw"));
+				user.setU_pw(request.getParameter("password"));
 				user.setU_name(request.getParameter("name"));
-				user.setU_tel(request.getParameter("tel") + "-" + request.getParameter("tel2")+"-"+request.getParameter("tel3"));
+				user.setU_tel(request.getParameter("tel1") + "-" + request.getParameter("tel2")+"-"+request.getParameter("tel3"));
 				user.setU_age(request.getParameter("age"));
+				user.setU_level(request.getParameter("level"));
 				
 				userService = UserService.getInstance();
 				userService.insertUser(user);
@@ -301,7 +299,6 @@ public class Controller extends HttpServlet{
 				user = (User)session.getAttribute("user");
 				board = new Board();
 				board.setU_idx(user.getU_idx());
-				
 				File attachesDir = new File(ATTACHES_DIR);
 				 
 		        DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
@@ -311,6 +308,7 @@ public class Controller extends HttpServlet{
 				
 		        try {
 		        	List<FileItem> items = upload.parseRequest(request);
+		        	//다중 업로드를 위한 List
 		        	List<BoardFile> bfList = new ArrayList<BoardFile>();
 			        for (FileItem item : items) {
 			            if (item.isFormField()) {
@@ -325,7 +323,7 @@ public class Controller extends HttpServlet{
 			            		break;
 			            	}
 			             } else if (item.getSize() > 0){		 
-			            	  BoardFile bf = new BoardFile();
+			            	  boardfile = new BoardFile();
 			            	 
 		                      String separator = File.separator;
 		                      int index =  item.getName().lastIndexOf(separator);
@@ -335,9 +333,10 @@ public class Controller extends HttpServlet{
 		                      File uploadFile = new File(ATTACHES_DIR +  separator + fileName);
 		                      item.write(uploadFile);
 		                      
-		                      bf.setFileName(item.getName());
-		                      
-		                      bfList.add(bf);
+		                      boardfile.setFileName(item.getName());
+			                  boardfile.setOrgFileName(item.getName());
+			                  
+		                      bfList.add(boardfile);
 		                }
 			            board.setFileList(bfList);
 			        }
@@ -347,9 +346,11 @@ public class Controller extends HttpServlet{
 			          e.printStackTrace();
 			          out.println("<h1>파일 업로드 중 오류가  발생하였습니다.</h1>");
 			    }
+		        board.setB_idx(boardfile.getB_idx());
 				boardService = Boardservice.getInstance() ;
-				boardService.insertBoard(board);
-			    view = "board/boardinsert-result";
+				boardService.insertBoard(board, boardfile);
+			    
+				view = "board/boardinsert-result";
 			    break;
 	    
 			  //MultipartRequest 구문

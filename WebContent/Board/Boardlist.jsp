@@ -91,7 +91,7 @@
 				</c:forEach>
 			</table>
 	<!-- pagination -->
-	<div style = "border-collapse:collapse;	width:360px; margin:40px auto;">
+	<div style = "border-collapse:collapse;	width:340px; margin:40px auto;">
 		<ul>
 			<c:choose>
 					<c:when test="${pagination.startPage-1 != 0}">

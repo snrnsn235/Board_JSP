@@ -88,7 +88,6 @@ public class BoardDAO {
 				User user = new User();
 				user.setU_id(rs.getString("u_idx"));
 				board.setUser(user);
-				
 				list.add(board);
 				}
 		} catch(Exception e) {
@@ -179,21 +178,28 @@ public class BoardDAO {
 		}
 	}
 	
-	public void insertBoardFile(Board board) {
+	public void insertBoardFile(BoardFile boardfile) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into board"
+			String sql = "insert into boardfile(filename, orgFileName, b_idx) value(?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, boardfile.getFileName());
+			pstmt.setString(2, boardfile.getOrgFileName());
+			pstmt.setInt(3, boardfile.getB_idx());
+			pstmt.executeUpdate();
+			pstmt.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(pstmt != null ) pstmt.close();
-				if(conn != null ) conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	public void replyBoard(Board board) {
