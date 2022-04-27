@@ -314,11 +314,11 @@ public class Controller extends HttpServlet{
 			            if (item.isFormField()) {
 			            	switch (item.getFieldName()) {
 			            	case "title":
-			            		board.setB_title(item.getString());
+			            		board.setB_title(item.getString(CHARSET));
 			            		System.out.printf("파라미터 명 : %s, 파라미터 값 : %s \n", item.getFieldName(), item.getString(CHARSET));
 			            		break;
 			            	case "content":
-			            		board.setB_content(item.getString());
+			            		board.setB_content(item.getString(CHARSET));
 			            		System.out.printf("파라미터 명 : %s, 파라미터 값 : %s \n", item.getFieldName(), item.getString(CHARSET));
 			            		break;
 			            	}
@@ -326,7 +326,7 @@ public class Controller extends HttpServlet{
 			            	  boardfile = new BoardFile();
 			            	 
 		                      String separator = File.separator;
-		                      int index =  item.getName().lastIndexOf(separator);
+		                      int index = item.getName().lastIndexOf(separator);
 		                      String fileName = item.getName().substring(index  + 1);
 		                      System.out.printf("파라미터 명 : %s, 파일 명 : %s, 파일 크기 : %s bytes \n", item.getFieldName(), item.getName(), item.getSize());
 		                      board.setFilename(item.getName());
@@ -334,21 +334,21 @@ public class Controller extends HttpServlet{
 		                      item.write(uploadFile);
 		                      
 		                      boardfile.setFileName(item.getName());
-			                  boardfile.setOrgFileName(item.getName());
-			                  
+//			                  boardfile.setOrgFileName(item.getName());
 		                      bfList.add(boardfile);
 		                }
 			            board.setFileList(bfList);
+			            System.out.println(bfList);
+			            System.out.println(board);
 			        }
-			        out.println("<h1>파일 업로드 완료</h1>");
 		        } catch (Exception e) {
 			          // 파일 업로드 처리 중 오류가 발생하는 경우
 			          e.printStackTrace();
 			          out.println("<h1>파일 업로드 중 오류가  발생하였습니다.</h1>");
 			    }
-		        board.setB_idx(boardfile.getB_idx());
+		       
 				boardService = Boardservice.getInstance() ;
-				boardService.insertBoard(board, boardfile);
+				boardService.insertBoard(board);
 			    
 				view = "board/boardinsert-result";
 			    break;
@@ -358,7 +358,6 @@ public class Controller extends HttpServlet{
 //				board.setB_content(multipartRequest.getParameter("content"));
 //				board.setB_title(multipartRequest.getParameter("title"));
 //				board.setFilename(multipartRequest.getFilesystemName("filename"));
-		           
 //				parameter가 전달된 녀석의 문자를 얻어오는 것이라면
 //				part는 전달한 name값을 가지고 특정 파트를 읽는 것이다.
 //				저장경로는 상대경로를 쓸 수 없다 절대경로여야한다

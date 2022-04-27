@@ -148,7 +148,7 @@ public class BoardDAO {
 		}
 	}
 	
-	public void insertBoard(Board board) {
+	public Board insertBoard(Board board) {
 			Connection conn = null;
 			PreparedStatement pstmt = null;
 			
@@ -166,6 +166,10 @@ public class BoardDAO {
 				sql = "update board set b_group=last_insert_id() where b_idx = last_insert_id()";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.executeUpdate();
+				
+				sql = "select * from board where b_idx = last_insert_id()";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.executeUpdate();
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			} finally {
@@ -176,21 +180,25 @@ public class BoardDAO {
 				e.printStackTrace();
 			}
 		}
+			return board;
 	}
 	
-	public void insertBoardFile(BoardFile boardfile) {
+	public void insertBoardFile(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into boardfile(filename, orgFileName, b_idx) value(?,?,?)";
+			String sql = "insert into boardfile(filename, b_idx) value(?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, boardfile.getFileName());
-			pstmt.setString(2, boardfile.getOrgFileName());
-			pstmt.setInt(3, boardfile.getB_idx());
+			pstmt.setString(1, board.getFilename());
+			pstmt.setInt(2, board.getB_idx());
 			pstmt.executeUpdate();
 			pstmt.close();
+			
+			sql = "update boardfile set b_idx=last_insert_id() where where f_idx=last_insert_id()";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -202,6 +210,7 @@ public class BoardDAO {
 			}
 		}
 	}
+	
 	public void replyBoard(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

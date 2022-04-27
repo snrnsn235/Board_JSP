@@ -3,7 +3,6 @@ package com.lcomputerstudy.testmvc.service;
 import java.util.List;
 
 import com.lcomputerstudy.testmvc.dao.*;
-import com.lcomputerstudy.testmvc.vo.Board;
 import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
 
@@ -33,25 +32,18 @@ public class UserService {
 	public void levelUpdate(User user) {
 		dao.levelUpdate(user);
 	}
-//	public void levelRemove(User user) {
-//		dao.levelRemove(user);
-//	}
 	public int getUsersCount() {
 		return dao.getUsersCount();
 	}
-	
 	public User loginUser(String idx, String pw) {
 		return dao.loginUser(idx, pw);
 	}
-	
 	public User getUsers(User user) {
 		return dao.getUsers(user);
 	}
-	
 	public void editUser(User user) {
 		dao.editUser(user);
 	}
-	
 	public void deleteUser(User user) {
 		dao.deleteUser(user);
 	}
