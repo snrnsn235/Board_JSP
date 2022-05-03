@@ -80,7 +80,7 @@
 			</tr>
 			<tr>
 				<td>첨부파일</td>
-				<td><img src="/lcomputerstudy/upload/${board.filename }" style="color:red;"></td>
+				<td><img src="/lcomputerstudy/upload/${board.filename}"></td>
 			</tr>
 			<tr>
 				<td>내용</td>

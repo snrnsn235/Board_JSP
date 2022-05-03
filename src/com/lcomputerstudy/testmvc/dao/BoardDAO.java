@@ -191,10 +191,14 @@ public class BoardDAO {
 
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into boardfile(orgfilename, b_idx) value(?,?)";
+			String sql = "insert into boardfile(filename, orgfilename, b_idx) values(?,?,?),(?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, board.getFilename());
-			pstmt.setInt(2, board.getB_idx());
+			pstmt.setString(1, board.getFileList().get(0).getFileName());
+			pstmt.setString(2, board.getFileList().get(0).getOrgFileName());
+			pstmt.setInt(3, board.getB_idx());
+			pstmt.setString(4, board.getFileList().get(1).getFileName());
+			pstmt.setString(5, board.getFileList().get(1).getOrgFileName());
+			pstmt.setInt(6, board.getB_idx());
 			pstmt.executeUpdate();
 			pstmt.close();
 

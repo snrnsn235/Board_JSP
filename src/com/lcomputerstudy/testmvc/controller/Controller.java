@@ -304,7 +304,6 @@ public class Controller extends HttpServlet {
 			user = (User) session.getAttribute("user");
 			board = new Board();
 			board.setU_idx(user.getU_idx());
-
 			File attachesDir = new File(ATTACHES_DIR);
 
 			DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
@@ -333,8 +332,7 @@ public class Controller extends HttpServlet {
 					} else if (item.getSize() > 0) {
 						boardfile = new BoardFile();
 						String separator = File.separator;
-//						int index = item.getName().lastIndexOf(separator);
-						
+						//int index = item.getName().lastIndexOf(separator);
 						// 날짜를 자동으로 입력하게 하기 위한 코드
 						Date date = new Date();
 						//시간을 원하는 포멧으로 출력하기위한 함수SimpleDateFormat()
@@ -342,16 +340,20 @@ public class Controller extends HttpServlet {
 						String strDate = sf.format(date);
 						int n = ((int) (Math.random() * 9000)) + 1000;
 						String fileName = strDate + n; //여기까지 하면 fileName이 들어옴
-						new File(fileName);//디렉터리와 파일명까지 경로를 모두 지정하여 파일 객체를 생성
+						//jpg, png, text 확장자를 넣어주기 위한 코드
+						String orgFileName = item.getName();
+						int extIndex = orgFileName.lastIndexOf(".");
+						String ext = orgFileName.substring(extIndex+1);
+						new File(fileName + "." + ext);//디렉터리와 파일명까지 경로를 모두 지정하여 파일 객체를 생성
 						
 //						String fileName1 = item.getName().substring(index + 1);
 						System.out.printf("파라미터 명 : %s, 파일 명 : %s, 파일 크기 : %s bytes \n", item.getFieldName(),
 								item.getName(), item.getSize());
-						board.setFilename(item.getName());
+						board.setFilename(fileName + "." + ext);
 						File uploadFile = new File(ATTACHES_DIR + separator + fileName);
 						item.write(uploadFile);
 
-		                boardfile.setFileName(item.getName());
+		                boardfile.setFileName(fileName + "." + ext);
 						boardfile.setOrgFileName(item.getName());
 						bfList.add(boardfile);
 					}
