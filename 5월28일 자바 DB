@@ -1,0 +1,438 @@
+-- --------------------------------------------------------
+-- 호스트:                          127.0.0.1
+-- 서버 버전:                        10.5.15-MariaDB - mariadb.org binary distribution
+-- 서버 OS:                        Win64
+-- HeidiSQL 버전:                  11.3.0.6295
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+-- root 데이터베이스 구조 내보내기
+CREATE DATABASE IF NOT EXISTS `root` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `root`;
+
+-- 테이블 root.board 구조 내보내기
+CREATE TABLE IF NOT EXISTS `board` (
+  `b_idx` int(10) NOT NULL AUTO_INCREMENT,
+  `b_title` varchar(255) NOT NULL,
+  `b_content` varchar(255) NOT NULL,
+  `b_date` datetime NOT NULL,
+  `b_hit` int(11) NOT NULL DEFAULT 0,
+  `b_group` varchar(255) NOT NULL,
+  `b_order` varchar(255) NOT NULL,
+  `b_depth` varchar(255) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `u_idx` int(10) NOT NULL,
+  PRIMARY KEY (`b_idx`),
+  KEY `u_idx` (`u_idx`),
+  CONSTRAINT `board_ibfk_1` FOREIGN KEY (`u_idx`) REFERENCES `user` (`u_idx`) ON DELETE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.board:~60 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `board` DISABLE KEYS */;
+INSERT INTO `board` (`b_idx`, `b_title`, `b_content`, `b_date`, `b_hit`, `b_group`, `b_order`, `b_depth`, `filename`, `u_idx`) VALUES
+	(1, 'power', 'znfnznznzzz', '2022-03-27 19:22:14', 0, '1', '1', '0', '', 13),
+	(2, 'power', 'znfnznznzzz', '2022-03-27 19:22:27', 0, '2', '1', '0', '', 13),
+	(3, 'power', 'znfnznznzzz', '2022-03-27 19:22:30', 0, '3', '1', '0', '', 13),
+	(4, 'power', 'power is jacob', '2022-03-27 19:22:38', 0, '4', '1', '0', '', 13),
+	(5, 'power', 'power is jacob', '2022-03-27 19:23:29', 0, '5', '1', '0', '', 13),
+	(6, 'fjasfd', 'dahgaihoaehgajvklajk', '2022-03-27 19:23:42', 0, '6', '1', '0', '', 13),
+	(7, 'jasgasoaksk', 'gashgasgaskldjlkasdf', '2022-03-27 19:23:54', 0, '7', '1', '0', '', 13),
+	(10, 'rnrn', '구구구', '2022-03-27 19:24:16', 0, '10', '1', '0', '', 13),
+	(11, 'rhrh', '고슛', '2022-03-27 19:24:29', 0, '11', '1', '0', '', 8),
+	(12, 'vkdnj', '파워파워파워', '2022-03-27 19:24:37', 0, '12', '1', '0', '', 13),
+	(13, 'djddjdeld', '엉덩이', '2022-03-27 19:25:04', 0, '13', '1', '0', '', 13),
+	(14, 'epemvmfptj', '데드리프트', '2022-03-27 19:25:22', 0, '14', '1', '0', '', 11),
+	(15, 'tmznjxm', '스쿼트', '2022-03-27 19:25:33', 0, '15', '1', '0', '', 11),
+	(16, 'tkaenrms', '삼두근', '2022-03-27 19:27:07', 0, '16', '1', '0', '', 11),
+	(17, 'dlenrms', '이두근', '2022-03-27 19:27:18', 0, '17', '1', '0', '', 11),
+	(18, 'whddkfl', '종아리', '2022-03-27 19:27:29', 0, '18', '1', '0', '', 10),
+	(19, 'djRo', '어깨', '2022-03-27 19:27:36', 0, '19', '1', '0', '', 10),
+	(20, 'gnaustkarkrrms', '후면삼각근', '2022-03-27 19:27:48', 0, '20', '1', '0', '', 10),
+	(21, 'rktma', '가슴', '2022-03-27 19:28:02', 0, '21', '1', '0', '', 10),
+	(22, 'tkfpfp', '사레레', '2022-03-27 19:28:13', 0, '22', '1', '0', '', 10),
+	(23, 'qpsclvmfptm', '벤치프레스', '2022-03-27 19:28:24', 0, '23', '1', '0', '', 10),
+	(24, 'ejaqpf', '덤벨', '2022-03-27 19:28:33', 0, '24', '1', '0', '', 10),
+	(25, 'qkqpf', '바벨', '2022-03-27 19:28:40', 0, '25', '1', '0', '', 10),
+	(26, 'ejaqpfvmfptm', '덤벨프레스', '2022-03-27 19:28:59', 0, '26', '1', '0', '', 10),
+	(27, 'fjswl', '런지', '2022-03-27 19:29:06', 0, '27', '1', '0', '', 3),
+	(28, 'fprmvmfptm', '레그프레스', '2022-03-27 19:30:33', 0, '28', '1', '0', '', 3),
+	(29, 'vnfdjq', '풀업', '2022-03-27 19:30:52', 0, '29', '1', '0', '', 3),
+	(30, 'xlqhs', '티본', '2022-03-27 19:31:06', 0, '30', '1', '0', '', 3),
+	(31, 'ㄹㅇㅁ', 'ㄹㅇㄴㅁ', '2022-03-27 19:32:53', 0, '31', '1', '0', '', 3),
+	(32, 'test', 'test', '2022-03-27 21:13:17', 0, '23', '3', '1', '', 3),
+	(33, 'test', 'test', '2022-03-27 21:18:09', 0, '23', '2', '1', '', 10),
+	(41, '4/13', '4/13', '2022-04-13 23:43:12', 0, '41', '1', '0', '', 12),
+	(47, 'tre', 'tre', '2022-04-14 00:48:45', 0, '47', '1', '0', '', 23),
+	(51, '4/14', '4/14test', '2022-04-14 23:40:23', 0, '51', '1', '0', '', 23),
+	(52, 'test', '4/20', '2022-04-20 18:48:43', 0, '52', '1', '0', '', 4),
+	(53, 'fdas', 'fdasfasd', '2022-04-20 21:49:27', 0, '53', '1', '0', '', 4),
+	(54, '432', '432', '2022-04-20 21:52:41', 0, '54', '1', '0', '', 4),
+	(55, '4321', '4321', '2022-04-20 21:53:49', 0, '55', '1', '0', '', 4),
+	(56, '4/20', '4/20', '2022-04-20 22:20:40', 0, '56', '1', '0', '', 4),
+	(57, '4/22222', '4/22222222', '2022-04-20 22:23:10', 0, '57', '1', '0', '', 4),
+	(58, '4/22222', '4/22222222', '2022-04-20 22:23:18', 0, '58', '1', '0', '', 4),
+	(59, 'rew', 'rewrwerwe', '2022-04-20 22:25:43', 0, '59', '1', '0', '', 4),
+	(61, '4/20 rew', '들어간다', '2022-04-20 22:34:50', 0, '61', '1', '0', '', 4),
+	(62, '4/20', '4/20', '2022-04-20 22:57:06', 0, '62', '1', '0', '', 4),
+	(63, 'rew', 'rewrewrew', '2022-04-20 22:58:10', 0, '63', '1', '0', '', 4),
+	(66, 'last', 'last test', '2022-04-20 23:42:01', 0, '66', '1', '0', 'P1236.jpg,P12345.jpg', 4),
+	(67, 'rewr', 'rewr', '2022-04-20 23:48:54', 0, '67', '1', '0', 'Apple Watch.jpg,museum01.jpg', 4),
+	(69, 'test', 'test', '2022-04-21 00:07:15', 0, '69', '1', '0', '203826_204548_3226.png,apple.jpg', 4),
+	(70, 'test', 'test <br>\r\n<img src="/upload/203826_204548_3226.png">\r\n', '2022-04-21 00:08:14', 0, '70', '1', '0', 'apple.jpg,background.jpg', 4),
+	(71, 'reRE', 're', '2022-04-21 00:11:32', 0, '71', '1', '0', 'background1.jpg', 4),
+	(72, '321', '321', '2022-04-23 00:21:29', 0, '72', '1', '0', 'background3.jpg', 4),
+	(73, '3213', '32131231312', '2022-04-26 00:39:41', 0, '73', '1', '0', 'apple.jpg', 4),
+	(89, '222', '222', '2022-04-26 02:34:52', 0, '89', '1', '0', 'background1.jpg', 4),
+	(90, '1', '1321', '2022-04-26 02:52:03', 0, '90', '1', '0', 'Apple Watch1.jpg', 4),
+	(91, '123', '123321', '2022-04-29 21:44:31', 0, '91', '1', '0', 'background.jpg', 4),
+	(92, '123', '4321', '2022-04-29 21:45:07', 0, '92', '1', '0', '2021022201002364800209141.jpg', 4),
+	(93, '123', '4321', '2022-04-29 21:45:41', 0, '93', '1', '0', '2021022201002364800209141.jpg', 4),
+	(94, '6666666666', '677777777777777', '2022-04-29 21:46:25', 0, '94', '1', '0', 'P1237.jpg', 4),
+	(95, 'ㅏㅏㅏㅏㅏㅏ', 'ㅠㅜㅠㅜㅠㅜㅠ', '2022-04-29 22:17:32', 0, '95', '1', '0', 'background2.jpg', 4),
+	(96, 'ㅎㅎㅎ', 'ㄹㄴㅇㄹㄴㄹㄶ', '2022-04-29 22:20:47', 0, '96', '1', '0', '202204292220219674', 4),
+	(97, 'ㅎㄹㄴ', '마지막이길', '2022-04-29 22:26:26', 0, '97', '1', '0', '202204292225579558', 4),
+	(98, '제발', '되어주라 응???', '2022-04-29 23:00:45', 0, '98', '1', '0', '202204292300368431', 4);
+/*!40000 ALTER TABLE `board` ENABLE KEYS */;
+
+-- 테이블 root.boardfile 구조 내보내기
+CREATE TABLE IF NOT EXISTS `boardfile` (
+  `f_idx` int(11) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(255) DEFAULT NULL,
+  `orgFileName` varchar(255) DEFAULT NULL,
+  `b_idx` int(11) NOT NULL,
+  PRIMARY KEY (`f_idx`),
+  KEY `FK_boardfile_root.board` (`b_idx`),
+  CONSTRAINT `FK_boardfile_root.board` FOREIGN KEY (`b_idx`) REFERENCES `board` (`b_idx`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.boardfile:~6 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `boardfile` DISABLE KEYS */;
+INSERT INTO `boardfile` (`f_idx`, `filename`, `orgFileName`, `b_idx`) VALUES
+	(1, NULL, '2021022201002364800209141.jpg', 92),
+	(2, NULL, '2021022201002364800209141.jpg', 93),
+	(3, NULL, 'P1237.jpg', 94),
+	(5, NULL, 'background2.jpg', 95),
+	(7, NULL, '202204292220219674', 96),
+	(8, '202204292300368431', '2021032415043700.jpg', 98);
+/*!40000 ALTER TABLE `boardfile` ENABLE KEYS */;
+
+-- 테이블 root.board_2 구조 내보내기
+CREATE TABLE IF NOT EXISTS `board_2` (
+  `bno` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `content` text NOT NULL,
+  `writer` varchar(30) NOT NULL,
+  `view_cnt` int(11) DEFAULT 0,
+  `comment_cnt` int(11) DEFAULT 0,
+  `reg_date` datetime DEFAULT current_timestamp(),
+  `up_date` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`bno`)
+) ENGINE=InnoDB AUTO_INCREMENT=1126 DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.board_2:~3 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `board_2` DISABLE KEYS */;
+INSERT INTO `board_2` (`bno`, `title`, `content`, `writer`, `view_cnt`, `comment_cnt`, `reg_date`, `up_date`) VALUES
+	(1123, 'hello', 'hello', 'asdf', 2, 2, '2022-05-23 15:40:32', '2022-05-23 15:40:32'),
+	(1124, '5/23', '5/23', 'asdf', 3, 0, '2022-05-23 18:53:34', '2022-05-23 19:53:14'),
+	(1125, '5/23', '5/232323', 'asdf', 0, 0, '2022-05-23 19:57:45', '2022-05-23 19:57:45');
+/*!40000 ALTER TABLE `board_2` ENABLE KEYS */;
+
+-- 테이블 root.comment 구조 내보내기
+CREATE TABLE IF NOT EXISTS `comment` (
+  `c_idx` int(10) NOT NULL AUTO_INCREMENT,
+  `c_content` varchar(255) NOT NULL,
+  `c_date` datetime NOT NULL,
+  `c_group` varchar(255) NOT NULL,
+  `c_order` varchar(255) NOT NULL,
+  `c_depth` varchar(255) NOT NULL,
+  `b_idx` int(11) NOT NULL,
+  `u_idx` int(11) DEFAULT NULL,
+  PRIMARY KEY (`c_idx`),
+  KEY `b_idx` (`b_idx`),
+  KEY `u_idx` (`u_idx`),
+  CONSTRAINT `FK_1` FOREIGN KEY (`b_idx`) REFERENCES `board` (`b_idx`) ON DELETE NO ACTION,
+  CONSTRAINT `FK_2` FOREIGN KEY (`u_idx`) REFERENCES `user` (`u_idx`) ON DELETE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.comment:~42 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` (`c_idx`, `c_content`, `c_date`, `c_group`, `c_order`, `c_depth`, `b_idx`, `u_idx`) VALUES
+	(1, 'test', '2022-03-30 00:17:47', '1', '1', '0', 1, NULL),
+	(2, 'rewq', '2022-03-30 01:36:55', '2', '1', '0', 1, NULL),
+	(3, 'test', '2022-03-31 17:40:19', '3', '1', '0', 1, NULL),
+	(5, 'test', '2022-03-31 19:44:49', '5', '1', '0', 10, NULL),
+	(6, 'asdaasasd', '2022-03-31 20:05:50', '6', '1', '0', 1, NULL),
+	(7, 'test1', '2022-03-31 20:07:05', '7', '1', '0', 1, NULL),
+	(8, 'asdfdzda', '2022-03-31 20:19:29', '8', '1', '0', 1, NULL),
+	(9, 'asd321', '2022-03-31 20:21:14', '9', '1', '0', 1, NULL),
+	(10, 'test11', '2022-03-31 22:44:20', '10', '1', '0', 11, NULL),
+	(11, 'test2', '2022-03-31 23:28:42', '11', '1', '0', 10, NULL),
+	(12, 'test 4/3', '2022-04-03 13:46:25', '12', '1', '0', 1, NULL),
+	(14, 'reqw', '2022-04-07 11:12:56', '14', '1', '0', 1, NULL),
+	(17, 'test123', '2022-04-07 23:39:30', '9', '3', '2', 1, NULL),
+	(18, '가나다라마바사', '2022-04-07 23:44:57', '18', '1', '0', 1, NULL),
+	(19, '가나다라마바사', '2022-04-07 23:46:15', '19', '1', '0', 1, NULL),
+	(20, '4/7 lasttest321', '2022-04-07 23:55:15', '20', '1', '0', 1, NULL),
+	(27, 'TEST', '2022-04-08 00:01:27', '27', '1', '0', 1, NULL),
+	(28, 'TEST', '2022-04-08 00:01:33', '28', '1', '0', 1, NULL),
+	(29, '데드리프트', '2022-04-08 00:06:54', '29', '1', '0', 1, NULL),
+	(30, '데드리프트', '2022-04-08 00:09:11', '30', '1', '0', 1, NULL),
+	(32, 'ㄱㄷㄱㄷ', '2022-04-08 00:27:02', '32', '1', '0', 1, NULL),
+	(33, 'ㅅㄷㅅㅈ', '2022-04-08 00:27:41', '33', '1', '0', 1, NULL),
+	(34, 'ㄱㄷㅈㅂ', '2022-04-08 00:32:39', '34', '1', '0', 1, NULL),
+	(35, 'ㅅㄷㄴㅅ', '2022-04-08 00:35:33', '35', '1', '0', 1, NULL),
+	(36, 'ㄱㄷㅂㅈㄱㄷㅈㅂ', '2022-04-08 00:38:11', '36', '1', '0', 1, NULL),
+	(37, '포기하기 싫어', '2022-04-08 00:41:26', '37', '1', '0', 1, NULL),
+	(38, '암행기', '2022-04-08 00:43:43', '38', '1', '0', 1, NULL),
+	(39, 'ㅅㄷㄴㅅ', '2022-04-08 00:44:08', '39', '1', '0', 1, NULL),
+	(40, 'ㄱㄷㅈㅂ', '2022-04-08 00:46:35', '40', '1', '0', 1, NULL),
+	(41, '진짜 자고 싶다', '2022-04-08 00:47:30', '41', '1', '0', 1, NULL),
+	(42, 'rew', '2022-04-08 11:02:38', '42', '1', '0', 1, NULL),
+	(43, '4/8 test test', '2022-04-08 11:03:03', '43', '1', '0', 1, NULL),
+	(44, 'test321', '2022-04-08 11:06:43', '9', '4', '3', 1, NULL),
+	(45, 'power', '2022-04-08 11:07:05', '45', '1', '0', 1, NULL),
+	(46, 'deathside', '2022-04-08 11:10:43', '46', '1', '0', 1, NULL),
+	(47, 'powerside', '2022-04-08 11:11:12', '47', '1', '0', 1, NULL),
+	(48, 'ㅎㅇㅁ', '2022-04-16 23:12:12', '9', '2', '1', 1, NULL),
+	(49, '5/27', '2022-05-27 23:28:51', '49', '1', '0', 71, NULL),
+	(50, 'fdsafdsa', '2022-05-27 23:35:06', '50', '1', '0', 98, NULL),
+	(51, 'rew', '2022-05-27 23:51:40', '50', '2', '1', 98, NULL),
+	(53, '431', '2022-05-28 00:31:21', '50', '2', '1', 98, NULL),
+	(54, '41234123', '2022-05-28 00:31:38', '50', '3', '2', 98, NULL);
+/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
+
+-- 테이블 root.comment_2 구조 내보내기
+CREATE TABLE IF NOT EXISTS `comment_2` (
+  `cno` int(11) NOT NULL AUTO_INCREMENT,
+  `bno` int(11) NOT NULL,
+  `pcno` int(11) DEFAULT NULL,
+  `comment` varchar(300) DEFAULT NULL,
+  `commenter` varchar(50) DEFAULT NULL,
+  `reg_date` datetime DEFAULT current_timestamp(),
+  `up_date` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`cno`)
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.comment_2:~15 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `comment_2` DISABLE KEYS */;
+INSERT INTO `comment_2` (`cno`, `bno`, `pcno`, `comment`, `commenter`, `reg_date`, `up_date`) VALUES
+	(59, 1123, NULL, 'hihihihi321321', 'asdf', '2022-05-23 16:05:24', '2022-05-23 17:25:40'),
+	(62, 1123, NULL, 'hello', 'asdf', '2022-05-23 16:05:25', '2022-05-23 16:05:25'),
+	(63, 1123, NULL, 'hello', 'asdf', '2022-05-23 16:05:25', '2022-05-23 16:05:25'),
+	(64, 1123, NULL, 'hello', 'asdf', '2022-05-23 16:05:25', '2022-05-23 16:05:25'),
+	(65, 1123, NULL, 'hello', 'asdf', '2022-05-23 16:05:26', '2022-05-23 16:05:26'),
+	(66, 1123, NULL, 'hello', 'asdf', '2022-05-23 16:05:26', '2022-05-23 16:05:26'),
+	(67, 1123, NULL, 'hello', 'asdf', '2022-05-23 16:05:26', '2022-05-23 16:05:26'),
+	(68, 1123, NULL, 'hello', 'asdf', '2022-05-23 16:05:27', '2022-05-23 16:05:27'),
+	(69, 1123, NULL, NULL, 'asdf', '2022-05-23 16:05:36', '2022-05-23 16:05:36'),
+	(73, 1123, NULL, 'rewreww', 'asdf', '2022-05-23 17:07:11', '2022-05-23 17:07:11'),
+	(74, 1123, NULL, '', 'asdf', '2022-05-23 17:07:29', '2022-05-23 17:07:29'),
+	(75, 1123, 59, 'child of hihihihi321321', 'asdf', '2022-05-23 18:31:35', '2022-05-23 18:31:35'),
+	(77, 1123, 59, 'child2 of hihihi321321', 'asdf', '2022-05-23 18:39:05', '2022-05-23 18:39:05'),
+	(79, 1123, 59, 'child3 of hihihihi321321', 'asdf', '2022-05-23 18:40:40', '2022-05-23 18:40:40'),
+	(81, 1123, 59, '5555', 'asdf', '2022-05-23 18:41:12', '2022-05-23 18:41:12');
+/*!40000 ALTER TABLE `comment_2` ENABLE KEYS */;
+
+-- 테이블 root.lc_auth 구조 내보내기
+CREATE TABLE IF NOT EXISTS `lc_auth` (
+  `u_id` varchar(50) NOT NULL,
+  `u_auth` varchar(50) NOT NULL,
+  PRIMARY KEY (`u_id`,`u_auth`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.lc_auth:~19 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `lc_auth` DISABLE KEYS */;
+INSERT INTO `lc_auth` (`u_id`, `u_auth`) VALUES
+	('1111', 'ROLE_USER'),
+	('321', 'ROLE_USER'),
+	('7777', 'ROLE_USER'),
+	('dlwogns', 'ROLE_USER'),
+	('dlwoguq', 'ROLE_USER'),
+	('jacob_zzang', 'ROLE_USER'),
+	('jacoib', 'ROLE_USER'),
+	('lee_jae_hyeop', 'ROLE_USER'),
+	('po', 'ROLE_USER'),
+	('power', 'ROLE_USER'),
+	('power235', 'ROLE_USER'),
+	('pppp', 'ROLE_USER'),
+	('sdgvdshsdfg', 'ROLE_USER'),
+	('snrnsn2351@gmail.com', 'ROLE_USER'),
+	('snrnsn235@naver.com', 'ROLE_USER'),
+	('snrnsnr', 'ROLE_USER'),
+	('snrnsnr321', 'ROLE_USER'),
+	('trete', 'ROLE_USER'),
+	('user', 'ROLE_ADMIN');
+/*!40000 ALTER TABLE `lc_auth` ENABLE KEYS */;
+
+-- 테이블 root.lc_board 구조 내보내기
+CREATE TABLE IF NOT EXISTS `lc_board` (
+  `b_idx` int(11) NOT NULL AUTO_INCREMENT,
+  `b_title` varchar(50) NOT NULL,
+  `b_content` text NOT NULL,
+  `b_datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `b_id` varchar(255) NOT NULL DEFAULT 'AUTO_INCREMENT',
+  `b_writer` varchar(50) DEFAULT NULL,
+  `u_idx` int(11) NOT NULL,
+  PRIMARY KEY (`b_idx`),
+  KEY `u_idx` (`u_idx`),
+  CONSTRAINT `FK_lc_board_root.lc_user` FOREIGN KEY (`u_idx`) REFERENCES `lc_user` (`u_idx`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.lc_board:~3 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `lc_board` DISABLE KEYS */;
+INSERT INTO `lc_board` (`b_idx`, `b_title`, `b_content`, `b_datetime`, `b_id`, `b_writer`, `u_idx`) VALUES
+	(1, '제목444', '내용444', '2022-05-03 15:37:34', 'snrnsn2351@gmail.com', '테스트4', 8),
+	(2, '제목3', '내용3', '2022-05-03 15:37:31', 'snrnsnr321', '테스트3', 8),
+	(3, '제목1', '내용1', '2022-05-03 15:36:42', 'user', '테스트', 8);
+/*!40000 ALTER TABLE `lc_board` ENABLE KEYS */;
+
+-- 테이블 root.lc_user 구조 내보내기
+CREATE TABLE IF NOT EXISTS `lc_user` (
+  `u_idx` int(11) NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(50) NOT NULL,
+  `u_password` varchar(200) NOT NULL,
+  `u_name` varchar(50) NOT NULL,
+  `u_datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `u_tel` varchar(255) NOT NULL,
+  `u_address` varchar(255) NOT NULL,
+  `u_level` varchar(255) DEFAULT NULL,
+  `u_age` int(11) NOT NULL,
+  `u_isAccountNonExpired` tinyint(4) NOT NULL,
+  `u_isAccountNonLocked` tinyint(4) NOT NULL,
+  `u_isCredentialNonExpired` tinyint(4) NOT NULL,
+  `u_isEnabled` tinyint(4) NOT NULL,
+  PRIMARY KEY (`u_idx`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.lc_user:~8 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `lc_user` DISABLE KEYS */;
+INSERT INTO `lc_user` (`u_idx`, `u_id`, `u_password`, `u_name`, `u_datetime`, `u_tel`, `u_address`, `u_level`, `u_age`, `u_isAccountNonExpired`, `u_isAccountNonLocked`, `u_isCredentialNonExpired`, `u_isEnabled`) VALUES
+	(1, 'lee_jae_hyeop', '$2a$10$empYPmVpFz0b8N4O8WHV..zRg3c4dlukZQ6JmYNQrfXGGnHFgvvU.', '321', '2022-05-14 23:25:20', '222-3333-2323', '대구 동구 방촌동 우방강촌마을2차', NULL, 23, 1, 1, 1, 1),
+	(2, 'sdgvdshsdfg', '$2a$10$yyphcAoTeaEmazocpAL7/.sYFR90CXBejYCUuRn.LBo9COpqddWUm', 'tttt', '2022-05-14 23:25:44', '000-0000-0000', '6/694 Logan Load', NULL, 55, 1, 1, 1, 1),
+	(3, 'snrnsn2351@gmail.com', '$2a$10$iE9172JCQSY9vtejRIkt7O7qpmzPY2Lr32z2cIEB8uTzA6L../LLu', 're', '2022-05-14 18:17:29', '123-123-123', 'rewrew', NULL, 43, 1, 1, 1, 1),
+	(4, 'snrnsn235@naver.com', '$2a$10$A56LLeiutIwimdrO8xn0W.PDCg3TFgw.53EGzJnpxrnOgflo7O7K2', '협재', '2022-05-14 18:17:15', '990-1203-3123', 'efdafsdf', NULL, 32, 1, 1, 1, 1),
+	(5, 'snrnsnr', '$2a$10$MaNXfzeNNl3lNfrIpnIgQ.TiZgy95FXHcHzEStMKP7x0J/H3u3yoO', '누구', '2022-05-16 15:49:45', '010-2222-2222', 'rewrewrew', NULL, 12, 1, 1, 1, 1),
+	(6, 'snrnsnr321', '$2a$10$GY4a9lOtEZAZN/vLXPRsGeftd/OZK4aO5XHQcIcqBJ2rVcOKYGblq', '누구', '2022-05-16 15:51:36', '010-2222-2222', '대구', NULL, 12, 1, 1, 1, 1),
+	(7, 'trete', '$2a$10$ZlreGoZMMGKVOQ9nvxzswef6z6hvEAoZuRqcIaLE3YBkh6ci3SVG2', '321', '2022-05-14 23:25:28', '222-3333-2323', '대구 동촌', NULL, 23, 1, 1, 1, 1),
+	(8, 'user', '$2a$10$.p7Wq64N92NJxi9eZdk/tOirtwFgG/qUBHYZ.OWFvyL/IgrfUbK76', '1234', '2022-05-14 00:34:26', '010-3660-0658', '대구 동구 방촌동', NULL, 66, 1, 1, 1, 1);
+/*!40000 ALTER TABLE `lc_user` ENABLE KEYS */;
+
+-- 테이블 root.spring_session 구조 내보내기
+CREATE TABLE IF NOT EXISTS `spring_session` (
+  `PRIMARY_ID` char(36) NOT NULL,
+  `SESSION_ID` char(36) NOT NULL,
+  `CREATION_TIME` bigint(20) NOT NULL,
+  `LAST_ACCESS_TIME` bigint(20) NOT NULL,
+  `MAX_INACTIVE_INTERVAL` int(11) NOT NULL,
+  `EXPIRY_TIME` bigint(20) NOT NULL,
+  `PRINCIPAL_NAME` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`PRIMARY_ID`),
+  UNIQUE KEY `SPRING_SESSION_IX1` (`SESSION_ID`),
+  KEY `SPRING_SESSION_IX2` (`EXPIRY_TIME`),
+  KEY `SPRING_SESSION_IX3` (`PRINCIPAL_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- 테이블 데이터 root.spring_session:~1 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `spring_session` DISABLE KEYS */;
+INSERT INTO `spring_session` (`PRIMARY_ID`, `SESSION_ID`, `CREATION_TIME`, `LAST_ACCESS_TIME`, `MAX_INACTIVE_INTERVAL`, `EXPIRY_TIME`, `PRINCIPAL_NAME`) VALUES
+	('726a8f65-46e7-4706-b707-b9f2904d8840', '7a0b618a-7646-4115-a066-5113dc430eff', 1652710476887, 1652713876406, 7200, 1652721076406, 'user');
+/*!40000 ALTER TABLE `spring_session` ENABLE KEYS */;
+
+-- 테이블 root.spring_session_attributes 구조 내보내기
+CREATE TABLE IF NOT EXISTS `spring_session_attributes` (
+  `SESSION_PRIMARY_ID` char(36) NOT NULL,
+  `ATTRIBUTE_NAME` varchar(200) NOT NULL,
+  `ATTRIBUTE_BYTES` blob NOT NULL,
+  PRIMARY KEY (`SESSION_PRIMARY_ID`,`ATTRIBUTE_NAME`),
+  CONSTRAINT `SPRING_SESSION_ATTRIBUTES_FK` FOREIGN KEY (`SESSION_PRIMARY_ID`) REFERENCES `spring_session` (`PRIMARY_ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- 테이블 데이터 root.spring_session_attributes:~1 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `spring_session_attributes` DISABLE KEYS */;
+INSERT INTO `spring_session_attributes` (`SESSION_PRIMARY_ID`, `ATTRIBUTE_NAME`, `ATTRIBUTE_BYTES`) VALUES
+	('726a8f65-46e7-4706-b707-b9f2904d8840', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c00000000000002300200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b78707372004f6f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e557365726e616d6550617373776f726441757468656e7469636174696f6e546f6b656e00000000000002300200024c000b63726564656e7469616c737400124c6a6176612f6c616e672f4f626a6563743b4c00097072696e636970616c71007e0004787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c7371007e0004787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00067870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f7269747900000000000002300200014c0004726f6c657400124c6a6176612f6c616e672f537472696e673b787074000a524f4c455f41444d494e7871007e000d737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c7300000000000002300200024c000d72656d6f74654164647265737371007e000f4c000973657373696f6e496471007e000f787074000f303a303a303a303a303a303a303a3174002437613031663663332d643963382d343931612d386330342d3666663066363665666262617073720026636f6d2e6c636f6d707574657273747564792e6578616d706c652e646f6d61696e2e55736572000000000000000102000f4900036167655a001369734163636f756e744e6f6e457870697265645a001269734163636f756e744e6f6e4c6f636b65645a0017697343726564656e7469616c734e6f6e457870697265645a00096973456e61626c6564490006726f776e756d4c00076164647265737371007e000f5b00076172725f74656c7400135b4c6a6176612f6c616e672f537472696e673b4c000b617574686f72697469657371007e00064c000870617373776f726471007e000f4c000374656c71007e000f4c0009754461746554696d6571007e000f4c00047549647871007e000f4c0005754e616d6571007e000f4c0008757365726e616d6571007e000f787000000000010101010000000070707371007e000c0000000177040000000171007e00107874003c243261243130242e7037577136344e39324e4a786939655a646b2f744f697274774667472f71554248595a2e4f574676794c2f4967726655624b37367070707400043132333474000475736572);
+/*!40000 ALTER TABLE `spring_session_attributes` ENABLE KEYS */;
+
+-- 테이블 root.user 구조 내보내기
+CREATE TABLE IF NOT EXISTS `user` (
+  `u_idx` int(10) NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(255) NOT NULL,
+  `u_pw` varchar(255) NOT NULL,
+  `u_name` varchar(255) NOT NULL,
+  `u_tel` varchar(255) NOT NULL,
+  `u_level` varchar(255) NOT NULL,
+  `u_age` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`u_idx`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.user:~22 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`u_idx`, `u_id`, `u_pw`, `u_name`, `u_tel`, `u_level`, `u_age`) VALUES
+	(2, 'over235', '1234', '협재이', '4321-876-4321', 'no', '67'),
+	(3, 'power', '1234', 'NAME3', '010-0000-0000', 'no', '50'),
+	(4, 'power235', '1234', 'test1', '123-123-123', 'yes', '80'),
+	(5, 'test123', '1234', 'test2', '321-321-321', 'no', '80'),
+	(6, 'test1234', '1234', 'test3', '321-321-321', 'no', '70'),
+	(7, 'test', '1234', 'test4', '234-234-234', 'no', '55'),
+	(8, 'qwer23', '1234', 'test5', '345-345-345', 'no', '78'),
+	(9, 'qwer235', '1234', 'test6', '456-456-456', 'no', '87'),
+	(10, 'asdf123', '1234', 'test7', '567-567-567', 'no', '68'),
+	(11, 'xmfodzm', '1234', '이재범', '010-010-011', 'no', '65'),
+	(12, 'parameter', '1234', '구구구', '999-9999-9999', 'no', '99'),
+	(13, 'palpal', '1234', '팔팔팔', '8888-8888-8888', 'no', '88'),
+	(14, 'chil', '1234', '칠칠칠', '7777-7777-7777', 'no', '77'),
+	(15, 'ilil', '1234', '일일', '1111-1111-1111', 'no', '11'),
+	(16, 'yeee', '1234', '이이', '2222-2222-2222', 'no', '22'),
+	(17, 'sam', '1234', '삼삼', '333-333-333', 'no', '33'),
+	(20, 'root7654', '1234', '협재이', '543-543-534', 'no', '54'),
+	(23, 'snrnsn235', '123', '이재협', '111-1111-1111', 'no', '23'),
+	(24, '이재협', '123', 'dlwoguq', '101-1010-1010', 'no', '30'),
+	(25, '이재협', '123', 'dlwoguq', '101-1010-1010', 'no', '30'),
+	(26, '이재협', '123', 'dlwoguq', '101-1010-1010', 'no', '30'),
+	(27, '3333', '123', '구구구', '3-3-3', 'no', '32');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+-- 테이블 root.user2 구조 내보내기
+CREATE TABLE IF NOT EXISTS `user2` (
+  `id` varchar(50) NOT NULL,
+  `pwd` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `birth` datetime NOT NULL,
+  `sns` varchar(50) NOT NULL,
+  `reg_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.user2:~1 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `user2` DISABLE KEYS */;
+INSERT INTO `user2` (`id`, `pwd`, `name`, `email`, `birth`, `sns`, `reg_date`) VALUES
+	('asdf', '1234', 'abc', 'snrnsn235@naver.com', '1992-03-04 00:00:00', 'Instagram', '2022-05-03 15:36:42');
+/*!40000 ALTER TABLE `user2` ENABLE KEYS */;
+
+-- 테이블 root.user2_1 구조 내보내기
+CREATE TABLE IF NOT EXISTS `user2_1` (
+  `id` varchar(50) DEFAULT NULL,
+  `pwd` varchar(50) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `birth` datetime DEFAULT NULL,
+  `sns` varchar(50) DEFAULT NULL,
+  `reg_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 테이블 데이터 root.user2_1:~0 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `user2_1` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user2_1` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
